@@ -18,12 +18,25 @@ MOC_DIR = $${OUT_PWD}/obj
 RCC_DIR = $${OUT_PWD}/obj
 UI_DIR = $${OUT_PWD}/obj
 
+INCLUDEPATH += $$PWD/src \
+                $$PWD/include \
+                $$PWD/ui \
+
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp
+    src/aboutdialog.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/settingsdialog.cpp
 
 HEADERS += \
-        mainwindow.h
+    include/aboutdialog.h \
+    include/mainwindow.h \
+    include/settingsdialog.h
 
 FORMS += \
-        mainwindow.ui
+    ui/aboutdialog.ui \
+    ui/mainwindow.ui \
+    ui/settingsdialog.ui
+
+RESOURCES += \
+    resources.qrc
