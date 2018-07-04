@@ -3,10 +3,12 @@
 
 #include <QMainWindow>
 
+class LanguagesManager;
+class LanguagesManagerModel;
+
 namespace Ui {
 class MainWindow;
 }
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -32,7 +34,10 @@ private slots:
     
 private:
     Ui::MainWindow *ui;
+    LanguagesManager *m_manager;
+    LanguagesManagerModel *m_languagesTable;
     void createToolBar(); 
+    QString supportedType;
 };
 
 #endif // MAINWINDOW_H

@@ -2,13 +2,30 @@
 #include "ui_mainwindow.h"
 #include "aboutdialog.h"
 #include "settingsdialog.h"
+#include "languagesexporter.h"
+#include "languagesmanager.h"
+#include "languagesmanagermodel.h"
+#include "csvlanguagesexporter.h"
+#include "customitemdelegate.h"
 
+#include <QSettings>
+#include <QFileInfo>
+#include <QFileDialog>
+
+const QString settingsGroup = "LanguageManager";
+const QString lastDirectory = "lastDirectoryUsed";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_languagesTable(new LanguagesManagerModel()),
+    m_manager(LanguagesManager::instance()),
+    supportedType{tr("Comma Separated Values (*.csv)")}
 {
     ui->setupUi(this);
+
+    ui->languageTable->setItemDelegate(new CustomItemDelegate);
+    ui->languageTable->setModel(m_languagesTable);
     createToolBar();
 }
 
@@ -61,7 +78,34 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-    
+    QSettings settings;
+    settings.beginGroup(settingsGroup);
+    QString lastDir = settings.value(lastDirectory, QString()).toString();
+    settings.endGroup();
+
+    QString destFilename = QFileDialog::getOpenFileName(this,
+                                                        tr("Import languages"),
+                                                        lastDir,
+                                                        supportedType); //TODO: aggiungerlo
+
+    if (destFilename.isEmpty())
+        return;
+
+    settings.beginGroup(settingsGroup);
+    settings.setValue(lastDirectory, QFileInfo(destFilename).absolutePath());
+    settings.endGroup();
+
+    std::unique_ptr<AbstractLanguagesExporter> exporter{new CsvLanguagesExporter(m_manager)};
+    exporter->setFilename(destFilename);
+
+    if (exporter->importLanguages()) {
+        m_languagesTable->init();
+        QMessageBox::information(this, tr("Languages Manager"),
+                                 tr("Languages succesfully imported"));
+    }
+    else
+        QMessageBox::warning(this, tr("Languages Manager"),
+                             tr("Error while importing languages"));
 }
 
 void MainWindow::on_actionPreferences_triggered()

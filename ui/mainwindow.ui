@@ -36,7 +36,7 @@
        <enum>QLayout::SetFixedSize</enum>
       </property>
       <item>
-       <widget class="QTreeWidget" name="languagesTable">
+       <widget class="QTreeWidget" name="contextTable">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -73,7 +73,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QTableView" name="contextTable"/>
+       <widget class="QTableView" name="languageTable"/>
       </item>
      </layout>
     </item>
@@ -96,7 +96,7 @@
      <x>0</x>
      <y>0</y>
      <width>598</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
