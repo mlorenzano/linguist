@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include "aboutdialog.h"
 #include "settingsdialog.h"
+#include "csv.h"
+
+#include <iostream>
 
 #include <QSettings>
 #include <QFileInfo>
@@ -62,41 +65,21 @@ void MainWindow::createToolBar()
 
 void MainWindow::on_actionExport_triggered()
 {
-    
+
 }
 
 void MainWindow::on_actionImport_triggered()
 {
-    /*
-    QSettings settings;
-    settings.beginGroup(settingsGroup);
-    QString lastDir = settings.value(lastDirectory, QString()).toString();
-    settings.endGroup();
-
-    QString destFilename = QFileDialog::getOpenFileName(this,
-                                                        tr("Import languages"),
-                                                        lastDir,
-                                                        supportedType); //TODO: aggiungerlo
-
+    //csv(QChar separatore, QTableWidget *table, bool row_header=false, bool column_header=false);
+    QString destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),  QString(),supportedType); //TODO: aggiungerlo
     if (destFilename.isEmpty())
         return;
+    csv table(QChar(';'), ui->languageTable, true, false);
+    table.load(destFilename);
+    std::cerr<<table.rowCount();
+    QStringList a =  table.column(0);
+    table.getTable(ui->languageTable, true, true);
 
-    settings.beginGroup(settingsGroup);
-    settings.setValue(lastDirectory, QFileInfo(destFilename).absolutePath());
-    settings.endGroup();
-
-    std::unique_ptr<AbstractLanguagesExporter> exporter{new CsvLanguagesExporter(m_manager)};
-    exporter->setFilename(destFilename);
-
-    if (exporter->importLanguages()) {
-        m_languagesTable->init();
-        QMessageBox::information(this, tr("Languages Manager"),
-                                 tr("Languages succesfully imported"));
-    }
-    else
-        QMessageBox::warning(this, tr("Languages Manager"),
-                             tr("Error while importing languages"));
-                             */
 }
 
 void MainWindow::on_actionPreferences_triggered()

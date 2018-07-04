@@ -35,6 +35,7 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/settingsdialog.cpp \
+    src/key.cpp
 
 HEADERS += \
     include/aboutdialog.h \
@@ -42,6 +43,7 @@ HEADERS += \
     include/settingsdialog.h \
     libs-3rdparty/libCSV/shared/csv.h \
     libs-3rdparty/libCSV/shared/csv_global.h \
+    include/key.h
 
 FORMS += \
     ui/aboutdialog.ui \
