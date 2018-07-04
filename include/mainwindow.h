@@ -34,8 +34,6 @@ private slots:
     
 private:
     Ui::MainWindow *ui;
-    LanguagesManager *m_manager;
-    LanguagesManagerModel *m_languagesTable;
     void createToolBar(); 
     QString supportedType;
 };

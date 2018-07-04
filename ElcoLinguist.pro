@@ -35,63 +35,13 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/settingsdialog.cpp \
-    src/languagesexporter.cpp \
-    src/languagesmanager.cpp \
-    src/languagesmanagermodel.cpp \
-    src/languagekey.cpp \
-    src/standardlanguage.cpp \
-    src/standardlanguage.cpp \
-    src/standardmessage.cpp \
-    src/translatablelanguage.cpp \
-    src/translatablemessage.cpp \
-    src/csvlanguagesexporter.cpp \
-    src/aboutdialog.cpp \
-    src/csvlanguagesexporter.cpp \
-    src/languagekey.cpp \
-    src/languagesexporter.cpp \
-    src/languagesmanager.cpp \
-    src/languagesmanagermodel.cpp \
-    src/main.cpp \
-    src/mainwindow.cpp \
-    src/settingsdialog.cpp \
-    src/standardlanguage.cpp \
-    src/standardmessage.cpp \
-    src/translatablelanguage.cpp \
-    src/translatablemessage.cpp \
-    src/customitemdelegate.cpp
 
 HEADERS += \
     include/aboutdialog.h \
     include/mainwindow.h \
     include/settingsdialog.h \
-    include/languagesexporter.h \
-    include/languagesmanager.h \
-    include/languagesmanagermodel.h \
-    include/languagekey.h \
-    include/abstractladderlanguage.h \
-    include/standardlanguage.h \
-    include/standardmessage.h \
-    include/translatablelanguage.h \
-    include/translatablemessage.h \
-    include/abstractlanguagemodule.h \
-    include/csvlanguagesexporter.h \
-    include/aboutdialog.h \
-    include/abstractladderlanguage.h \
-    include/abstractlanguagemodule.h \
-    include/csvlanguagesexporter.h \
-    include/languagekey.h \
-    include/languagesexporter.h \
-    include/languagesmanager.h \
-    include/languagesmanagermodel.h \
-    include/mainwindow.h \
-    include/settingsdialog.h \
-    include/standardlanguage.h \
-    include/standardmessage.h \
-    include/translatablelanguage.h \
-    include/translatablemessage.h \
     libs-3rdparty/libCSV/shared/csv.h \
     libs-3rdparty/libCSV/shared/csv_global.h \
-    include/customitemdelegate.h
 
 FORMS += \
     ui/aboutdialog.ui \
