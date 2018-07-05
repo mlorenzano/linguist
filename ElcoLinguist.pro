@@ -38,7 +38,8 @@ SOURCES += \
     src/mainwindow.cpp \
     src/settingsdialog.cpp \
     src/language.cpp \
-    src/key.cpp
+    src/key.cpp \
+    src/languagestablemanager.cpp
 
 HEADERS += \
     libs-3rdparty/libCSV/shared/csv.h \
@@ -47,7 +48,8 @@ HEADERS += \
     include/mainwindow.h \
     include/settingsdialog.h \
     include/language.h \
-    include/key.h
+    include/key.h \
+    include/languagestablemanager.h
 
 FORMS += \
     ui/aboutdialog.ui \

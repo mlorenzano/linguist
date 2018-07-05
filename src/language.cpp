@@ -15,12 +15,13 @@ void Language::addItem(const Key &key, std::string message)
     messages.insert(std::make_pair(message, key));
 }
 
-std::list<std::string> Language::getMessagesByContext(std::string context)
+QList<QStandardItem *> Language::getMessagesByContext(std::string context)
 {
-    std::list<std::string> sameCtxMessages;
+    QList <QStandardItem *> sameCtxMessages;
     for (auto  i : messages) {
         if (i.second.belongsTo(context)) {
-           sameCtxMessages.push_back(i.first);
+           auto *item = new QStandardItem(QString::fromStdString(i.first));
+           sameCtxMessages.append(item);
         }
     }
     return sameCtxMessages;

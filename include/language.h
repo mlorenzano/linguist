@@ -2,6 +2,10 @@
 #define INCLUDELANGUAGE_H
 
 #include"key.h"
+
+#include <QList>
+#include <QStandardItem>
+
 #include <unordered_map>
 #include <list>
 #include <string>
@@ -13,7 +17,7 @@ public:
     Language();
     Language(const Language &other);
     void addItem(const Key &key, std::string message);
-    std::list<std::string> getMessagesByContext(std::string context);
+    QList<QStandardItem *> getMessagesByContext(std::string context);
 private:
     std::unordered_map<std::string, Key> messages;
 };

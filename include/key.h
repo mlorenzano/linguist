@@ -1,6 +1,7 @@
-#include <iostream>
 #ifndef INCLUDEKEY_H
 #define INCLUDEKEY_H
+
+#include <iostream>
 
 class Key
 {
