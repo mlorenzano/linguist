@@ -80,15 +80,30 @@ Key &Key::operator =(const Key &other)
     return *this;
 }
 
-bool Key::operator ==(const Key &other)
+bool Key::operator ==(const Key &other) const
 {
     return context == other.context &&
            id == other.id &&
            pageOfContext == other.pageOfContext;
 }
-bool Key::operator !=(const Key &other)
+bool Key::operator !=(const Key &other) const
 {
     return !(*this == other);
+}
+
+std::string Key::getContext() const
+{
+    return context;
+}
+
+std::string Key::getId() const
+{
+    return id;
+}
+
+std::string Key::getPageOfContext() const
+{
+    return pageOfContext;
 }
 
 

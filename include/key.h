@@ -17,12 +17,18 @@ public:
     bool belongsTo(std::string context);
 
     Key &operator =(const Key &other);
-    bool operator ==(const Key &other);
-    bool operator !=(const Key &other);
+    bool operator ==(const Key &other) const;
+    bool operator !=(const Key &other) const;
+
+    std::string getContext() const;
+
+    std::string getId() const;
+
+    std::string getPageOfContext() const;
 
 private:
-    std::string id;
     std::string context;
+    std::string id;
     std::string pageOfContext;
 };
 #endif
