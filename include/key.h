@@ -31,4 +31,19 @@ private:
     std::string id;
     std::string pageOfContext;
 };
+
+struct KeyHasher
+{
+    std::size_t operator ()(const Key& k) const
+    {
+        using std::size_t;
+        using std::hash;
+        using std::string;
+
+        return ((hash<string>()(k.getContext())
+                 ^ (hash<string>()(k.getId()) << 1)) >> 1)
+                ^ (hash<string>()(k.getPageOfContext()) << 1);
+    }
+};
+
 #endif
