@@ -77,7 +77,7 @@ void MainWindow::on_actionImport_triggered()
     csv table(QChar(';'), ui->languageTable, true, false);
     table.load(destFilename);
     std::cerr<<table.rowCount();
-    QStringList a =  table.column(0);
+    QStringList a =  table.row(1);
     table.getTable(ui->languageTable, true, true);
 
 }

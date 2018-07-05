@@ -4,12 +4,6 @@
 #include <QRegExp>
 #include <QStringList>
 
-Key::Key() :
-    context(),
-    id(),
-    pageOfContext()
-{ }
-
 Key::Key(const Key &other)
 {
     *this = other;
@@ -74,6 +68,10 @@ bool Key::fromString(std::string keyString)
     return false;
 }
 
+bool Key::belongsTo(std::string context)
+{
+    return this->context == context;
+}
 Key &Key::operator =(const Key &other)
 {
     context = other.context;

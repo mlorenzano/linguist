@@ -6,6 +6,8 @@
 
 QT       += core gui xml
 
+CONFIG += c++14
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ElcoLinguist
@@ -35,14 +37,16 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/settingsdialog.cpp \
+    src/language.cpp \
     src/key.cpp
 
 HEADERS += \
+    libs-3rdparty/libCSV/shared/csv.h \
+    libs-3rdparty/libCSV/shared/csv_global.h \
     include/aboutdialog.h \
     include/mainwindow.h \
     include/settingsdialog.h \
-    libs-3rdparty/libCSV/shared/csv.h \
-    libs-3rdparty/libCSV/shared/csv_global.h \
+    include/language.h \
     include/key.h
 
 FORMS += \
