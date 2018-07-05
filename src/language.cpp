@@ -17,11 +17,11 @@ void Language::addItem(const Key &key, std::string message)
 
 QList<QStandardItem *> Language::getMessagesByContext(std::string context)
 {
-    QList <QStandardItem *> sameCtxMessages;
+    QList<QStandardItem *> sameCtxMessages;
     for (auto  i : messages) {
-        if (i.second.belongsTo(context)) {
+        if (context.empty() || i.second.belongsTo(context)) {
            auto *item = new QStandardItem(QString::fromStdString(i.first));
-           sameCtxMessages.append(item);
+           sameCtxMessages.push_back(item);
         }
     }
     return sameCtxMessages;

@@ -17,7 +17,7 @@ public:
     Language();
     Language(const Language &other);
     void addItem(const Key &key, std::string message);
-    QList<QStandardItem *> getMessagesByContext(std::string context);
+    QList<QStandardItem *> getMessagesByContext(std::string context = "");
 private:
     std::unordered_map<std::string, Key> messages;
 };
