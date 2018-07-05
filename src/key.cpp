@@ -68,7 +68,7 @@ bool Key::fromString(std::string keyString)
     return false;
 }
 
-bool Key::belongsTo(std::string context)
+bool Key::belongsTo(std::string context) const
 {
     return this->context == context;
 }

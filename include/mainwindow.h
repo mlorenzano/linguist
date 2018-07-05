@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "languagestablemanager.h"
+#include "csv.h"
 #include <QMainWindow>
 
 class LanguagesManager;
@@ -34,10 +35,14 @@ private slots:
     void on_actionAbout_triggered();
     
 private:
+    void populateTable();
+    csv csvReader;
     Ui::MainWindow *ui;
     void createToolBar();
     languagesTableManager tableManager;
     QString supportedType;
+    std::vector<std::string> collectColumnAt(std::size_t i);
+    std::vector<std::string> collectIntestations();
 };
 
 #endif // MAINWINDOW_H

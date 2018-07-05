@@ -6,11 +6,13 @@ languagesTableManager::languagesTableManager() :
 
 QStandardItemModel *languagesTableManager::getTableByContext(std::string context)
 {
-    languagesTable = new QStandardItemModel(0, languages.size());
+    languagesTable = new QStandardItemModel(0, (int)languages.size());
     int i = 0;
     for (auto lang : languages) {
-        languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang.first)));
+
         languagesTable->appendColumn(lang.second.getMessagesByContext(context));
+        //languagesTable->horizontalHeaderItem(i)->setText(QString::fromStdString(lang.first));
+        //languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang.first)));
         ++i;
     }
     return languagesTable;
@@ -18,12 +20,6 @@ QStandardItemModel *languagesTableManager::getTableByContext(std::string context
 
 void languagesTableManager::insertLanguage(std::string languageName, Language language)
 {
-    languages.insert({languageName, language});
+    languages.insert(std::make_pair(languageName, language));
 }
-/*
- * QStandardItemModel *model = new QStandardItemModel(2,3,this); //2 Rows and 3 Columns
-   &nbsp;&nbsp;&nbsp; model->setHorizontalHeaderItem(0, new QStandardItem(QString("Column1 Header")));
-&nbsp;&nbsp;&nbsp; model->setHorizontalHeaderItem(1, new QStandardItem(QString("Column2 Header")));
-&nbsp;&nbsp;&nbsp; model->setHorizontalHeaderItem(2, new QStandardItem(QString("Column3 Header")));
-&nbsp;&nbsp;&nbsp; ui->tableView->setModel(model);
-*/
+
