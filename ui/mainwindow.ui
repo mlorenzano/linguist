@@ -73,7 +73,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QTableWidget" name="languageTable"/>
+       <widget class="QTreeView" name="languageTable"/>
       </item>
      </layout>
     </item>

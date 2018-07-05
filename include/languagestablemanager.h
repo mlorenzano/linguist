@@ -13,10 +13,10 @@ class languagesTableManager
 public:
     languagesTableManager();
     void insertLanguage(std::string languageName, Language language);
-    QStandardItemModel &getTableByContext(std::string context = "");
+    QStandardItemModel *getTableByContext(std::string context = "");
 
 private:
-    QStandardItemModel languagesTable;
+    QStandardItemModel *languagesTable;
     std::unordered_map<std::string, Language> languages;
 };
 

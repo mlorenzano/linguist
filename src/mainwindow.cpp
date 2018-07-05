@@ -13,11 +13,11 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    supportedType{tr("Comma Separated Values (*.csv)")}
+    supportedType{tr("Comma Separated Values (*.csv)")},
+    tableManager()
 {
     ui->setupUi(this);
-    //ui->languageTable->setItemDelegate(new CustomItemDelegate);
-    //ui->languageTable->setModel(m_languagesTable);
+    ui->languageTable->setModel(tableManager.getTableByContext());
     createToolBar();
 }
 
@@ -74,11 +74,12 @@ void MainWindow::on_actionImport_triggered()
     QString destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),  QString(),supportedType); //TODO: aggiungerlo
     if (destFilename.isEmpty())
         return;
-    csv table(QChar(';'), ui->languageTable, true, false);
+    /*csv table(QChar(';'), ui->languageTable, true, false);
     table.load(destFilename);
     std::cerr<<table.rowCount();
     QStringList a =  table.row(1);
     table.getTable(ui->languageTable, true, true);
+    a = table.column; */
 
 }
 

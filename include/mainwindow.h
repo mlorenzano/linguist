@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "languagestablemanager.h"
 #include <QMainWindow>
 
 class LanguagesManager;
@@ -34,7 +35,8 @@ private slots:
     
 private:
     Ui::MainWindow *ui;
-    void createToolBar(); 
+    void createToolBar();
+    languagesTableManager tableManager;
     QString supportedType;
 };
 
