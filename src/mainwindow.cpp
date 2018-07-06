@@ -81,6 +81,7 @@ void MainWindow::on_actionImport_triggered()
     csvReader.load(destFilename);
     populateTable();
     ui->languageTable->setModel(tableManager.getTableByContext());
+    ui->languageTable->resizeColumnsToContents();
 
 }
 
