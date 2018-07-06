@@ -17,6 +17,7 @@ public:
     Language(const Language &other);
     Language(const std::string &name, const std::vector<std::string> &strings);
     QList<QStandardItem *> getMessagesByContext(std::string context = "");
+    void changeMessage(const std::string &text, const Key &key);
     static void setKeys(const std::vector<std::string> &keys);
 
 private:

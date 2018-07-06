@@ -26,5 +26,7 @@ void languagesTableManager::insertLanguage(std::string languageName, Language la
 
 void languagesTableManager::updateItemData(QStandardItem *changedItem)
 {
-    std::cerr<<"language: "<<((messageItem *)changedItem)->getLanguage()<<std::endl;
+    auto changedMessageItem = (messageItem *) changedItem;
+    languages.at(changedMessageItem->getLanguage()).changeMessage
+            (changedMessageItem->text().toStdString(), changedMessageItem->getKey());
 }

@@ -38,6 +38,11 @@ QList<QStandardItem *> Language::getMessagesByContext(std::string context)
     return sameCtxMessages;
 }
 
+void Language::changeMessage(const std::string &text, const Key &key)
+{
+    messages.at(key) = text;
+}
+
 void Language::setKeys(const std::vector<std::string> &keys)
 {
     Language::keys = keys;
