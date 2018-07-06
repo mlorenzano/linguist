@@ -2,8 +2,7 @@
 #define INCLUDELANGUAGETABLEMANAGER_H
 
 #include "language.h"
-
-#include <QStandardItem>
+#include "languagetablemodel.h"
 
 #include <unordered_map>
 #include <list>
@@ -13,10 +12,10 @@ class languagesTableManager
 public:
     languagesTableManager();
     void insertLanguage(std::string languageName, Language language);
-    QStandardItemModel *getTableByContext(std::string context = "");
+    languageTableModel *getTableByContext(std::string context = "");
 
 private:
-    QStandardItemModel *languagesTable;
+    languageTableModel *languagesTable;
     std::unordered_map<std::string, Language> languages;
 };
 

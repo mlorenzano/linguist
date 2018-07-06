@@ -49,7 +49,8 @@ HEADERS += \
     include/settingsdialog.h \
     include/language.h \
     include/key.h \
-    include/languagestablemanager.h
+    include/languagestablemanager.h \
+    include/languagetablemodel.h
 
 FORMS += \
     ui/aboutdialog.ui \

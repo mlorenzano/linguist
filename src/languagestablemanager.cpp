@@ -4,9 +4,9 @@ languagesTableManager::languagesTableManager() :
     languages()
 {}
 
-QStandardItemModel *languagesTableManager::getTableByContext(std::string context)
+languageTableModel *languagesTableManager::getTableByContext(std::string context)
 {
-    languagesTable = new QStandardItemModel(0, 0);
+    languagesTable = new languageTableModel();
     int i = 0;
     for (auto lang : languages) {
 
