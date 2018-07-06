@@ -5,6 +5,7 @@
 
 class languageTableModel : public QStandardItemModel
 {
+    Q_OBJECT
 public:
     //only used to make the first column non editable
     Qt::ItemFlags flags ( const QModelIndex & index ) const
