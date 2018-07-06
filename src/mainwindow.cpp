@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     csvReader(QChar(';'), nullptr, true, false)
 {
     ui->setupUi(this);
-    //ui->languageTable->setModel(tableManager.getTableByContext());
     createToolBar();
 }
 
@@ -74,15 +73,14 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-    //csv(QChar separatore, QTableWidget *table, bool row_header=false, bool column_header=false);
     QString destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),  QString(),supportedType); //TODO: aggiungerlo
     if (destFilename.isEmpty())
         return;
+    tableManager.clear();
     csvReader.load(destFilename);
     populateTable();
     ui->languageTable->setModel(tableManager.getTableByContext());
     ui->languageTable->resizeColumnsToContents();
-
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -132,7 +130,6 @@ std::vector<std::string> MainWindow::collectColumnAt(std::size_t i)
 
     return v;
 }
-
 
 void MainWindow::populateTable()
 {

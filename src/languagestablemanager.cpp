@@ -3,11 +3,13 @@
 languagesTableManager::languagesTableManager(QObject *parent) :
     QObject(parent),
     languages()
-{}
+{
+    languagesTable = new languageTableModel();
+}
 
 languageTableModel *languagesTableManager::getTableByContext(std::string context)
 {
-    languagesTable = new languageTableModel();
+    languagesTable->reset();
     connect(languagesTable, &languageTableModel::itemChanged, this, &languagesTableManager::updateItemData);
     int i = 0;
     for (auto lang : languages) {
@@ -29,4 +31,10 @@ void languagesTableManager::updateItemData(QStandardItem *changedItem)
     auto changedMessageItem = (messageItem *) changedItem;
     languages.at(changedMessageItem->getLanguage()).changeMessage
             (changedMessageItem->text().toStdString(), changedMessageItem->getKey());
+}
+
+void languagesTableManager::clear()
+{
+    languagesTable->reset();
+    languages.clear();
 }

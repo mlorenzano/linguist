@@ -15,5 +15,12 @@ public:
         else
             return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
+
+    void reset()
+    {
+        beginResetModel();
+        clear();
+        endResetModel();
+    }
 };
 #endif // INCLUDELANGUAGETABLEMODEL_H

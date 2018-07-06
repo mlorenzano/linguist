@@ -17,6 +17,7 @@ public:
     void insertLanguage(std::string languageName, Language language);
     languageTableModel *getTableByContext(std::string context = "");
 
+    void clear();
 private slots:
     void updateItemData(QStandardItem *changedItem);
 
