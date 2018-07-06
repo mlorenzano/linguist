@@ -6,13 +6,12 @@ languagesTableManager::languagesTableManager() :
 
 QStandardItemModel *languagesTableManager::getTableByContext(std::string context)
 {
-    languagesTable = new QStandardItemModel(0, (int)languages.size());
+    languagesTable = new QStandardItemModel(0, 0);
     int i = 0;
     for (auto lang : languages) {
 
         languagesTable->appendColumn(lang.second.getMessagesByContext(context));
-        //languagesTable->horizontalHeaderItem(i)->setText(QString::fromStdString(lang.first));
-        //languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang.first)));
+        languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang.first)));
         ++i;
     }
     return languagesTable;

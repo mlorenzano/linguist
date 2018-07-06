@@ -3,7 +3,7 @@
 
 #include "language.h"
 
-#include <qstandarditemmodel.h>
+#include <QStandardItem>
 
 #include <unordered_map>
 #include <list>
