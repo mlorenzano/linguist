@@ -139,7 +139,7 @@ void MainWindow::populateTable()
     std::vector<std::string> intestations = collectIntestations();
     Language::setKeys(collectColumnAt(0));
     for (int i = 0; i < intestations.size(); i++) {
-        tableManager.insertLanguage(intestations[i], Language(collectColumnAt(i+1)));
+        tableManager.insertLanguage(intestations[i], Language(intestations[i], collectColumnAt(i+1)));
     }
 }
 

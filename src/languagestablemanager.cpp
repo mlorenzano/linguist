@@ -1,5 +1,4 @@
 #include "languagestablemanager.h"
-#include <QObject>
 
 languagesTableManager::languagesTableManager(QObject *parent) :
     QObject(parent),
@@ -27,5 +26,5 @@ void languagesTableManager::insertLanguage(std::string languageName, Language la
 
 void languagesTableManager::updateItemData(QStandardItem *changedItem)
 {
-    //std::cerr<<changedItem->column()<<std::endl<<changedItem->row();
+    std::cerr<<"language: "<<((messageItem *)changedItem)->getLanguage()<<std::endl;
 }

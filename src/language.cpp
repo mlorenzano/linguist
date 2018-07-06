@@ -12,12 +12,13 @@ Language::Language(const Language &other)
     *this = other;
 }
 
-Language::Language(const std::vector<std::string> &strings)
+Language::Language(const std::string &name, const std::vector<std::string> &strings)
 {
     if (strings.size() != keys.size()) {
         std::cerr<<"Impossible to initialize language";
         return;
     }
+    this->name = name;
     int i = 0;
     for(auto &key : keys) {
         messages.insert(std::make_pair(std::ref(key), strings[i]));
@@ -30,7 +31,7 @@ QList<QStandardItem *> Language::getMessagesByContext(std::string context)
     QList<QStandardItem *> sameCtxMessages;
     for (auto i : messages) {
         if (context.empty() || i.first.belongsTo(context)) {
-           auto *item = new QStandardItem(QString::fromStdString(i.second));
+           auto *item = new messageItem(i.second, name, i.first);
            sameCtxMessages.push_back(item);
         }
     }
