@@ -11,7 +11,8 @@ languagesTableManager::languagesTableManager(QObject *parent) :
 const std::vector<Language> languagesTableManager::getLanguages()
 {
     std::vector<Language> tmp;
-    std::transform(languages.begin(), languages.end(), std::back_inserter(tmp), [] (std::pair<std::string, Language> pair)
+    std::transform(languages.begin(), languages.end(), std::back_inserter(tmp),
+                   [] (std::pair<std::string, Language> pair)
     {
         return pair.second;
     });
@@ -45,6 +46,7 @@ void languagesTableManager::updateItemData(QStandardItem *changedItem)
     auto changedMessageItem = (messageItem *) changedItem;
     languages.at(changedMessageItem->getLanguage()).changeMessage
             (changedMessageItem->text().toStdString(), changedMessageItem->getKey());
+    changedMessageItem->changeColor();
 }
 
 void languagesTableManager::clear()

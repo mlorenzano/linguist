@@ -11,6 +11,7 @@ public:
     messageItem();
     messageItem(const std::string &text, const std::string &language, const Key &key);
 
+    void changeColor();
     std::string getLanguage() const;
     Key getKey() const;
 
