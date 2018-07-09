@@ -85,7 +85,10 @@ void MainWindow::on_actionImport_triggered()
     QString destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),  QString(),supportedType); //TODO: aggiungerlo
     if (destFilename.isEmpty())
         return;
+
     tableManager.clear();
+    csvReader.clear();
+    csvReader.setSeparatore(';');
     csvReader.load(destFilename);
     populateTable();
     ui->languageTable->setModel(tableManager.getTableByContext());
@@ -155,7 +158,7 @@ void MainWindow::populateTable()
     for (int i = 0; i < intestations.size(); i++) {
         tableManager.insertLanguage(intestations[i], Language(intestations[i], collectColumnAt(i+1)));
     }
-}\
+}
 
 
 

@@ -5,6 +5,7 @@ languagesTableManager::languagesTableManager(QObject *parent) :
     languages()
 {
     languagesTable = new languageTableModel();
+    connect(languagesTable, &languageTableModel::itemChanged, this, &languagesTableManager::updateItemData);
 }
 
 const std::vector<Language> languagesTableManager::getLanguages()
@@ -20,7 +21,7 @@ const std::vector<Language> languagesTableManager::getLanguages()
 languageTableModel *languagesTableManager::getTableByContext(std::string context)
 {
     languagesTable->reset();
-    connect(languagesTable, &languageTableModel::itemChanged, this, &languagesTableManager::updateItemData);
+
     int i = 0;
     for (auto lang : languages) {
 
@@ -45,6 +46,6 @@ void languagesTableManager::updateItemData(QStandardItem *changedItem)
 
 void languagesTableManager::clear()
 {
-    languagesTable->reset();
     languages.clear();
+    languagesTable->reset();
 }
