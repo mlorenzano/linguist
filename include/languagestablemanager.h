@@ -13,12 +13,14 @@ class languagesTableManager : public QObject
 {
     Q_OBJECT
 public:
-    const std::vector<Language> getLanguages();
     languagesTableManager(QObject *parent = nullptr);
-    void insertLanguage(std::string languageName, Language language);
+
+    const std::vector<Language> getLanguages();
+    bool insertLanguage(std::string languageName, Language language);
     languageTableModel *getTableByContext(std::string context = "");
 
     void clear();
+
 private slots:
     void updateItemData(QStandardItem *changedItem);
 

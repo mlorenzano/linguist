@@ -14,8 +14,9 @@ class Language
 {
 public:
     Language();
-    Language(const Language &other);
+    Language(const std::string &name);
     Language(const std::string &name, const std::vector<std::string> &strings);
+    Language(const Language &other);
 
     const std::string &getName() const;
     QList<QStandardItem *> getMessagesByContext(std::string context = "");

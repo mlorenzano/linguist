@@ -44,6 +44,7 @@ private:
     Ui::MainWindow *ui;
     languagesTableManager tableManager;
     QString supportedType;
+    std::string currentContext;
 };
 
 #endif // MAINWINDOW_H

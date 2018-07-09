@@ -7,9 +7,12 @@ Language::Language() :
     messages()
 {}
 
-Language::Language(const Language &other)
+Language::Language(const std::string &name)
 {
-    *this = other;
+    this->name = name;
+    for (auto &key : keys) {
+        messages.insert(std::make_pair(std::cref(key), ""));
+    }
 }
 
 Language::Language(const std::string &name, const std::vector<std::string> &strings)
@@ -24,6 +27,11 @@ Language::Language(const std::string &name, const std::vector<std::string> &stri
         messages.insert(std::make_pair(std::ref(key), strings[i]));
         i++;
     }
+}
+
+Language::Language(const Language &other)
+{
+    *this = other;
 }
 
 const std::string &Language::getName() const

@@ -32,9 +32,12 @@ languageTableModel *languagesTableManager::getTableByContext(std::string context
     return languagesTable;
 }
 
-void languagesTableManager::insertLanguage(std::string languageName, Language language)
+bool languagesTableManager::insertLanguage(std::string languageName, Language language)
 {
+    if (languages.find(languageName) != languages.end())
+        return false;
     languages.insert(std::make_pair(languageName, language));
+    return true;
 }
 
 void languagesTableManager::updateItemData(QStandardItem *changedItem)
