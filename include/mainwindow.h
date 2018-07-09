@@ -35,15 +35,10 @@ private slots:
     void on_actionAbout_triggered();
     
 private:
-    void populateTable();
-    csv csvReader;
     Ui::MainWindow *ui;
     void createToolBar();
     languagesTableManager tableManager;
     QString supportedType;
-    std::vector<Key> collectKeys();
-    std::vector<std::string> collectColumnAt(std::size_t i);
-    std::vector<std::string> collectIntestations();
 };
 
 #endif // MAINWINDOW_H

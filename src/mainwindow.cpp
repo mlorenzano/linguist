@@ -2,11 +2,9 @@
 #include "ui_mainwindow.h"
 #include "aboutdialog.h"
 #include "settingsdialog.h"
-#include "csv.h"
+#include "csvreader.h"
 #include "csvwriter.h"
-
-#include <language.h>
-#include <algorithm>
+#include "language.h"
 
 #include <iostream>
 
@@ -18,8 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     supportedType{tr("Comma Separated Values (*.csv)")},
-    tableManager(),
-    csvReader(QChar(';'), nullptr, true, false)
+    tableManager()
 {
     ui->setupUi(this);
     createToolBar();
@@ -82,17 +79,21 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-    QString destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),  QString(),supportedType); //TODO: aggiungerlo
+    QString destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"), "",supportedType);
     if (destFilename.isEmpty())
         return;
-
     tableManager.clear();
-    csvReader.clear();
-    csvReader.setSeparatore(';');
-    csvReader.load(destFilename);
-    populateTable();
+
+    CSVreader reader(destFilename.toStdString());
+
+    Language::setKeys(reader.collectKeys());
+    std::vector<std::string> intestations = reader.collectIntestations();
+    for (int i = 0; i < intestations.size(); i++) {
+        tableManager.insertLanguage(intestations[i],
+                                    Language(intestations[i], reader.collectColumnAt(i+1)));
+    }
+
     ui->languageTable->setModel(tableManager.getTableByContext());
-    ui->languageTable->resizeColumnsToContents();
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -121,43 +122,6 @@ void MainWindow::on_actionAbout_triggered()
 {
     AboutDialog *d{new AboutDialog(this)};
     d->exec();
-}
-
-std::vector<Key> MainWindow::collectKeys()
-{
-    std::vector<std::string> stringKeys = collectColumnAt(0);
-    std::vector<Key> keys;
-    std::transform(stringKeys.begin(), stringKeys.end(), std::back_inserter(keys), [] (const std::string &key)
-    { return Key(key); });
-    return keys;
-}
-std::vector<std::string> MainWindow::collectIntestations()
-{
-    auto tmp =  csvReader.row(1);
-    std::vector<std::string> v;
-    std::transform(tmp.begin() + 1, tmp.end(), std::back_inserter(v), [] (const QString& var)
-    { return var.toStdString();});
-
-    return v;
-}
-
-std::vector<std::string> MainWindow::collectColumnAt(std::size_t i)
-{
-    auto tmp =  csvReader.column(i);
-    std::vector<std::string> v;
-    std::transform(tmp.begin() + 2, tmp.end(), std::back_inserter(v), [] (const QString& var)
-    { return var.toStdString();});
-
-    return v;
-}
-
-void MainWindow::populateTable()
-{
-    Language::setKeys(collectKeys());
-    std::vector<std::string> intestations = collectIntestations();
-    for (int i = 0; i < intestations.size(); i++) {
-        tableManager.insertLanguage(intestations[i], Language(intestations[i], collectColumnAt(i+1)));
-    }
 }
 
 
