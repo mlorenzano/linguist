@@ -7,6 +7,16 @@ languagesTableManager::languagesTableManager(QObject *parent) :
     languagesTable = new languageTableModel();
 }
 
+const std::vector<Language> languagesTableManager::getLanguages()
+{
+    std::vector<Language> tmp;
+    std::transform(languages.begin(), languages.end(), std::back_inserter(tmp), [] (std::pair<std::string, Language> pair)
+    {
+        return pair.second;
+    });
+    return tmp;
+}
+
 languageTableModel *languagesTableManager::getTableByContext(std::string context)
 {
     languagesTable->reset();

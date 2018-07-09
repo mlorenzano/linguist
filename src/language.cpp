@@ -26,6 +26,10 @@ Language::Language(const std::string &name, const std::vector<std::string> &stri
     }
 }
 
+const std::string &Language::getName() const
+{
+    return name;
+}
 QList<QStandardItem *> Language::getMessagesByContext(std::string context)
 {
     QList<QStandardItem *> sameCtxMessages;
@@ -38,16 +42,19 @@ QList<QStandardItem *> Language::getMessagesByContext(std::string context)
     return sameCtxMessages;
 }
 
+const std::vector<std::string> Language::getMessages() const
+{
+    std::vector<std::string>tmp;
+    std::transform(messages.begin(), messages.end(), std::back_inserter(tmp), [] (std::pair<Key, std::string> const & pair)
+    {
+        return pair.second;
+    });
+    return tmp;
+}
+
 void Language::changeMessage(const std::string &text, const Key &key)
 {
     messages.at(key) = text;
-}
-
-QString Language::getItemAt(int i)
-{
-    auto it = messages.begin();
-    std::advance(it, i);
-    return QString::fromStdString(it->second);
 }
 
 void Language::setKeys(const std::vector<Key> &keys)
@@ -55,7 +62,7 @@ void Language::setKeys(const std::vector<Key> &keys)
     Language::keys = keys;
 }
 
-int Language::numberOfKeys()
+const std::vector<Key> &Language::getKeys()
 {
-    return keys.size();
+    return keys;
 }

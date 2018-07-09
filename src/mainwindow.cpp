@@ -3,6 +3,7 @@
 #include "aboutdialog.h"
 #include "settingsdialog.h"
 #include "csv.h"
+#include "csvwriter.h"
 
 #include <language.h>
 #include <algorithm>
@@ -68,7 +69,15 @@ void MainWindow::createToolBar()
 
 void MainWindow::on_actionExport_triggered()
 {
-
+    CSVwriter writer;
+    QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),  QString(),supportedType); //TODO: aggiungerlo
+    if (destFilename.isEmpty())
+        return;
+    writer.setKeys(Language::getKeys());
+    for (auto i : tableManager.getLanguages()) {
+        writer.addLanguage(i);
+    }
+    writer.save(destFilename);
 }
 
 void MainWindow::on_actionImport_triggered()
@@ -117,6 +126,7 @@ std::vector<Key> MainWindow::collectKeys()
     std::vector<Key> keys;
     std::transform(stringKeys.begin(), stringKeys.end(), std::back_inserter(keys), [] (const std::string &key)
     { return Key(key); });
+    return keys;
 }
 std::vector<std::string> MainWindow::collectIntestations()
 {
@@ -145,7 +155,7 @@ void MainWindow::populateTable()
     for (int i = 0; i < intestations.size(); i++) {
         tableManager.insertLanguage(intestations[i], Language(intestations[i], collectColumnAt(i+1)));
     }
-}
+}\
 
 
 

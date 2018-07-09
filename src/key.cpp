@@ -76,7 +76,7 @@ Key &Key::operator =(const Key &other)
 {
     context = other.context;
     id = other.id;
-    pageOfContext = other.context;
+    pageOfContext = other.pageOfContext;
     return *this;
 }
 
