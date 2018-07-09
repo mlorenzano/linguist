@@ -1,7 +1,7 @@
 #include "language.h"
 #include <iterator>
 
-std::vector<std::string> Language::keys = std::vector<std::string>();
+std::vector<Key> Language::keys = std::vector<Key>();
 
 Language::Language() :
     messages()
@@ -43,7 +43,19 @@ void Language::changeMessage(const std::string &text, const Key &key)
     messages.at(key) = text;
 }
 
-void Language::setKeys(const std::vector<std::string> &keys)
+QString Language::getItemAt(int i)
+{
+    auto it = messages.begin();
+    std::advance(it, i);
+    return QString::fromStdString(it->second);
+}
+
+void Language::setKeys(const std::vector<Key> &keys)
 {
     Language::keys = keys;
+}
+
+int Language::numberOfKeys()
+{
+    return keys.size();
 }

@@ -111,6 +111,13 @@ void MainWindow::on_actionAbout_triggered()
     d->exec();
 }
 
+std::vector<Key> MainWindow::collectKeys()
+{
+    std::vector<std::string> stringKeys = collectColumnAt(0);
+    std::vector<Key> keys;
+    std::transform(stringKeys.begin(), stringKeys.end(), std::back_inserter(keys), [] (const std::string &key)
+    { return Key(key); });
+}
 std::vector<std::string> MainWindow::collectIntestations()
 {
     auto tmp =  csvReader.row(1);
@@ -133,8 +140,8 @@ std::vector<std::string> MainWindow::collectColumnAt(std::size_t i)
 
 void MainWindow::populateTable()
 {
+    Language::setKeys(collectKeys());
     std::vector<std::string> intestations = collectIntestations();
-    Language::setKeys(collectColumnAt(0));
     for (int i = 0; i < intestations.size(); i++) {
         tableManager.insertLanguage(intestations[i], Language(intestations[i], collectColumnAt(i+1)));
     }

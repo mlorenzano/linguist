@@ -40,7 +40,8 @@ SOURCES += \
     src/language.cpp \
     src/key.cpp \
     src/languagestablemanager.cpp \
-    src/messageitem.cpp
+    src/messageitem.cpp \
+    src/csvwriter.cpp
 
 HEADERS += \
     libs-3rdparty/libCSV/shared/csv.h \
@@ -52,7 +53,8 @@ HEADERS += \
     include/key.h \
     include/languagestablemanager.h \
     include/languagetablemodel.h \
-    include/messageitem.h
+    include/messageitem.h \
+    include/csvwriter.h
 
 FORMS += \
     ui/aboutdialog.ui \

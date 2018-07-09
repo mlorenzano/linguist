@@ -41,6 +41,7 @@ private:
     void createToolBar();
     languagesTableManager tableManager;
     QString supportedType;
+    std::vector<Key> collectKeys();
     std::vector<std::string> collectColumnAt(std::size_t i);
     std::vector<std::string> collectIntestations();
 };

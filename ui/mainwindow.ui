@@ -36,7 +36,7 @@
        <enum>QLayout::SetFixedSize</enum>
       </property>
       <item>
-       <widget class="QTreeWidget" name="contextTable">
+       <widget class="QTreeWidget" name="contextTree">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
