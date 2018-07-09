@@ -16,7 +16,8 @@ public:
     languagesTableManager(QObject *parent = nullptr);
 
     const std::vector<Language> getLanguages();
-    bool insertLanguage(std::string languageName, Language language);
+    void setDefault(const Language &def);
+    bool insertLanguage(const std::string &languageName, const Language &language);
     languageTableModel *getTableByContext(std::string context = "");
 
     void clear();
@@ -25,8 +26,9 @@ private slots:
     void updateItemData(QStandardItem *changedItem);
 
 private:
-    languageTableModel *languagesTable;
+    Language defaultLanguage;
     std::unordered_map<std::string, Language> languages;
+    languageTableModel *languagesTable;
 };
 
 #endif // INCLUDELANGUAGETABLEMANAGER_H

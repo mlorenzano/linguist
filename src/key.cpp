@@ -37,7 +37,7 @@ bool Key::fromString(std::string keyString)
     QRegExp reValue("((ct|id|op)=\"+[\\S]+\"+)");
     int pos = 0;
     bool ok = false;
-    QString str = QString().fromStdString(keyString);
+    QString str = QString::fromStdString(keyString);
 
     context.clear();
     id.clear();

@@ -11,6 +11,7 @@ languagesTableManager::languagesTableManager(QObject *parent) :
 const std::vector<Language> languagesTableManager::getLanguages()
 {
     std::vector<Language> tmp;
+    tmp.push_back(defaultLanguage);
     std::transform(languages.begin(), languages.end(), std::back_inserter(tmp),
                    [] (std::pair<std::string, Language> pair)
     {
@@ -23,9 +24,10 @@ languageTableModel *languagesTableManager::getTableByContext(std::string context
 {
     languagesTable->reset();
 
-    int i = 0;
+    languagesTable->appendColumn(defaultLanguage.getMessagesByContext(context));
+    languagesTable->setHorizontalHeaderItem(0, new QStandardItem("Default"));
+    int i = 1;
     for (auto lang : languages) {
-
         languagesTable->appendColumn(lang.second.getMessagesByContext(context));
         languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang.first)));
         ++i;
@@ -33,7 +35,12 @@ languageTableModel *languagesTableManager::getTableByContext(std::string context
     return languagesTable;
 }
 
-bool languagesTableManager::insertLanguage(std::string languageName, Language language)
+void languagesTableManager::setDefault(const Language &def)
+{
+    defaultLanguage = def;
+}
+
+bool languagesTableManager::insertLanguage(const std::string &languageName, const Language &language)
 {
     if (languages.find(languageName) != languages.end())
         return false;
