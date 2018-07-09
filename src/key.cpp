@@ -30,6 +30,7 @@ std::string Key::toString()
     keyString += "op=\"" + pageOfContext + "\" ";
     return keyString;
 }
+
 bool Key::fromString(std::string keyString)
 {
     QString key, value, param;
@@ -70,8 +71,9 @@ bool Key::fromString(std::string keyString)
 
 bool Key::belongsTo(std::string context) const
 {
-    return this->context == context;
+    return this->context == context || context.empty();
 }
+
 Key &Key::operator =(const Key &other)
 {
     context = other.context;

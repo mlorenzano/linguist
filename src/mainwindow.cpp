@@ -82,9 +82,9 @@ void MainWindow::on_actionImport_triggered()
     QString destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"), "",supportedType);
     if (destFilename.isEmpty())
         return;
-    tableManager.clear();
 
     CSVreader reader(destFilename.toStdString());
+    tableManager.clear();
 
     Language::setKeys(reader.collectKeys());
     std::vector<std::string> intestations = reader.collectIntestations();
@@ -94,6 +94,9 @@ void MainWindow::on_actionImport_triggered()
     }
 
     ui->languageTable->setModel(tableManager.getTableByContext());
+    ui->languageTable->resizeColumnsToContents();
+
+    populateContextTree();
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -124,13 +127,28 @@ void MainWindow::on_actionAbout_triggered()
     d->exec();
 }
 
+void MainWindow::populateContextTree()
+{
+    ui->contextTree->clear();
+    QList<QTreeWidgetItem*> children;
+    for (auto i : Language::getKeys()){
+        QTreeWidgetItem *child = new QTreeWidgetItem();
+        child->setText(0, QString::fromStdString(i.getContext()));
+        children << child;
+    }
 
+    QTreeWidgetItem *root = new QTreeWidgetItem();
+    root->setText(0, tr("All"));
+    root->addChildren(children);
+    ui->contextTree->addTopLevelItem(root);
+    ui->contextTree->expandAll();
+    ui->languageTable->resizeColumnsToContents();
+}
 
-
-
-
-
-
-
-
-
+void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
+{
+    std::string context = "";
+    if (item->childCount() == 0) //not a root item
+        context = item->text(column).toStdString();
+    ui->languageTable->setModel(tableManager.getTableByContext(context));
+}

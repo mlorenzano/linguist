@@ -35,7 +35,7 @@ QList<QStandardItem *> Language::getMessagesByContext(std::string context)
 {
     QList<QStandardItem *> sameCtxMessages;
     for (auto i : messages) {
-        if (context.empty() || i.first.belongsTo(context)) {
+        if (i.first.belongsTo(context)) {
            auto *item = new messageItem(i.second, name, i.first);
            sameCtxMessages.push_back(item);
         }

@@ -4,6 +4,7 @@
 #include "languagestablemanager.h"
 #include "csv.h"
 #include <QMainWindow>
+#include <QTreeWidget>
 
 class LanguagesManager;
 class LanguagesManagerModel;
@@ -34,9 +35,13 @@ private slots:
     
     void on_actionAbout_triggered();
     
+    void on_contextTree_itemClicked(QTreeWidgetItem *item, int column);
+
 private:
-    Ui::MainWindow *ui;
     void createToolBar();
+    void populateContextTree();
+
+    Ui::MainWindow *ui;
     languagesTableManager tableManager;
     QString supportedType;
 };
