@@ -30,6 +30,7 @@ const std::string &Language::getName() const
 {
     return name;
 }
+
 QList<QStandardItem *> Language::getMessagesByContext(std::string context)
 {
     QList<QStandardItem *> sameCtxMessages;
@@ -45,10 +46,9 @@ QList<QStandardItem *> Language::getMessagesByContext(std::string context)
 const std::vector<std::string> Language::getMessages() const
 {
     std::vector<std::string>tmp;
-    std::transform(messages.begin(), messages.end(), std::back_inserter(tmp), [] (std::pair<Key, std::string> const & pair)
-    {
-        return pair.second;
-    });
+    for (auto key : keys) {
+        tmp.push_back(messages.at(key));
+    }
     return tmp;
 }
 
