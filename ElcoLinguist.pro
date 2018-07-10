@@ -43,7 +43,7 @@ SOURCES += \
     src/messageitem.cpp \
     src/csvwriter.cpp \
     src/csvreader.cpp \
-    src/exportlanguagesdialog.cpp
+    src/languagelistdialog.cpp
 
 HEADERS += \
     libs-3rdparty/libCSV/shared/csv.h \
@@ -58,7 +58,7 @@ HEADERS += \
     include/messageitem.h \
     include/csvwriter.h \
     include/csvreader.h \
-    include/exportlanguagesdialog.h
+    include/languagelistdialog.h
 
 FORMS += \
     ui/aboutdialog.ui \

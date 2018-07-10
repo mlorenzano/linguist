@@ -32,7 +32,7 @@ private slots:
     
     void on_actionAdd_Language_triggered();
     
-    void on_actionRemove_Language_triggered();
+    void on_actionRemove_Languages_triggered();
     
     void on_actionFilters_triggered();
     
@@ -56,6 +56,7 @@ private:
     QString supportedType;
     QString workingDirectory;
     std::string currentContext;
+    std::vector<std::string> filteredLanguages;
     QSortFilterProxyModel *sortFilter;
 };
 

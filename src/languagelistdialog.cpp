@@ -1,25 +1,35 @@
-#include "include\exportlanguagesdialog.h"
+#include "include\languagelistdialog.h"
 #include "ui_exportlanguagesdialog.h"
 
-exportLanguagesDialog::exportLanguagesDialog(QWidget *parent) :
+languageListDialog::languageListDialog (const QString &title, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::exportLanguagesDialog)
+{
+    ui->setupUi(this);
+    QDialog::setWindowTitle(title);
+}
+
+languageListDialog::languageListDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::exportLanguagesDialog)
 {
     ui->setupUi(this);
 }
 
-exportLanguagesDialog::~exportLanguagesDialog()
+languageListDialog::~languageListDialog()
 {
     delete ui;
 }
 
-void exportLanguagesDialog::populateLanguagesList(const std::vector<std::string> &languages)
+void languageListDialog::populateLanguagesList(const std::vector<std::string> &languages)
 {
     auto *def = new QListWidgetItem();
     def->setText("Default");
     def->setCheckState(Qt::Checked);
     def->setFlags(def->flags() & ~Qt::ItemIsEnabled);
-    ui->languagesListWidget->addItem(def);
+    ui->
+            languagesListWidget->
+            addItem(def);
 
     for (auto lang : languages) {
         auto *item = new QListWidgetItem();
@@ -28,7 +38,7 @@ void exportLanguagesDialog::populateLanguagesList(const std::vector<std::string>
         ui->languagesListWidget->addItem(item);
     }
 }
-std::vector<std::string> exportLanguagesDialog::languagesToExport()
+std::vector<std::string> languageListDialog::checkedLanguages()
 {
     std::vector<std::string> checkedLanguages;
     for (int i = 1; i < ui->languagesListWidget->count(); i++) {
@@ -40,12 +50,12 @@ std::vector<std::string> exportLanguagesDialog::languagesToExport()
     return checkedLanguages;
 }
 
-void exportLanguagesDialog::on_buttonBox_accepted()
+void languageListDialog::on_buttonBox_accepted()
 {
     accept();
 }
 
-void exportLanguagesDialog::on_buttonBox_rejected()
+void languageListDialog::on_buttonBox_rejected()
 {
     reject();
 }

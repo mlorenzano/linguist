@@ -7,15 +7,16 @@ namespace Ui {
 class exportLanguagesDialog;
 }
 
-class exportLanguagesDialog : public QDialog
+class languageListDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit exportLanguagesDialog(QWidget *parent = 0);
+    languageListDialog (const QString &titlem, QWidget *parent = 0);
+    explicit languageListDialog(QWidget *parent = 0);
     void populateLanguagesList(const std::vector<std::string> &languages);
-    std::vector<std::string> languagesToExport();
-    ~exportLanguagesDialog();
+    std::vector<std::string> checkedLanguages();
+    ~languageListDialog();
 
 private slots:
     void on_buttonBox_accepted();

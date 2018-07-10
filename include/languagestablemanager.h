@@ -15,12 +15,17 @@ class languagesTableManager : public QObject
 public:
     languagesTableManager(QObject *parent = nullptr);
 
+    languageTableModel *getTable(const std::string &context = "");
+    languageTableModel *getTable(const std::string &context, const std::vector<std::string> languagesName);
+
     const std::vector<Language> getLanguages();
-    const std::vector<Language> getLanguages(std::vector<std::string> languagesToExport);
+    const std::vector<Language> getLanguages(const std::vector<std::string> &languagesToExport);
+
     const std::vector<std::string> getLanguagesName();
     void setDefault(const Language &def);
+
+    void removeLanguages(const std::vector<std::string> &languagesToRemove);
     bool insertLanguage(const std::string &languageName, const Language &language);
-    languageTableModel *getTableByContext(std::string context = "");
 
     void clear();
 

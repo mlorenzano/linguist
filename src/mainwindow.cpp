@@ -5,7 +5,7 @@
 #include "csvreader.h"
 #include "csvwriter.h"
 #include "language.h"
-#include "exportlanguagesdialog.h"
+#include "languagelistdialog.h"
 
 #include <iostream>
 
@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     currentContext = "";
 
     sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    sortFilter->setSourceModel(tableManager.getTableByContext());
+    sortFilter->setSourceModel(tableManager.getTable());
     ui->languageTable->setModel(sortFilter);
 }
 
@@ -43,7 +43,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionExport_triggered()
 {
     CSVwriter writer;
-    QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),  workingDirectory,supportedType); //TODO: aggiungerlo
+    QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),
+                                                        workingDirectory,supportedType);
     if (destFilename.isEmpty())
         return;
     writer.setKeys(Language::getKeys());
@@ -96,14 +97,24 @@ void MainWindow::on_actionAdd_Language_triggered()
     updateLanguageTable();
 }
 
-void MainWindow::on_actionRemove_Language_triggered()
+void MainWindow::on_actionRemove_Languages_triggered()
 {
-    //ui->languageTable->selectedIndexes().at(1).column()
+    languageListDialog dialog(tr("Remove Languages"));
+    dialog.populateLanguagesList(tableManager.getLanguagesName());
+    if (dialog.exec() == QDialog::Accepted) {
+        tableManager.removeLanguages(dialog.checkedLanguages());
+    }
+    updateLanguageTable();
 }
 
 void MainWindow::on_actionFilters_triggered()
 {
-    
+    languageListDialog dialog(tr("Export Languages"));
+    dialog.populateLanguagesList(tableManager.getLanguagesName());
+    if (dialog.exec() == QDialog::Accepted) {
+        filteredLanguages = dialog.checkedLanguages();
+    }
+    updateLanguageTable();
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -111,6 +122,23 @@ void MainWindow::on_actionAbout_triggered()
     AboutDialog *d{new AboutDialog(this)};
     d->exec();
 }
+
+void MainWindow::on_actionExport_Languages_triggered()
+{
+    languageListDialog dialog(tr("Export Languages"));
+    dialog.populateLanguagesList(tableManager.getLanguagesName());
+    if (dialog.exec() == QDialog::Accepted) {
+        CSVwriter writer;
+        QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),
+                                                            workingDirectory,supportedType);
+        if (destFilename.isEmpty())
+            return;
+        writer.setKeys(Language::getKeys());
+        writer.addLanguages(tableManager.getLanguages(dialog.checkedLanguages()));
+        writer.save(destFilename);
+    }
+}
+
 
 void MainWindow::createToolBar()
 {
@@ -122,7 +150,7 @@ void MainWindow::createToolBar()
 
     QAction *removeLanguageButton = new QAction();
     removeLanguageButton->setIcon(QIcon(":/icons/icons/Gnome-List-Remove-64.png")); //minus symbol
-    connect(removeLanguageButton, SIGNAL(triggered(bool)), this, SLOT(on_actionRemove_Language_triggered()));
+    connect(removeLanguageButton, SIGNAL(triggered(bool)), this, SLOT(on_actionRemove_Languages_triggered()));
     removeLanguageButton->setToolTip("Remove Language");
     ui->topToolBar->addAction(removeLanguageButton);
 
@@ -135,7 +163,7 @@ void MainWindow::createToolBar()
     ui->topToolBar->addAction(importLanguagesbutton);
 
     QAction *exportLanguagesButton = new QAction();
-    exportLanguagesButton->setIcon(QIcon(":/icons/icons/gnome_export.png")); //import symbol
+    exportLanguagesButton->setIcon(QIcon(":/icons/icons/gnome_export.png")); //export symbol
     connect(exportLanguagesButton, SIGNAL(triggered(bool)), this, SLOT(on_actionExport_triggered()));
     exportLanguagesButton->setToolTip("Export");
     ui->topToolBar->addAction(exportLanguagesButton);
@@ -147,6 +175,12 @@ void MainWindow::createToolBar()
     connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(on_actionPreferences_triggered()));
     settingsButton->setToolTip("Preferences");
     ui->topToolBar->addAction(settingsButton);
+
+    QAction *filtersButton = new QAction();
+    filtersButton->setIcon(QIcon(":/icons/icons/Gnome-Logviewer-64.png")); //magnifier symbol
+    connect(filtersButton, SIGNAL(triggered(bool)), this, SLOT(on_actionFilters_triggered()));
+    filtersButton->setToolTip("Filters");
+    ui->topToolBar->addAction(filtersButton);
 
     QWidget* empty = new QWidget();
     empty->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
@@ -203,24 +237,8 @@ void MainWindow::searchString(const QString &s)
 
 void MainWindow::updateLanguageTable()
 {
-    sortFilter->setSourceModel(tableManager.getTableByContext(currentContext));
+    sortFilter->setSourceModel(tableManager.getTable(currentContext, filteredLanguages));
     ui->languageTable->update();
     ui->languageTable->resizeColumnsToContents();
     ui->languageTable->resizeRowsToContents();
-}
-
-void MainWindow::on_actionExport_Languages_triggered()
-{
-    exportLanguagesDialog dialog;
-    dialog.populateLanguagesList(tableManager.getLanguagesName());
-    if (dialog.exec() == QDialog::Accepted)
-    {
-        CSVwriter writer;
-        QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),  workingDirectory,supportedType); //TODO: aggiungerlo
-        if (destFilename.isEmpty())
-            return;
-        writer.setKeys(Language::getKeys());
-        writer.addLanguages(tableManager.getLanguages(dialog.languagesToExport()));
-        writer.save(destFilename);
-    }
 }
