@@ -19,13 +19,16 @@ void CSVwriter::setKeys(std::vector<Key> keys)
     }
 }
 
-void CSVwriter::addLanguage(const Language &language)
+void CSVwriter::addLanguages(const std::vector<Language> &languages)
 {
-    csv::addItem(1, languagesCount+1, QString::fromStdString(language.getName()));
-    int i = 2;
-    for (auto message : language.getMessages()) {
-        csv::addItem(i, languagesCount+1, QString::fromStdString(message));
-        i++;
+    for (auto lang : languages) {
+        csv::addItem(1, languagesCount+1, QString::fromStdString(lang.getName()));
+        int i = 2;
+        for (auto message : lang.getMessages()) {
+            csv::addItem(i, languagesCount+1, QString::fromStdString(message));
+            i++;
+        }
+        ++languagesCount;
     }
-    ++languagesCount;
+
 }

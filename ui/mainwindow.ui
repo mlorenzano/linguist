@@ -105,9 +105,9 @@
     </property>
     <addaction name="actionExport"/>
     <addaction name="actionImport"/>
+    <addaction name="actionExport_Languages"/>
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
-    <addaction name="actionExport_Languages"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">

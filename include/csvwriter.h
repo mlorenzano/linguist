@@ -10,7 +10,7 @@ class CSVwriter : public csv
 public:
     CSVwriter();
     void setKeys(std::vector<Key> keys);
-    void addLanguage(const Language &language);
+    void addLanguages(const std::vector<Language> &languages);
 private:
     int languagesCount;
     std::string infKeyText;

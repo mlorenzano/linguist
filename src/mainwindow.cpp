@@ -46,9 +46,7 @@ void MainWindow::on_actionExport_triggered()
     if (destFilename.isEmpty())
         return;
     writer.setKeys(Language::getKeys());
-    for (auto i : tableManager.getLanguages()) {
-        writer.addLanguage(i);
-    }
+    writer.addLanguages(tableManager.getLanguages());
     writer.save(destFilename);
 }
 
@@ -219,9 +217,7 @@ void MainWindow::on_actionExport_Languages_triggered()
         if (destFilename.isEmpty())
             return;
         writer.setKeys(Language::getKeys());
-        for (auto i : tableManager.getLanguages(dialog.languagesToExport())) {
-            writer.addLanguage(i);
-        }
+        writer.addLanguages(tableManager.getLanguages(dialog.languagesToExport()));
         writer.save(destFilename);
     }
 }
