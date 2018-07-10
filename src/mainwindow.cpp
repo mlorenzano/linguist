@@ -41,7 +41,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionExport_triggered()
 {
     CSVwriter writer;
-    QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),  QString(),supportedType); //TODO: aggiungerlo
+    QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),  workingDirectory,supportedType); //TODO: aggiungerlo
     if (destFilename.isEmpty())
         return;
     writer.setKeys(Language::getKeys());
@@ -53,21 +53,24 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-    std::string destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"), "",supportedType).toStdString();
+    std::string destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"), workingDirectory,supportedType).toStdString();
     if (destFilename.empty())
         return;
-
-    CSVreader reader(destFilename);
     tableManager.clear();
 
+    QFileInfo info(QString::fromStdString(destFilename));
+    workingDirectory = info.path();
+    QWidget::setWindowTitle(info.fileName() + " - " + QWidget::windowTitle());
+
+    CSVreader reader(destFilename);
     Language::setKeys(reader.collectKeys());
     std::vector<std::string> intestations = reader.collectIntestations();
     tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
-
     for (int i = 1; i < intestations.size(); i++) {
         tableManager.insertLanguage(intestations[i],
                                     Language(intestations[i], reader.collectColumnAt(i+1)));
     }
+
     currentContext = "";
     populateContextTree();
     updateLanguageTable();

@@ -52,6 +52,7 @@ private:
     QLineEdit *searchLine;
     languagesTableManager tableManager;
     QString supportedType;
+    QString workingDirectory;
     std::string currentContext;
     QSortFilterProxyModel *sortFilter;
 };
