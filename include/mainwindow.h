@@ -3,8 +3,11 @@
 
 #include "languagestablemanager.h"
 #include "csv.h"
+
 #include <QMainWindow>
 #include <QTreeWidget>
+#include <QSortFilterProxyModel>
+#include <QLineEdit>
 
 class LanguagesManager;
 class LanguagesManagerModel;
@@ -40,11 +43,17 @@ private slots:
 private:
     void createToolBar();
     void populateContextTree();
+    std::vector<std::string> collectContexts();
+    void updateLanguageTable();
+
+    void searchString(const QString &s);
 
     Ui::MainWindow *ui;
+    QLineEdit *searchLine;
     languagesTableManager tableManager;
     QString supportedType;
     std::string currentContext;
+    QSortFilterProxyModel *sortFilter;
 };
 
 #endif // MAINWINDOW_H

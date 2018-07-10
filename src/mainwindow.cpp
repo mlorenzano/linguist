@@ -13,16 +13,24 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     supportedType{tr("Comma Separated Values (*.csv)")},
-    tableManager()
+    tableManager(),
+    sortFilter(new QSortFilterProxyModel()),
+    searchLine(new QLineEdit())
 {
     ui->setupUi(this);
-    currentContext = "";
     createToolBar();
+
+    connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
+    currentContext = "";
+    sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    sortFilter->setSourceModel(tableManager.getTableByContext());
+    ui->languageTable->setModel(sortFilter);
 }
 
 MainWindow::~MainWindow()
@@ -61,10 +69,8 @@ void MainWindow::on_actionImport_triggered()
                                     Language(intestations[i], reader.collectColumnAt(i+1)));
     }
     currentContext = "";
-    ui->languageTable->setModel(tableManager.getTableByContext(currentContext));
-    ui->languageTable->resizeColumnsToContents();
-
     populateContextTree();
+    updateLanguageTable();
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -83,7 +89,7 @@ void MainWindow::on_actionAdd_Language_triggered()
     if (!tableManager.insertLanguage(name, Language(name)))
         QMessageBox::information(this, tr("Error"),
                                  tr("This language already exists."));
-    ui->languageTable->setModel(tableManager.getTableByContext(currentContext));
+    updateLanguageTable();
 }
 
 void MainWindow::on_actionRemove_Language_triggered()
@@ -137,15 +143,24 @@ void MainWindow::createToolBar()
     connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(on_actionPreferences_triggered()));
     settingsButton->setToolTip("Preferences");
     ui->topToolBar->addAction(settingsButton);
+
+    QWidget* empty = new QWidget();
+    empty->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    ui->topToolBar->addWidget(empty);
+
+    auto lblSearch = new QLabel(tr("  Sear&ch  "), this);
+    lblSearch->setBuddy(searchLine);
+    ui->topToolBar->addWidget(lblSearch);
+    ui->topToolBar->addWidget(searchLine);
 }
 
 void MainWindow::populateContextTree()
 {
     ui->contextTree->clear();
     QList<QTreeWidgetItem*> children;
-    for (auto i : Language::getKeys()){
+    for (auto i : collectContexts()){
         QTreeWidgetItem *child = new QTreeWidgetItem();
-        child->setText(0, QString::fromStdString(i.getContext()));
+        child->setText(0, QString::fromStdString(i));
         children << child;
     }
 
@@ -157,10 +172,34 @@ void MainWindow::populateContextTree()
     ui->languageTable->resizeColumnsToContents();
 }
 
+std::vector<std::string> MainWindow::collectContexts()
+{
+    std::vector<std::string> contexts;
+    for (auto i : Language::getKeys()) {
+        std::string tmpContext = i.getContext();
+        if (std::find(contexts.begin(), contexts.end(), tmpContext) == contexts.end())
+            contexts.push_back(tmpContext);
+    }
+    return contexts;
+}
+
 void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
 {
-    std::string currentContext = "";
+    currentContext = "";
     if (item->childCount() == 0) //not a root item
         currentContext = item->text(column).toStdString();
-    ui->languageTable->setModel(tableManager.getTableByContext(currentContext));
+    updateLanguageTable();
+}
+
+void MainWindow::searchString(const QString &s)
+{
+    sortFilter->setFilterRegExp(QString("^.*(%1).*$").arg(s));
+    updateLanguageTable();
+}
+
+void MainWindow::updateLanguageTable()
+{
+    sortFilter->setSourceModel(tableManager.getTableByContext(currentContext));
+    ui->languageTable->update();
+    ui->languageTable->resizeColumnsToContents();
 }
