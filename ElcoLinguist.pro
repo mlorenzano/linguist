@@ -42,7 +42,8 @@ SOURCES += \
     src/languagestablemanager.cpp \
     src/messageitem.cpp \
     src/csvwriter.cpp \
-    src/csvreader.cpp
+    src/csvreader.cpp \
+    src/exportlanguagesdialog.cpp
 
 HEADERS += \
     libs-3rdparty/libCSV/shared/csv.h \
@@ -56,12 +57,14 @@ HEADERS += \
     include/languagetablemodel.h \
     include/messageitem.h \
     include/csvwriter.h \
-    include/csvreader.h
+    include/csvreader.h \
+    include/exportlanguagesdialog.h
 
 FORMS += \
     ui/aboutdialog.ui \
     ui/mainwindow.ui \
-    ui/settingsdialog.ui
+    ui/settingsdialog.ui \
+    ui/exportlanguagesdialog.ui
 
 RESOURCES += \
     resources.qrc
