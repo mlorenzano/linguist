@@ -5,6 +5,7 @@
 #include "csvreader.h"
 #include "csvwriter.h"
 #include "language.h"
+#include "exportlanguagesdialog.h"
 
 #include <iostream>
 
@@ -205,4 +206,22 @@ void MainWindow::updateLanguageTable()
     sortFilter->setSourceModel(tableManager.getTableByContext(currentContext));
     ui->languageTable->update();
     ui->languageTable->resizeColumnsToContents();
+}
+
+void MainWindow::on_actionExport_Languages_triggered()
+{
+    exportLanguagesDialog dialog;
+    dialog.populateLanguagesList(tableManager.getLanguagesName());
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        CSVwriter writer;
+        QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),  workingDirectory,supportedType); //TODO: aggiungerlo
+        if (destFilename.isEmpty())
+            return;
+        writer.setKeys(Language::getKeys());
+        for (auto i : tableManager.getLanguages(dialog.languagesToExport())) {
+            writer.addLanguage(i);
+        }
+        writer.save(destFilename);
+    }
 }

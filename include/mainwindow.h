@@ -40,6 +40,8 @@ private slots:
     
     void on_contextTree_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_actionExport_Languages_triggered();
+
 private:
     void createToolBar();
     void populateContextTree();

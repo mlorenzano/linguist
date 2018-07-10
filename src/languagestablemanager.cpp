@@ -20,6 +20,27 @@ const std::vector<Language> languagesTableManager::getLanguages()
     return tmp;
 }
 
+const std::vector<Language> languagesTableManager::getLanguages
+(std::vector<std::string> languagesToExport)
+{
+    std::vector<Language> tmp;
+    for (auto i : languagesToExport) {
+        tmp.push_back(languages[i]);
+    }
+    return tmp;
+}
+
+const std::vector<std::string> languagesTableManager::getLanguagesName()
+{
+    std::vector<std::string> tmp;
+    std::transform(languages.begin(), languages.end(), std::back_inserter(tmp),
+                   [] (std::pair<std::string, Language> pair)
+    {
+        return pair.first;
+    });
+    return tmp;
+}
+
 languageTableModel *languagesTableManager::getTableByContext(std::string context)
 {
     languagesTable->reset();
