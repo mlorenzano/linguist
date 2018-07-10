@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     currentContext = "";
+
     sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
     sortFilter->setSourceModel(tableManager.getTableByContext());
     ui->languageTable->setModel(sortFilter);
@@ -64,7 +65,8 @@ void MainWindow::on_actionImport_triggered()
     CSVreader reader(destFilename);
     Language::setKeys(reader.collectKeys());
     std::vector<std::string> intestations = reader.collectIntestations();
-    tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
+    if (!intestations.empty())
+        tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
     for (int i = 1; i < intestations.size(); i++) {
         tableManager.insertLanguage(intestations[i],
                                     Language(intestations[i], reader.collectColumnAt(i+1)));
@@ -96,7 +98,7 @@ void MainWindow::on_actionAdd_Language_triggered()
 
 void MainWindow::on_actionRemove_Language_triggered()
 {
-    
+    //ui->languageTable->selectedIndexes().at(1).column()
 }
 
 void MainWindow::on_actionFilters_triggered()
@@ -204,6 +206,7 @@ void MainWindow::updateLanguageTable()
     sortFilter->setSourceModel(tableManager.getTableByContext(currentContext));
     ui->languageTable->update();
     ui->languageTable->resizeColumnsToContents();
+    ui->languageTable->resizeRowsToContents();
 }
 
 void MainWindow::on_actionExport_Languages_triggered()
