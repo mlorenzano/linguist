@@ -12,6 +12,8 @@ class PlainTextEditor : public QTextEdit
 public:
     inline PlainTextEditor(QWidget *parent) : QTextEdit(parent) {
         setAcceptRichText(false);
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     }
 
 signals:
