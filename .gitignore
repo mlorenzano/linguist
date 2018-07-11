@@ -4,4 +4,8 @@
 debug/
 obj/
 release/
+<<<<<<< HEAD
+=======
+*.user
+>>>>>>> develop
 Makefile
