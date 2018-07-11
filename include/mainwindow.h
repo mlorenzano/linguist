@@ -42,6 +42,8 @@ private slots:
 
     void on_actionExport_Languages_triggered();
 
+    void resizeTable();
+
 private:
     void createToolBar();
     void populateContextTree();

@@ -24,9 +24,8 @@ void CustomItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index
 void CustomItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     auto textEditor = dynamic_cast<PlainTextEditor *>(editor);
-    if (textEditor) {
+    if (textEditor)
         model->setData(index, QVariant(textEditor->toPlainText()));
-    }
 }
 
 void CustomItemDelegate::editingFinished()

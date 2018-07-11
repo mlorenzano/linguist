@@ -32,9 +32,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     currentContext = "";
     sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    sortFilter->setSourceModel(tableManager.getTable());
+    sortFilter->setSourceModel(tableManager.getTable(currentContext, filteredLanguages));
     ui->languageTable->setModel(sortFilter);
     ui->languageTable->setItemDelegate(new CustomItemDelegate());
+    connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
+            //connect(languagesTable, &languageTableModel::itemChanged, this, &languagesTableManager::updateItemData);
 }
 
 
@@ -78,6 +80,7 @@ void MainWindow::on_actionImport_triggered()
 
     currentContext = "";
     populateContextTree();
+    filteredLanguages = tableManager.getLanguagesName();
     updateLanguageTable();
 }
 
@@ -95,8 +98,10 @@ void MainWindow::on_actionAdd_Language_triggered()
     if (name.empty())
         return;
     if (!tableManager.insertLanguage(name, Language(name)))
-        QMessageBox::information(this, tr("Error"),
-                                 tr("This language already exists."));
+        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
+    else {
+        filteredLanguages.push_back(name);
+    }
     updateLanguageTable();
 }
 
@@ -114,6 +119,7 @@ void MainWindow::on_actionFilters_triggered()
 {
     languageListDialog dialog(tr("Set Filters"));
     dialog.populateLanguagesList(tableManager.getLanguagesName());
+    dialog.setSelectedLanguages(filteredLanguages);
     if (dialog.exec() == QDialog::Accepted) {
         filteredLanguages = dialog.checkedLanguages();
     }
@@ -249,6 +255,11 @@ void MainWindow::updateLanguageTable()
 {
     sortFilter->setSourceModel(tableManager.getTable(currentContext, filteredLanguages));
     ui->languageTable->update();
+    resizeTable();
+}
+
+void MainWindow::resizeTable()
+{
     ui->languageTable->resizeColumnsToContents();
     ui->languageTable->resizeRowsToContents();
 }

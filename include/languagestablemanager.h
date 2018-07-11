@@ -15,7 +15,6 @@ class languagesTableManager : public QObject
 public:
     languagesTableManager(QObject *parent = nullptr);
 
-    languageTableModel *getTable(const std::string &context = "");
     languageTableModel *getTable(const std::string &context, const std::vector<std::string> languagesName);
 
     const std::vector<Language> getLanguages();
@@ -28,6 +27,8 @@ public:
     bool insertLanguage(const std::string &languageName, const Language &language);
 
     void clear();
+signals:
+    void dataChanged();
 
 private slots:
     void updateItemData(QStandardItem *changedItem);

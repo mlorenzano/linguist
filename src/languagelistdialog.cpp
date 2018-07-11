@@ -37,6 +37,17 @@ void languageListDialog::populateLanguagesList(const std::vector<std::string> &l
     }
 }
 
+void languageListDialog::setSelectedLanguages(const std::vector<std::string> &filteredLanguages)
+{
+    for (auto lang : filteredLanguages) {
+        for (int i = 0; i < ui->languagesListWidget->count(); i++) {
+            if ( ui->languagesListWidget->item(i)->text().toStdString() == lang) {
+                ui->languagesListWidget->item(i)->setCheckState(Qt::Checked);
+                break;
+            }
+        }
+    }
+}
 std::vector<std::string> languageListDialog::checkedLanguages()
 {
     std::vector<std::string> checkedLanguages;

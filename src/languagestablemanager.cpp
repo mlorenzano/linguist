@@ -8,27 +8,11 @@ languagesTableManager::languagesTableManager(QObject *parent) :
     connect(languagesTable, &languageTableModel::itemChanged, this, &languagesTableManager::updateItemData);
 }
 
-languageTableModel *languagesTableManager::getTable(const std::string &context)
-{
-    languagesTable->reset();
-    languagesTable->appendColumn(defaultLanguage.getMessagesByContext(context));
-    languagesTable->setHorizontalHeaderItem(0, new QStandardItem("Default"));
-    int i = 1;
-    for (auto lang : languages) {
-        languagesTable->appendColumn(lang.second.getMessagesByContext(context));
-        languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang.first)));
-        ++i;
-    }
-    return languagesTable;
-}
 
 languageTableModel *languagesTableManager::getTable(const std::string &context,
                                                     const std::vector<std::string> languagesName)
 {
     languagesTable->reset();
-
-    if (languagesName.empty())
-        return getTable(context);
     languagesTable->appendColumn(defaultLanguage.getMessagesByContext(context));
     languagesTable->setHorizontalHeaderItem(0, new QStandardItem("Default"));
     int i = 1;
@@ -97,6 +81,7 @@ void languagesTableManager::updateItemData(QStandardItem *changedItem)
     languages.at(changedMessageItem->getLanguage()).changeMessage
             (changedMessageItem->text().toStdString(), changedMessageItem->getKey());
     changedMessageItem->changeColor();
+    emit dataChanged();
 }
 
 void languagesTableManager::clear()
