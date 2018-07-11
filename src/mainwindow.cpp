@@ -197,7 +197,12 @@ void MainWindow::populateContextTree()
     QList<QTreeWidgetItem*> children;
     for (auto i : collectContexts()){
         QTreeWidgetItem *child = new QTreeWidgetItem();
-        child->setText(0, QString::fromStdString(i));
+        if (i == "$$DynamicStrings$$")
+            child->setText(0, "DynamicStrings");
+        else if (i == "$$EventsHandler$$")
+            child->setText(0, "EventsHandler");
+        else
+            child->setText(0, QString::fromStdString(i));
         children << child;
     }
 
@@ -223,8 +228,11 @@ std::vector<std::string> MainWindow::collectContexts()
 void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
 {
     currentContext = "";
-    if (item->childCount() == 0) //not a root item
+    if (item->childCount() == 0) {
         currentContext = item->text(column).toStdString();
+        if (currentContext == "DynamicStrings" || currentContext == "EventsHandler")
+            currentContext = "$$" + currentContext + "$$";
+    }
     updateLanguageTable();
 }
 
