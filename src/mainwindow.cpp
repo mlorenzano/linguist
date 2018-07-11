@@ -6,8 +6,7 @@
 #include "csvwriter.h"
 #include "language.h"
 #include "languagelistdialog.h"
-
-#include <iostream>
+#include "customitemdelegate.h"
 
 #include <QSettings>
 #include <QFileInfo>
@@ -15,6 +14,9 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QLabel>
+
+#include <iostream>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
     sortFilter->setSourceModel(tableManager.getTable());
     ui->languageTable->setModel(sortFilter);
+    ui->languageTable->setItemDelegate(new CustomItemDelegate());
 }
 
 

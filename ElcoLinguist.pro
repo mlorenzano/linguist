@@ -50,7 +50,8 @@ SOURCES += \
     src/messageitem.cpp \
     src/csvwriter.cpp \
     src/csvreader.cpp \
-    src/languagelistdialog.cpp
+    src/languagelistdialog.cpp \
+    src/customitemdelegate.cpp
 
 HEADERS += \
     libs-3rdparty/libCSV/shared/csv.h \
@@ -124,8 +125,8 @@ HEADERS += \
     libs-3rdparty/libXLNT/shared/xlnt/worksheet/sheet_view.hpp \
     libs-3rdparty/libXLNT/shared/xlnt/worksheet/worksheet.hpp \
     libs-3rdparty/libXLNT/shared/xlnt/xlnt_config.hpp \
-    libs-3rdparty/libXLNT/shared/xlnt/xlnt.hpp
     libs-3rdparty/libXLNT/shared/xlnt/xlnt.hpp \
+    include/customitemdelegate.h
 
 FORMS += \
     ui/aboutdialog.ui \
