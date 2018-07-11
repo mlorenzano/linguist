@@ -6,7 +6,7 @@ messageItem::messageItem() : QStandardItem(),
 {}
 
 messageItem::messageItem(const std::string &text, const std::string &language, const Key &key) :
-    QStandardItem(QString::fromStdString(text))
+    QStandardItem(QString::fromStdString(text).replace("\\n", "\n"))
 {
     changeColor();
     this->language = language;
@@ -27,5 +27,3 @@ Key messageItem::getKey() const
 {
     return key;
 }
-
-

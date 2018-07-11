@@ -114,7 +114,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionAdd_Language"/>
-    <addaction name="actionRemove_Language"/>
+    <addaction name="actionRemove_Languages"/>
     <addaction name="separator"/>
     <addaction name="actionFilters"/>
    </widget>
@@ -143,9 +143,9 @@
     <string>Add Language</string>
    </property>
   </action>
-  <action name="actionRemove_Language">
+  <action name="actionRemove_Languages">
    <property name="text">
-    <string>Remove Language</string>
+    <string>Remove Languages</string>
    </property>
   </action>
   <action name="actionFilters">

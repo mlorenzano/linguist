@@ -29,11 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     currentContext = "";
-
     sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
     sortFilter->setSourceModel(tableManager.getTable());
     ui->languageTable->setModel(sortFilter);
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -109,7 +109,7 @@ void MainWindow::on_actionRemove_Languages_triggered()
 
 void MainWindow::on_actionFilters_triggered()
 {
-    languageListDialog dialog(tr("Export Languages"));
+    languageListDialog dialog(tr("Set Filters"));
     dialog.populateLanguagesList(tableManager.getLanguagesName());
     if (dialog.exec() == QDialog::Accepted) {
         filteredLanguages = dialog.checkedLanguages();
@@ -138,7 +138,6 @@ void MainWindow::on_actionExport_Languages_triggered()
         writer.save(destFilename);
     }
 }
-
 
 void MainWindow::createToolBar()
 {
