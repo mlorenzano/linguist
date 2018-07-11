@@ -9,7 +9,8 @@ CustomItemDelegate::CustomItemDelegate(QObject *parent) :
 
 QWidget *CustomItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-
+    (void)index;
+    (void)option;
     PlainTextEditor *pt = new PlainTextEditor(parent);
     connect(pt, SIGNAL(editFinished()), this, SLOT(editingFinished()));
     return pt;

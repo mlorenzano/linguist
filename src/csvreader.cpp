@@ -23,7 +23,7 @@ std::vector<Key> CSVreader::collectKeys()
 
 std::vector<std::string> CSVreader::collectColumnAt(std::size_t i)
 {
-    auto tmp =  csv::column(i);
+    auto tmp =  csv::column((int)i);
     std::vector<std::string> v;
     if (!tmp.empty())
         std::transform(tmp.begin() + 2, tmp.end(), std::back_inserter(v),
