@@ -17,10 +17,6 @@ Language::Language(const std::string &name)
 
 Language::Language(const std::string &name, const std::vector<std::string> &strings)
 {
-    if (strings.size() != keys.size()) {
-        std::cerr<<"Impossible to initialize language";
-        return;
-    }
     this->name = name;
     int i = 0;
     for(auto &key : keys) {

@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include "aboutdialog.h"
 #include "settingsdialog.h"
-#include "csvreader.h"
+#include "filereader.h"
 #include "csvwriter.h"
 #include "language.h"
 #include "languagelistdialog.h"
@@ -21,7 +21,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    supportedType{tr("Comma Separated Values (*.csv)")},
+    supportedType{tr("Comma Separated Values (*.csv);;Foglio Elettronico (*.xlsx)")},
     tableManager(),
     sortFilter(new QSortFilterProxyModel()),
     searchLine(new QLineEdit())
@@ -36,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->languageTable->setModel(sortFilter);
     ui->languageTable->setItemDelegate(new CustomItemDelegate());
     connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
-            //connect(languagesTable, &languageTableModel::itemChanged, this, &languagesTableManager::updateItemData);
 }
 
 
@@ -59,7 +58,8 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-    std::string destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"), workingDirectory,supportedType).toStdString();
+    std::string destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),
+                                                            workingDirectory,supportedType).toStdString();
     if (destFilename.empty())
         return;
     tableManager.clear();
@@ -68,8 +68,9 @@ void MainWindow::on_actionImport_triggered()
     workingDirectory = info.path();
     QWidget::setWindowTitle(info.fileName() + " - " + QWidget::windowTitle());
 
-    CSVreader reader(destFilename);
-    Language::setKeys(reader.collectKeys());
+    FileReader reader(destFilename);
+    auto a = reader.collectKeys();
+    Language::setKeys(a);
     std::vector<std::string> intestations = reader.collectIntestations();
     if (!intestations.empty())
         tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
