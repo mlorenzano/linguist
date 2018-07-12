@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Elco Linguist"
-#define MyAppVersion "0.1.0"
+#define MyAppVersion "0.2.0"
 #define MyAppPublisher "Elco Elettronica"
 #define MyAppURL "http://www.elcoelettronica.it/en/home/"
 #define MyAppExeName "ElcoLinguist.exe"
@@ -47,7 +47,7 @@ Type: files; Name: "{app}\*.qm"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}";
+Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; OnlyBelowVersion: 0,6.1
 
 [Dirs]
 Name: "{app}\platforms"
@@ -61,6 +61,7 @@ Source: {#MSVCBinPath}\plugins\platforms\*; DestDir: {app}\platforms; Flags: rep
 
 ; DLL interne
 Source: libs-3rdparty\libCSV\libCSV.dll; DestDir: {app}; Flags: replacesameversion;
+Source: libs-3rdparty\libXLNT\xlnt.dll; DestDir: {app}; Flags: replacesameversion;
 
 Source: release\{#MyAppExeName}; DestDir: {app}; Flags: replacesameversion;
 
