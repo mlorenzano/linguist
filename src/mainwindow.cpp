@@ -8,15 +8,14 @@
 #include "languagelistdialog.h"
 #include "customitemdelegate.h"
 
-#include <QSettings>
+#include <QInputDialog>
 #include <QFileInfo>
 #include <QFileDialog>
-#include <QInputDialog>
-#include <QMessageBox>
 #include <QLabel>
+#include <QMessageBox>
+#include <QSettings>
 
 #include <iostream>
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     createToolBar();
+
+    QSettings settings("MyCompany", "MyApp");
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
 
     connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     currentContext = "";
@@ -42,6 +45,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QSettings settings("MyCompany", "MyApp");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::on_actionExport_triggered()

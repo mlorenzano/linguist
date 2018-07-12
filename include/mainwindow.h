@@ -22,6 +22,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
     
 private slots:
     void on_actionExport_triggered();
