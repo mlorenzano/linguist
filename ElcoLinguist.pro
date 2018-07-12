@@ -48,10 +48,10 @@ SOURCES += \
     src/key.cpp \
     src/languagestablemanager.cpp \
     src/messageitem.cpp \
-    src/csvwriter.cpp \
     src/languagelistdialog.cpp \
     src/customitemdelegate.cpp \
-    src/filereader.cpp
+    src/filereader.cpp \
+    src/filewriter.cpp
 
 HEADERS += \
     libs-3rdparty/libCSV/shared/csv.h \
@@ -64,7 +64,6 @@ HEADERS += \
     include/languagestablemanager.h \
     include/languagetablemodel.h \
     include/messageitem.h \
-    include/csvwriter.h \
     include/languagelistdialog.h \
     libs-3rdparty/libXLNT/shared/xlnt/cell/cell.hpp \
     libs-3rdparty/libXLNT/shared/xlnt/cell/cell_reference.hpp \
@@ -126,7 +125,8 @@ HEADERS += \
     libs-3rdparty/libXLNT/shared/xlnt/xlnt_config.hpp \
     libs-3rdparty/libXLNT/shared/xlnt/xlnt.hpp \
     include/customitemdelegate.h \
-    include/filereader.h
+    include/filereader.h \
+    include/filewriter.h
 
 FORMS += \
     ui/aboutdialog.ui \

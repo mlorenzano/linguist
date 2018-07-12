@@ -3,7 +3,7 @@
 #include "aboutdialog.h"
 #include "settingsdialog.h"
 #include "filereader.h"
-#include "csvwriter.h"
+#include "filewriter.h"
 #include "language.h"
 #include "languagelistdialog.h"
 #include "customitemdelegate.h"
@@ -46,14 +46,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionExport_triggered()
 {
-    CSVwriter writer;
     QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),
                                                         workingDirectory,supportedType);
     if (destFilename.isEmpty())
         return;
+    FileWriter writer(destFilename.toStdString());
     writer.setKeys(Language::getKeys());
     writer.addLanguages(tableManager.getLanguages());
-    writer.save(destFilename);
+    writer.save();
 }
 
 void MainWindow::on_actionImport_triggered()
@@ -138,14 +138,14 @@ void MainWindow::on_actionExport_Languages_triggered()
     languageListDialog dialog(tr("Export Languages"));
     dialog.populateLanguagesList(tableManager.getLanguagesName());
     if (dialog.exec() == QDialog::Accepted) {
-        CSVwriter writer;
         QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),
                                                             workingDirectory,supportedType);
         if (destFilename.isEmpty())
             return;
+        FileWriter writer(destFilename.toStdString());
         writer.setKeys(Language::getKeys());
         writer.addLanguages(tableManager.getLanguages(dialog.checkedLanguages()));
-        writer.save(destFilename);
+        writer.save();
     }
 }
 
