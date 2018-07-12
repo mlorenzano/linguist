@@ -3,7 +3,7 @@
 
 #include <QStyleFactory>
 
-const QString VERSION = "0.1.0";
+const QString VERSION = "0.2.0";
 
 void loadApplicationData()
 {
