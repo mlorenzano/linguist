@@ -11,5 +11,7 @@
         <file>icons/Gnome-System-Run-64.png</file>
         <file>icons/select_all.png</file>
         <file>icons/unselect_all.png</file>
+        <file>icons/el.ico</file>
+        <file>icons/el.png</file>
     </qresource>
 </RCC>

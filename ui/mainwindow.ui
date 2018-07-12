@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>ElcoLinguist</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/icons/icons/el.png</normaloff>:/icons/icons/el.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
@@ -129,47 +133,87 @@
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionExport">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/icons/gnome_export.png</normaloff>:/icons/icons/gnome_export.png</iconset>
+   </property>
    <property name="text">
     <string>Export</string>
    </property>
   </action>
   <action name="actionImport">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/icons/gnome_import.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Import</string>
    </property>
   </action>
   <action name="actionAdd_Language">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/icons/Gnome-List-Add-64.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Add Language</string>
    </property>
   </action>
   <action name="actionRemove_Languages">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/icons/Gnome-List-Remove-64.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Remove Languages</string>
    </property>
   </action>
   <action name="actionFilters">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/icons/Gnome-Logviewer-64.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Filters</string>
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/icons/el.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/icons/Gnome-System-Run-64.png</normaloff>:/icons/icons/Gnome-System-Run-64.png</iconset>
+   </property>
    <property name="text">
     <string>Preferences</string>
    </property>
   </action>
   <action name="actionExport_Languages">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/icons/select_all.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Export Languages</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

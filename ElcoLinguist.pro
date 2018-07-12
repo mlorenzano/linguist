@@ -136,3 +136,5 @@ FORMS += \
 
 RESOURCES += \
     resources.qrc
+
+RC_FILE = resources.rc
