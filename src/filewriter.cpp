@@ -11,7 +11,8 @@ FileWriter::FileWriter(std::string filename)
         csvWriter->setSeparatore(';');
         xlsxWriter = nullptr;
     }
-    else {
+    else if (filename.find("xlsx") != std::string::npos ||
+             filename.find("xlx") != std::string::npos){
         xlsxWriter = new xlnt::workbook();
         xlnt::worksheet ws = xlsxWriter->active_sheet();
         ws.cell("A1").value(infKeyText);
@@ -28,7 +29,7 @@ void FileWriter::setKeys(std::vector<Key> keys)
             csvWriter->addItem(i, 0, QString::fromStdString(key.toString()));
             i++;
         }
-    } else {
+    } else if (xlsxWriter) {
         xlnt::worksheet ws = xlsxWriter->active_sheet();
         ws.rows(false)[1][0].value("Key");
         int i = 2;
@@ -51,7 +52,7 @@ void FileWriter::addLanguages(const std::vector<Language> &languages)
             }
             ++languagesCount;
         }
-    } else {
+    } else if (xlsxWriter) {
         for (auto lang : languages) {
             xlnt::worksheet ws = xlsxWriter->active_sheet();
             ws.rows(false)[1][languagesCount+1].value(lang.getName());
@@ -70,6 +71,6 @@ void FileWriter::save()
 {
     if (csvWriter)
         csvWriter->save(QString::fromStdString(filename));
-    else
+    else if (xlsxWriter)
         xlsxWriter->save(filename);
 }

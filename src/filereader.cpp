@@ -38,13 +38,9 @@ std::vector<std::string> FileReader::collectColumnAt(std::size_t i)
             });
     } else {
         auto ws = xlsxReader->active_sheet();
-        auto firstColIterator = ws.columns(false).begin();
-        std::advance(firstColIterator, (int)i);
-        auto col = *firstColIterator;
-
-        auto colsStart = col.begin();
-        std::advance(colsStart, 2);
-        std::transform(colsStart, col.end(), std::back_inserter(v),
+        auto colStart = ws.columns(false)[i].begin();
+        std::advance(colStart, 2);
+        std::transform(colStart, ws.columns(false)[i].end(), std::back_inserter(v),
                        [] (const xlnt::cell &var)
         {
             return var.to_string();
@@ -66,12 +62,9 @@ std::vector<std::string> FileReader::collectIntestations()
             });
     } else {
         auto ws = xlsxReader->active_sheet();
-        auto firstRowIterator = ws.rows(false).begin();
-        std::advance(firstRowIterator, 1);
-        auto row = *firstRowIterator;
-        auto rowStart = row.begin();
+        auto rowStart = ws.rows(false)[1].begin();
         std::advance(rowStart, 1);
-        std::transform(rowStart, row.end(), std::back_inserter(v),
+        std::transform(rowStart, ws.rows(false)[1].end(), std::back_inserter(v),
                        [] (const xlnt::cell &var)
         {
             return var.to_string();
