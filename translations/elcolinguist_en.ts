@@ -44,27 +44,32 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="141"/>
+        <location filename="../src/mainwindow.cpp" line="211"/>
         <source>Export</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="205"/>
         <source>Import</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="161"/>
+        <location filename="../src/mainwindow.cpp" line="191"/>
         <source>Add Language</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="171"/>
-        <location filename="../src/mainwindow.cpp" line="122"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>Remove Languages</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="225"/>
         <source>Filters</source>
         <translation></translation>
     </message>
@@ -75,59 +80,55 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="200"/>
+        <location filename="../src/mainwindow.cpp" line="219"/>
         <source>Preferences</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="210"/>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="172"/>
         <source>Export Languages</source>
         <translation>Export Languages</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="23"/>
-        <source>Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="60"/>
-        <location filename="../src/mainwindow.cpp" line="72"/>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="82"/>
+        <location filename="../src/mainwindow.cpp" line="94"/>
+        <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Import languages</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="108"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>New language</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="109"/>
+        <location filename="../src/mainwindow.cpp" line="132"/>
         <source>Insert language name:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="136"/>
         <source>Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="136"/>
         <source>This language already exists.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>Set Filters</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="209"/>
+        <location filename="../src/mainwindow.cpp" line="232"/>
         <source>  Sear&amp;ch  </source>
-        <translation></translation>
+        <translation type="unfinished">Search</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="231"/>
+        <location filename="../src/mainwindow.cpp" line="269"/>
         <source>All</source>
         <translation></translation>
     </message>
@@ -150,16 +151,6 @@
     <message>
         <location filename="../ui/settingsdialog.ui" line="26"/>
         <source>Language</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/settingsdialog.ui" line="33"/>
-        <source>English</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/settingsdialog.ui" line="38"/>
-        <source>Italiano</source>
         <translation></translation>
     </message>
 </context>

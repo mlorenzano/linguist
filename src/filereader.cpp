@@ -4,7 +4,7 @@ FileReader::FileReader(std::string filename)
 {
     if (filename.find("csv") != std::string::npos) {
         csvReader = new Csv();
-        auto a = csvReader->load(filename, ';');
+        csvReader->load(filename, ';');
         xlsxReader = nullptr;
     }
     else {

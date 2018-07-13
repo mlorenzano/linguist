@@ -10,6 +10,7 @@
 #include <QLineEdit>
 #include <QTranslator>
 #include <QDir>
+#include <QLabel>
 
 #include <set>
 
@@ -62,11 +63,11 @@ private:
     void populateContextTree();
     std::map<std::string, std::set<std::string>> collectContexts();
     void updateLanguageTable();
-
     void searchString(const QString &s);
 
     Ui::MainWindow *ui;
     QLineEdit *searchLine;
+    QLabel *lblSearch;
     languagesTableManager tableManager;
     QString supportedType;
     QString workingDirectory;

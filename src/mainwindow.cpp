@@ -11,7 +11,6 @@
 #include <QInputDialog>
 #include <QFileInfo>
 #include <QFileDialog>
-#include <QLabel>
 #include <QMessageBox>
 #include <QSettings>
 #include <QApplication>
@@ -21,12 +20,13 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    supportedType{tr("Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)")},
+    supportedType{"Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)"},
     tableManager(),
     sortFilter(new QSortFilterProxyModel()),
     searchLine(new QLineEdit()),
     translator(new QTranslator),
-    filteredLanguages()
+    filteredLanguages(),
+    lblSearch(new QLabel())
 {
     ui->setupUi(this);
 
@@ -66,6 +66,7 @@ void MainWindow::translateApp()
     qApp->removeTranslator(translator.get());
     QSettings set;
     auto currentLanguage = set.value(currentLanguageHandler, "it").toString();
+    lblSearch->setText(tr("  Sear&ch  "));
     if(translator->load(currentLanguage, languagePathHandler))
         qApp->installTranslator(translator.get());
 }
@@ -99,7 +100,7 @@ void MainWindow::on_actionImport_triggered()
 
     QFileInfo info(QString::fromStdString(destFilename));
     workingDirectory = info.path();
-    QWidget::setWindowTitle(info.fileName() + " - " + QWidget::windowTitle());
+    QWidget::setWindowTitle(info.fileName() + " - " + "ElcoLinguist");
 
     FileReader reader(destFilename);
     auto a = reader.collectKeys();
@@ -188,13 +189,13 @@ void MainWindow::createToolBar()
     QAction *addLanguageButton = new QAction();
     addLanguageButton->setIcon(QIcon(":/icons/icons/Gnome-List-Add-64.png")); //plus symbol
     connect(addLanguageButton, SIGNAL(triggered(bool)), this, SLOT(on_actionAdd_Language_triggered()));
-    addLanguageButton->setToolTip("Add Language");
+    addLanguageButton->setToolTip(tr("Add Language"));
     ui->topToolBar->addAction(addLanguageButton);
 
     QAction *removeLanguageButton = new QAction();
     removeLanguageButton->setIcon(QIcon(":/icons/icons/Gnome-List-Remove-64.png")); //minus symbol
     connect(removeLanguageButton, SIGNAL(triggered(bool)), this, SLOT(on_actionRemove_Languages_triggered()));
-    removeLanguageButton->setToolTip("Remove Language");
+    removeLanguageButton->setToolTip(tr("Remove Languages"));
     ui->topToolBar->addAction(removeLanguageButton);
 
     ui->topToolBar->addSeparator();
@@ -202,13 +203,13 @@ void MainWindow::createToolBar()
     QAction *importLanguagesbutton = new QAction();
     importLanguagesbutton->setIcon(QIcon(":/icons/icons/gnome_import.png")); //import symbol
     connect(importLanguagesbutton, SIGNAL(triggered(bool)), this, SLOT(on_actionImport_triggered()));
-    importLanguagesbutton->setToolTip("Import");
+    importLanguagesbutton->setToolTip(tr("Import"));
     ui->topToolBar->addAction(importLanguagesbutton);
 
     QAction *exportLanguagesButton = new QAction();
     exportLanguagesButton->setIcon(QIcon(":/icons/icons/gnome_export.png")); //export symbol
     connect(exportLanguagesButton, SIGNAL(triggered(bool)), this, SLOT(on_actionExport_triggered()));
-    exportLanguagesButton->setToolTip("Export");
+    exportLanguagesButton->setToolTip(tr("Export"));
     ui->topToolBar->addAction(exportLanguagesButton);
 
     ui->topToolBar->addSeparator();
@@ -216,20 +217,20 @@ void MainWindow::createToolBar()
     QAction *settingsButton = new QAction();
     settingsButton->setIcon(QIcon(":/icons/icons/Gnome-System-Run-64.png")); //gear symbol
     connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(on_actionPreferences_triggered()));
-    settingsButton->setToolTip("Preferences");
+    settingsButton->setToolTip(tr("Preferences"));
     ui->topToolBar->addAction(settingsButton);
 
     QAction *filtersButton = new QAction();
     filtersButton->setIcon(QIcon(":/icons/icons/Gnome-Logviewer-64.png")); //magnifier symbol
     connect(filtersButton, SIGNAL(triggered(bool)), this, SLOT(on_actionFilters_triggered()));
-    filtersButton->setToolTip("Filters");
+    filtersButton->setToolTip(tr("Filters"));
     ui->topToolBar->addAction(filtersButton);
 
     QWidget* empty = new QWidget();
     empty->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     ui->topToolBar->addWidget(empty);
 
-    auto lblSearch = new QLabel(tr("  Sear&ch  "), this);
+    lblSearch->setText(tr("  Sear&ch  "));
     lblSearch->setBuddy(searchLine);
     ui->topToolBar->addWidget(lblSearch);
     ui->topToolBar->addWidget(searchLine);
