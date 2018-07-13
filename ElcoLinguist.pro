@@ -23,13 +23,9 @@ UI_DIR = $$PWD/obj
 
 CONFIG(debug, debug|release) {
     LIBS += -L$$PWD/libs-3rdparty/libCSV -llibCSVd
-} else {
-    LIBS += -L$$PWD/libs-3rdparty/libCSV -llibCSV
-}
-
-CONFIG(debug, debug|release) {
     LIBS += -L$$PWD/libs-3rdparty/libXLNT -lxlntd
 } else {
+    LIBS += -L$$PWD/libs-3rdparty/libCSV -llibCSV
     LIBS += -L$$PWD/libs-3rdparty/libXLNT -lxlnt
 }
 
@@ -37,7 +33,8 @@ INCLUDEPATH += $$PWD/src \
                $$PWD/include \
                $$PWD/ui \
                $$PWD/libs-3rdparty/libCSV/shared \
-               $$PWD/libs-3rdparty/libXLNT/shared
+               $$PWD/libs-3rdparty/libCSV/shared/private \
+               $$PWD/libs-3rdparty/libXLNT/shared \
 
 SOURCES += \
     src/aboutdialog.cpp \

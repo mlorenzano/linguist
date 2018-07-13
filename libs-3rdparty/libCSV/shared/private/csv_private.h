@@ -1,15 +1,14 @@
-#ifndef CSV_H
-#define CSV_H
+#ifndef CSV_PRIVATE_H
+#define CSV_PRIVATE_H
 
-#include "csv_global.h"
+#include <string>
+#include <vector>
 
-#include <csv_private.h>
-
-class CSVSHARED_EXPORT Csv
+class Csv_private
 {
+
 public:
-    Csv();
-    ~Csv();
+    Csv_private();
 
     //Salvataggio
     bool load(const std::string& filename, char separator);
@@ -33,7 +32,14 @@ public:
     std::vector<std::string> column(const size_t index);
 
 private:
-    Csv_private *worker;
+    std::vector<std::vector<std::string> > m_items;
+    size_t m_columnCount;
+
+    //Lettura del file
+    std::vector<std::string> readFile(const std::string& path);
+
+    //Funzione di split
+    void split(const std::string& s, const char delim, std::vector<std::string> *out);
 };
 
-#endif // CSV_H
+#endif // CSV_PRIVATE_H

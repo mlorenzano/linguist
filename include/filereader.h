@@ -17,7 +17,7 @@ public:
     std::vector<std::string> collectColumnAt(std::size_t i);
     std::vector<std::string> collectIntestations();
 private:
-    csv *csvReader;
+    Csv *csvReader;
     xlnt::workbook *xlsxReader;
 
 };

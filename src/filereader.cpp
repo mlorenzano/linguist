@@ -3,7 +3,8 @@
 FileReader::FileReader(std::string filename)
 {
     if (filename.find("csv") != std::string::npos) {
-        csvReader = new csv(';', QString::fromStdString(filename));
+        csvReader = new Csv();
+        auto a = csvReader->load(filename, ';');
         xlsxReader = nullptr;
     }
     else {
@@ -32,9 +33,9 @@ std::vector<std::string> FileReader::collectColumnAt(std::size_t i)
         auto tmp =  csvReader->column((int)i);
         if (!tmp.empty())
             std::transform(tmp.begin() + 2, tmp.end(), std::back_inserter(v),
-                           [] (const QString& var)
+                           [] (const std::string& var)
             {
-                return var.toStdString();
+                return var;
             });
     } else {
         auto ws = xlsxReader->active_sheet();
@@ -54,13 +55,13 @@ std::vector<std::string> FileReader::collectIntestations()
     std::vector<std::string> v;
     if (csvReader) {
         auto tmp = csvReader->row(1);
-        if (tmp.last() == "")
+        if (tmp.back() == "")
             tmp.pop_back();
         if (!tmp.empty())
             std::transform(tmp.begin() + 1, tmp.end(), std::back_inserter(v),
-                           [] (const QString& var)
+                           [] (const std::string& var)
             {
-                return var.toStdString();
+                return var;
             });
     } else {
         auto ws = xlsxReader->active_sheet();

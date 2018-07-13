@@ -6,9 +6,8 @@ FileWriter::FileWriter(std::string filename)
     languagesCount = 0;
     this->filename = filename;
     if (filename.find("csv") != std::string::npos) {
-        csvWriter = new csv();
-        csvWriter->addItem(0, 0, QString::fromStdString(infKeyText));
-        csvWriter->setSeparatore(';');
+        csvWriter = new Csv();
+        csvWriter->setItem(0, 0, infKeyText);
         xlsxWriter = nullptr;
     }
     else if (filename.find("xlsx") != std::string::npos ||
@@ -23,10 +22,10 @@ FileWriter::FileWriter(std::string filename)
 void FileWriter::setKeys(std::vector<Key> keys)
 {
     if (csvWriter) {
-        csvWriter->addItem(1, 0, "Key");
+        csvWriter->setItem(1, 0, "Key");
         int i = 2;
         for (auto key : keys) {
-            csvWriter->addItem(i, 0, QString::fromStdString(key.toString()));
+            csvWriter->setItem(i, 0, key.toString());
             i++;
         }
     } else if (xlsxWriter) {
@@ -44,10 +43,10 @@ void FileWriter::addLanguages(const std::vector<Language> &languages)
 {
     if (csvWriter) {
         for (auto lang : languages) {
-            csvWriter->addItem(1, languagesCount+1, QString::fromStdString(lang.getName()));
+            csvWriter->setItem(1, languagesCount+1, lang.getName());
             int i = 2;
             for (auto message : lang.getMessages()) {
-                csvWriter->addItem(i, languagesCount+1, QString::fromStdString(message));
+                csvWriter->setItem(i, languagesCount+1, message);
                 i++;
             }
             ++languagesCount;
@@ -70,7 +69,7 @@ void FileWriter::addLanguages(const std::vector<Language> &languages)
 void FileWriter::save()
 {
     if (csvWriter)
-        csvWriter->save(QString::fromStdString(filename));
+        csvWriter->save(filename, ';');
     else if (xlsxWriter)
         xlsxWriter->save(filename);
 }
