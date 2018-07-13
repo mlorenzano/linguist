@@ -31,6 +31,13 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lblSite->setOpenExternalLinks(true);
 }
 
+void AboutDialog::changeEvent(QEvent *e)
+{
+    QDialog::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange)
+        ui->retranslateUi(this);
+}
+
 AboutDialog::~AboutDialog()
 {
     delete ui;

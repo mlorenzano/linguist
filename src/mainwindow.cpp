@@ -14,21 +14,26 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QSettings>
+#include <QApplication>
 
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    supportedType{tr("Comma Separated Values (*.csv);;Foglio Elettronico (*.xlsx)")},
+    supportedType{tr("Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)")},
     tableManager(),
     sortFilter(new QSortFilterProxyModel()),
-    searchLine(new QLineEdit())
+    searchLine(new QLineEdit()),
+    translator(new QTranslator)
 {
     ui->setupUi(this);
+
+    translateApp();
+    qApp->installEventFilter(this);
     createToolBar();
 
-    QSettings settings("MyCompany", "MyApp");
+    QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("windowState").toByteArray());
 
@@ -49,10 +54,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    QSettings settings("MyCompany", "MyApp");
+    QSettings settings;
     settings.setValue("geometry", saveGeometry());
     settings.setValue("windowState", saveState());
     QMainWindow::closeEvent(event);
+}
+
+void MainWindow::translateApp()
+{
+    qApp->removeTranslator(translator.get());
+    QSettings set;
+    auto currentLanguage = set.value(currentLanguageHandler, "it").toString();
+    if(translator->load(currentLanguage, languagePathHandler))
+        qApp->installTranslator(translator.get());
+}
+
+void MainWindow::changeEvent(QEvent *e)
+{
+    QMainWindow::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange)
+        ui->retranslateUi(this);
 }
 
 void MainWindow::on_actionExport_triggered()
@@ -101,6 +122,7 @@ void MainWindow::on_actionPreferences_triggered()
     settingsDialog *d = new settingsDialog();
     d->show();
     d->exec();
+    translateApp();
 }
 
 void MainWindow::on_actionAdd_Language_triggered()

@@ -138,3 +138,7 @@ RESOURCES += \
     resources.qrc
 
 RC_FILE = resources.rc
+
+TRANSLATIONS += $$PWD/translations/elcolinguist_it.ts
+TRANSLATIONS += $$PWD/translations/elcolinguist_en.ts
+

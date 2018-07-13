@@ -3,6 +3,9 @@
 
 #include <QDialog>
 
+static const QString currentLanguageHandler =
+        QLatin1String("Settings/Language/CurrentLanguage");
+
 namespace Ui {
 class settingsDialog;
 }
@@ -15,6 +18,9 @@ public:
     explicit settingsDialog(QWidget *parent = 0);
     ~settingsDialog();
     
+private slots:
+    void on_buttonBox_accepted();
+
 private:
     Ui::settingsDialog *ui;
 };

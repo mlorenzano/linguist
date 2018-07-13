@@ -16,9 +16,10 @@ void loadApplicationData()
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    loadApplicationData();
+
     MainWindow w;
 
-    loadApplicationData();
 
     w.show();
     

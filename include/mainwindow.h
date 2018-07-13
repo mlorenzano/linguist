@@ -8,9 +8,14 @@
 #include <QTreeWidget>
 #include <QSortFilterProxyModel>
 #include <QLineEdit>
+#include <QTranslator>
+#include <QDir>
 
 class LanguagesManager;
 class LanguagesManagerModel;
+
+static const QString languagePathHandler =
+        QString("%1/%2").arg(QDir::currentPath()).arg("translations");
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +31,7 @@ public:
 protected:
     void closeEvent(QCloseEvent *event) override;
     
+    void changeEvent(QEvent *e);
 private slots:
     void on_actionExport_triggered();
     
@@ -47,6 +53,8 @@ private slots:
 
     void resizeTable();
 
+    void translateApp();
+
 private:
     void createToolBar();
     void populateContextTree();
@@ -62,6 +70,7 @@ private:
     QString workingDirectory;
     std::string currentContext;
     std::vector<std::string> filteredLanguages;
+    std::unique_ptr<QTranslator> translator;
     QSortFilterProxyModel *sortFilter;
 };
 

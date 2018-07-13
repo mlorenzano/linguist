@@ -21,6 +21,13 @@ languageListDialog::~languageListDialog()
     delete ui;
 }
 
+void languageListDialog::changeEvent(QEvent *e)
+{
+    QDialog::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange)
+        ui->retranslateUi(this);
+}
+
 void languageListDialog::populateLanguagesList(const std::vector<std::string> &languages)
 {
     auto *def = new QListWidgetItem();
