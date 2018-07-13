@@ -17,6 +17,8 @@ void messageItem::changeColor()
 {
     if (QStandardItem::text() == "")
         QStandardItem::setBackground(QColor(253, 177, 94));
+    else
+        QStandardItem::setBackground(Qt::white);
 }
 std::string messageItem::getLanguage() const
 {
