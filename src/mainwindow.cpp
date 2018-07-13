@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     tableManager(),
     sortFilter(new QSortFilterProxyModel()),
     searchLine(new QLineEdit()),
-    translator(new QTranslator)
+    translator(new QTranslator),
+    filteredLanguages()
 {
     ui->setupUi(this);
 
@@ -40,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     currentContext = "";
     sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    sortFilter->setSourceModel(tableManager.getTable(currentContext, filteredLanguages));
+    sortFilter->setSourceModel(tableManager.getTable(currentContext, currentPage, filteredLanguages));
     ui->languageTable->setModel(sortFilter);
     ui->languageTable->setItemDelegate(new CustomItemDelegate());
     connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
@@ -237,44 +238,72 @@ void MainWindow::createToolBar()
 void MainWindow::populateContextTree()
 {
     ui->contextTree->clear();
-    QList<QTreeWidgetItem*> children;
-    for (auto i : collectContexts()){
-        QTreeWidgetItem *child = new QTreeWidgetItem();
-        if (i == "$$DynamicStrings$$")
-            child->setText(0, "DynamicStrings");
-        else if (i == "$$EventsHandler$$")
-            child->setText(0, "EventsHandler");
+    QList<QTreeWidgetItem*> contexts;
+    bool normalContext;
+    for (auto i : collectContexts()) {
+        normalContext = true;
+        QTreeWidgetItem *childContext = new QTreeWidgetItem();
+        if (i.first == "$$DynamicStrings$$") {
+            childContext->setText(0, "DynamicStrings");
+            normalContext = false;
+        }
+        else if (i.first == "$$EventsHandler$$") {
+            childContext->setText(0, "EventsHandler");
+            normalContext = false;
+        }
         else
-            child->setText(0, QString::fromStdString(i));
-        children << child;
+            childContext->setText(0, QString::fromStdString(i.first));
+        if (normalContext) {
+            QList<QTreeWidgetItem*> pages;
+            for (auto j : i.second) {
+                QTreeWidgetItem *childPage = new QTreeWidgetItem();
+                childPage->setText(0, QString::fromStdString(j));
+                pages << childPage;
+            }
+            childContext->addChildren(pages);
+        }
+        contexts << childContext;
     }
 
     QTreeWidgetItem *root = new QTreeWidgetItem();
     root->setText(0, tr("All"));
-    root->addChildren(children);
+    root->addChildren(contexts);
     ui->contextTree->addTopLevelItem(root);
-    ui->contextTree->expandAll();
+    ui->contextTree->expandItem(root);
     ui->languageTable->resizeColumnsToContents();
 }
-
-std::vector<std::string> MainWindow::collectContexts()
+std::map<std::string, std::set<std::string>> MainWindow::collectContexts()
 {
-    std::vector<std::string> contexts;
+    std::map<std::string, std::set<std::string>> contexts;
     for (auto i : Language::getKeys()) {
         std::string tmpContext = i.getContext();
-        if (std::find(contexts.begin(), contexts.end(), tmpContext) == contexts.end())
-            contexts.push_back(tmpContext);
+        if (contexts.find(tmpContext) == contexts.end())
+            contexts.insert(std::make_pair(tmpContext,
+                                           std::set<std::string> {i.getPageOfContext()}));
+        else {
+            if (contexts.at(tmpContext).find(i.getPageOfContext()) == contexts.at(tmpContext).end())
+                contexts.at(tmpContext).insert(i.getPageOfContext());
+        }
     }
     return contexts;
 }
 
 void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
 {
-    currentContext = "";
     if (item->childCount() == 0) {
-        currentContext = item->text(column).toStdString();
-        if (currentContext == "DynamicStrings" || currentContext == "EventsHandler")
-            currentContext = "$$" + currentContext + "$$";
+        if (item->text(column) == "DynamicStrings" || item->text(column) == "EventsHandler") {
+            currentContext = "$$" + item->text(column).toStdString() + "$$";
+            currentPage = "";
+        } else {
+            currentPage = item->text(column).toStdString();
+            currentContext = item->parent()->text(column).toStdString();
+        }
+    } else {
+        currentPage = "";
+        if (item->parent())
+            currentContext = item->text(column).toStdString();
+        else
+            currentContext = "";
     }
     updateLanguageTable();
 }
@@ -287,7 +316,7 @@ void MainWindow::searchString(const QString &s)
 
 void MainWindow::updateLanguageTable()
 {
-    sortFilter->setSourceModel(tableManager.getTable(currentContext, filteredLanguages));
+    sortFilter->setSourceModel(tableManager.getTable(currentContext, currentPage, filteredLanguages));
     ui->languageTable->update();
     resizeTable();
 }

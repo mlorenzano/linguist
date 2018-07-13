@@ -82,7 +82,7 @@
         <location filename="../ui/mainwindow.ui" line="210"/>
         <location filename="../src/mainwindow.cpp" line="149"/>
         <source>Export Languages</source>
-        <translation type="unfinished">Export Languages</translation>
+        <translation>Export Languages</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="23"/>

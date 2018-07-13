@@ -54,6 +54,8 @@ std::vector<std::string> FileReader::collectIntestations()
     std::vector<std::string> v;
     if (csvReader) {
         auto tmp = csvReader->row(1);
+        if (tmp.last() == "")
+            tmp.pop_back();
         if (!tmp.empty())
             std::transform(tmp.begin() + 1, tmp.end(), std::back_inserter(v),
                            [] (const QString& var)
@@ -65,7 +67,7 @@ std::vector<std::string> FileReader::collectIntestations()
         auto rowStart = ws.rows(false)[1].begin();
         std::advance(rowStart, 1);
         std::transform(rowStart, ws.rows(false)[1].end(), std::back_inserter(v),
-                       [] (const xlnt::cell &var)
+                [] (const xlnt::cell &var)
         {
             return var.to_string();
         });

@@ -69,9 +69,10 @@ bool Key::fromString(std::string keyString)
     return false;
 }
 
-bool Key::belongsTo(std::string context) const
+bool Key::belongsTo(const std::string &context, const std::string pageOfContext) const
 {
-    return this->context == context || context.empty();
+    return (this->context == context || context.empty()) &&
+            (this->pageOfContext == pageOfContext || pageOfContext.empty());
 }
 
 Key &Key::operator =(const Key &other)
@@ -85,8 +86,8 @@ Key &Key::operator =(const Key &other)
 bool Key::operator ==(const Key &other) const
 {
     return context == other.context &&
-           id == other.id &&
-           pageOfContext == other.pageOfContext;
+            id == other.id &&
+            pageOfContext == other.pageOfContext;
 }
 bool Key::operator !=(const Key &other) const
 {

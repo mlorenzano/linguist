@@ -11,6 +11,8 @@
 #include <QTranslator>
 #include <QDir>
 
+#include <set>
+
 class LanguagesManager;
 class LanguagesManagerModel;
 
@@ -58,7 +60,7 @@ private slots:
 private:
     void createToolBar();
     void populateContextTree();
-    std::vector<std::string> collectContexts();
+    std::map<std::string, std::set<std::string>> collectContexts();
     void updateLanguageTable();
 
     void searchString(const QString &s);
@@ -69,6 +71,7 @@ private:
     QString supportedType;
     QString workingDirectory;
     std::string currentContext;
+    std::string currentPage;
     std::vector<std::string> filteredLanguages;
     std::unique_ptr<QTranslator> translator;
     QSortFilterProxyModel *sortFilter;
