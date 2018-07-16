@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Elco Linguist"
-#define MyAppVersion "0.2.0"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "Elco Elettronica"
 #define MyAppURL "http://www.elcoelettronica.it/en/home/"
 #define MyAppExeName "ElcoLinguist.exe"

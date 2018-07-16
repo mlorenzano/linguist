@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     translateApp();
     qApp->installEventFilter(this);
-    //createToolBar();
 
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());
