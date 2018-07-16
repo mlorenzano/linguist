@@ -87,12 +87,25 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="toolTip">
+    <string/>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionImport"/>
+   <addaction name="actionExport"/>
+   <addaction name="actionExport_Languages"/>
+   <addaction name="separator"/>
+   <addaction name="actionAdd_Language"/>
+   <addaction name="actionRemove_Languages"/>
+   <addaction name="separator"/>
+   <addaction name="actionFilters"/>
+   <addaction name="separator"/>
+   <addaction name="actionPreferences"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

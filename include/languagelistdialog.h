@@ -19,6 +19,8 @@ public:
     std::vector<std::string> checkedLanguages();
     ~languageListDialog();
 
+protected:
+    void changeEvent(QEvent *e);
 private slots:
     void on_buttonBox_accepted();
 

@@ -14,7 +14,7 @@ public:
 
     std::string toString();
     bool fromString(std::string keyString);
-    bool belongsTo(std::string context) const;
+    bool belongsTo(const std::string &context, const std::string pageOfContext) const;
 
     Key &operator =(const Key &other);
     bool operator ==(const Key &other) const;

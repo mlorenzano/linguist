@@ -3,7 +3,7 @@
 
 #include <QStyleFactory>
 
-const QString VERSION = "0.2.0";
+const QString VERSION = "1.0.0";
 
 void loadApplicationData()
 {
@@ -16,13 +16,9 @@ void loadApplicationData()
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-
     loadApplicationData();
-
+    a.setStyle(QStyleFactory::create("Fusion"));
+    MainWindow w;
     w.show();
-    
-    qApp->setStyle(QStyleFactory::create("Fusion")); 
-    
     return a.exec();
 }

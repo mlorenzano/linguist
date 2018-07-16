@@ -35,11 +35,11 @@ const std::string &Language::getName() const
     return name;
 }
 
-QList<QStandardItem *> Language::getMessagesByContext(std::string context)
+QList<QStandardItem *> Language::getMessagesByContext(const std::string &context, const std::string &page)
 {
     QList<QStandardItem *> sameCtxMessages;
     for (auto i : messages) {
-        if (i.first.belongsTo(context)) {
+        if (i.first.belongsTo(context, page)) {
            auto *item = new messageItem(i.second, name, i.first);
            sameCtxMessages.push_back(item);
         }

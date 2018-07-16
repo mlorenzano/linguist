@@ -27,18 +27,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QComboBox" name="languageBox">
-        <item>
-         <property name="text">
-          <string>English</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Italiano</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="languageBox"/>
       </item>
      </layout>
     </widget>

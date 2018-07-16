@@ -8,7 +8,6 @@ FileWriter::FileWriter(std::string filename)
     if (filename.find("csv") != std::string::npos) {
         csvWriter = new csv();
         csvWriter->addItem(0, 0, QString::fromStdString(infKeyText));
-        csvWriter->setSeparatore(';');
         xlsxWriter = nullptr;
     }
     else if (filename.find("xlsx") != std::string::npos ||

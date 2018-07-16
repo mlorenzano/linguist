@@ -15,7 +15,7 @@ class languagesTableManager : public QObject
 public:
     languagesTableManager(QObject *parent = nullptr);
 
-    languageTableModel *getTable(const std::string &context, const std::vector<std::string> languagesName);
+    languageTableModel *getTable(const std::string &context, const std::string &page, const std::vector<std::string> languagesName);
 
     const std::vector<Language> getLanguages();
     const std::vector<Language> getLanguages(const std::vector<std::string> &languagesToExport);
