@@ -2,38 +2,61 @@
 #define CSV_H
 
 #include "csv_global.h"
+#include <QStringList>
+#include <QList>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QProgressDialog>
 
-#include <csv_private.h>
-
-class CSVSHARED_EXPORT Csv
+class CSV_EXPORT csv
 {
 public:
-    Csv();
-    ~Csv();
+    csv();
+    csv(QChar separatore, long int massima_dimensione_tabella=0);
+    csv(QChar separatore, QString filename, long int massima_dimensione_tabella=0);
+    csv(QTableWidget *table, bool row_header=false, bool column_header=false);
+    csv(QChar separatore, QTableWidget *table, bool row_header=false, bool column_header=false);
+    csv(QChar separatore, QString filename, QTableWidget *table, bool row_header=false, bool column_header=false, long int massima_dimensione_tabella=0);
+    ~csv();
 
-    //Salvataggio
-    bool load(const std::string& filename, char separator);
-
-    //Caricamento
-    bool save(const std::string& filename, char separator);
-
-    //Pulizia
     void clear();
 
     //Informazioni sullo stato corrente
-    size_t rowCount();
-    size_t columnCount();
+    unsigned int rowCount();
+    unsigned int columnCount();
 
-    //Popolazione
-    void setItem(const size_t row, const size_t column, const std::string& value);
+    //Popolazione della classe
+    void addItem(unsigned int row, unsigned int column, QString item);
 
-    //Lettura
-    std::string item(const size_t row, const size_t column);
-    std::vector<std::string> row(const size_t index);
-    std::vector<std::string> column(const size_t index);
+    //Lettura della classe
+    QString item(unsigned int row, unsigned int column, bool *ok=0);
+    QStringList row(unsigned int index, bool *ok=0);
+    QStringList column(unsigned int index, bool *ok=0);
+
+    //Salvataggio su file
+    bool save(QString filename);
+
+    //Caricamento da file
+    bool load(QString filename);
+
+    //Accesso al separatore
+    QChar separatore();
+    void setSeparatore(QChar c);
+
+    long int massimaDimensioneTabella();
+    void setMassimaDimensioneTabella(long int l);
+
+    bool isErroreMassimaDimensioneTabella();
+
+    //Gestione tabella
+    bool getTable(QTableWidget *table, bool row_header=false, bool column_header=false, QProgressDialog *progress=0x00000000);
+    bool setTable(QTableWidget *table, bool row_header=false, bool column_header=false);
 
 private:
-    Csv_private *worker;
+    QList<QStringList>  pvt_list;
+    QChar               pvt_separatore;
+    long int            pvt_massima_dimensione_tabella;
+    bool                pvt_errore_massima_dimensione_tabella;
 };
 
 #endif // CSV_H

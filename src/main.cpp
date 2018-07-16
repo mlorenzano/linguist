@@ -17,13 +17,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     loadApplicationData();
-
+    a.setStyle(QStyleFactory::create("Fusion"));
     MainWindow w;
-
-
     w.show();
-    
-    qApp->setStyle(QStyleFactory::create("Fusion")); 
-    
     return a.exec();
 }

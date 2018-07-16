@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     translateApp();
     qApp->installEventFilter(this);
-    createToolBar();
+    //createToolBar();
 
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());
@@ -81,7 +81,7 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::on_actionExport_triggered()
 {
     QString destFilename = QFileDialog::getSaveFileName(this, tr("Export languages"),
-                                                        workingDirectory,supportedType);
+                                                        QString(), supportedType);
     if (destFilename.isEmpty())
         return;
     FileWriter writer(destFilename.toStdString());
@@ -92,16 +92,18 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
+    QSettings set;
     std::string destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),
-                                                            workingDirectory,supportedType).toStdString();
+                                                            set.value("workingDirectory",
+                                                                      QString()).toString(),
+                                                            supportedType).toStdString();
     if (destFilename.empty())
         return;
     tableManager.clear();
 
     QFileInfo info(QString::fromStdString(destFilename));
-    workingDirectory = info.path();
     QWidget::setWindowTitle(info.fileName() + " - " + "ElcoLinguist");
-
+    set.setValue("workingDirectory", info.path());
     FileReader reader(destFilename);
     auto a = reader.collectKeys();
     Language::setKeys(a);
@@ -174,7 +176,7 @@ void MainWindow::on_actionExport_Languages_triggered()
     dialog.populateLanguagesList(tableManager.getLanguagesName());
     if (dialog.exec() == QDialog::Accepted) {
         QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),
-                                                            workingDirectory,supportedType);
+                                                            QString(),supportedType);
         if (destFilename.isEmpty())
             return;
         FileWriter writer(destFilename.toStdString());
@@ -182,58 +184,6 @@ void MainWindow::on_actionExport_Languages_triggered()
         writer.addLanguages(tableManager.getLanguages(dialog.checkedLanguages()));
         writer.save();
     }
-}
-
-void MainWindow::createToolBar()
-{
-    QAction *addLanguageButton = new QAction();
-    addLanguageButton->setIcon(QIcon(":/icons/icons/Gnome-List-Add-64.png")); //plus symbol
-    connect(addLanguageButton, SIGNAL(triggered(bool)), this, SLOT(on_actionAdd_Language_triggered()));
-    addLanguageButton->setToolTip(tr("Add Language"));
-    ui->topToolBar->addAction(addLanguageButton);
-
-    QAction *removeLanguageButton = new QAction();
-    removeLanguageButton->setIcon(QIcon(":/icons/icons/Gnome-List-Remove-64.png")); //minus symbol
-    connect(removeLanguageButton, SIGNAL(triggered(bool)), this, SLOT(on_actionRemove_Languages_triggered()));
-    removeLanguageButton->setToolTip(tr("Remove Languages"));
-    ui->topToolBar->addAction(removeLanguageButton);
-
-    ui->topToolBar->addSeparator();
-
-    QAction *importLanguagesbutton = new QAction();
-    importLanguagesbutton->setIcon(QIcon(":/icons/icons/gnome_import.png")); //import symbol
-    connect(importLanguagesbutton, SIGNAL(triggered(bool)), this, SLOT(on_actionImport_triggered()));
-    importLanguagesbutton->setToolTip(tr("Import"));
-    ui->topToolBar->addAction(importLanguagesbutton);
-
-    QAction *exportLanguagesButton = new QAction();
-    exportLanguagesButton->setIcon(QIcon(":/icons/icons/gnome_export.png")); //export symbol
-    connect(exportLanguagesButton, SIGNAL(triggered(bool)), this, SLOT(on_actionExport_triggered()));
-    exportLanguagesButton->setToolTip(tr("Export"));
-    ui->topToolBar->addAction(exportLanguagesButton);
-
-    ui->topToolBar->addSeparator();
-
-    QAction *settingsButton = new QAction();
-    settingsButton->setIcon(QIcon(":/icons/icons/Gnome-System-Run-64.png")); //gear symbol
-    connect(settingsButton, SIGNAL(triggered(bool)), this, SLOT(on_actionPreferences_triggered()));
-    settingsButton->setToolTip(tr("Preferences"));
-    ui->topToolBar->addAction(settingsButton);
-
-    QAction *filtersButton = new QAction();
-    filtersButton->setIcon(QIcon(":/icons/icons/Gnome-Logviewer-64.png")); //magnifier symbol
-    connect(filtersButton, SIGNAL(triggered(bool)), this, SLOT(on_actionFilters_triggered()));
-    filtersButton->setToolTip(tr("Filters"));
-    ui->topToolBar->addAction(filtersButton);
-
-    QWidget* empty = new QWidget();
-    empty->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    ui->topToolBar->addWidget(empty);
-
-    lblSearch->setText(tr("  Sear&ch  "));
-    lblSearch->setBuddy(searchLine);
-    ui->topToolBar->addWidget(lblSearch);
-    ui->topToolBar->addWidget(searchLine);
 }
 
 void MainWindow::populateContextTree()

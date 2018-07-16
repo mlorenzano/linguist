@@ -59,7 +59,6 @@ private slots:
     void translateApp();
 
 private:
-    void createToolBar();
     void populateContextTree();
     std::map<std::string, std::set<std::string>> collectContexts();
     void updateLanguageTable();
@@ -70,7 +69,6 @@ private:
     QLabel *lblSearch;
     languagesTableManager tableManager;
     QString supportedType;
-    QString workingDirectory;
     std::string currentContext;
     std::string currentPage;
     std::vector<std::string> filteredLanguages;

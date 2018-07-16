@@ -14,7 +14,7 @@ public:
     void addLanguages(const std::vector<Language> &languages);
     void save();
 private:
-    Csv *csvWriter;
+    csv *csvWriter;
     xlnt::workbook *xlsxWriter;
     std::string filename;
 

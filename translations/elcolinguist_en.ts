@@ -44,32 +44,32 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="141"/>
-        <location filename="../src/mainwindow.cpp" line="211"/>
+        <location filename="../src/mainwindow.cpp" line="214"/>
         <source>Export</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="151"/>
-        <location filename="../src/mainwindow.cpp" line="205"/>
+        <location filename="../src/mainwindow.cpp" line="208"/>
         <source>Import</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="161"/>
-        <location filename="../src/mainwindow.cpp" line="191"/>
+        <location filename="../src/mainwindow.cpp" line="194"/>
         <source>Add Language</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="171"/>
-        <location filename="../src/mainwindow.cpp" line="145"/>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="200"/>
         <source>Remove Languages</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="181"/>
-        <location filename="../src/mainwindow.cpp" line="225"/>
+        <location filename="../src/mainwindow.cpp" line="228"/>
         <source>Filters</source>
         <translation></translation>
     </message>
@@ -80,55 +80,60 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="200"/>
-        <location filename="../src/mainwindow.cpp" line="219"/>
+        <location filename="../src/mainwindow.cpp" line="222"/>
         <source>Preferences</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="210"/>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Export Languages</source>
         <translation>Export Languages</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
-        <location filename="../src/mainwindow.cpp" line="94"/>
-        <location filename="../src/mainwindow.cpp" line="175"/>
+        <location filename="../src/mainwindow.cpp" line="96"/>
+        <location filename="../src/mainwindow.cpp" line="178"/>
         <source>Import languages</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="131"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>New language</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Insert language name:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="136"/>
+        <location filename="../src/mainwindow.cpp" line="139"/>
         <source>Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="136"/>
+        <location filename="../src/mainwindow.cpp" line="139"/>
         <source>This language already exists.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Set Filters</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="232"/>
+        <location filename="../src/mainwindow.cpp" line="69"/>
+        <location filename="../src/mainwindow.cpp" line="235"/>
         <source>  Sear&amp;ch  </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="269"/>
+        <location filename="../src/mainwindow.cpp" line="83"/>
+        <source>Export languages</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="272"/>
         <source>All</source>
         <translation></translation>
     </message>
