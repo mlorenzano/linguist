@@ -80,7 +80,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::on_actionExport_triggered()
 {
-    QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),
+    QString destFilename = QFileDialog::getSaveFileName(this, tr("Export languages"),
                                                         workingDirectory,supportedType);
     if (destFilename.isEmpty())
         return;

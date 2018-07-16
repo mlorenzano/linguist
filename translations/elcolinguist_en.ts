@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="232"/>
         <source>  Sear&amp;ch  </source>
-        <translation type="unfinished">Search</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="269"/>

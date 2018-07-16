@@ -30,12 +30,6 @@ void languageListDialog::changeEvent(QEvent *e)
 
 void languageListDialog::populateLanguagesList(const std::vector<std::string> &languages)
 {
-    auto *def = new QListWidgetItem();
-    def->setText("Default");
-    def->setCheckState(Qt::Checked);
-    def->setFlags(def->flags() & ~Qt::ItemIsEnabled);
-    ui->languagesListWidget->addItem(def);
-
     for (auto lang : languages) {
         auto *item = new QListWidgetItem();
         item->setText(QString::fromStdString(lang));
@@ -58,7 +52,7 @@ void languageListDialog::setSelectedLanguages(const std::vector<std::string> &fi
 std::vector<std::string> languageListDialog::checkedLanguages()
 {
     std::vector<std::string> checkedLanguages;
-    for (int i = 1; i < ui->languagesListWidget->count(); i++) {
+    for (int i = 0; i < ui->languagesListWidget->count(); i++) {
         auto item = ui->languagesListWidget->item(i);
         if (item->checkState() == Qt::Checked)
             checkedLanguages.push_back(item->text().toStdString());
