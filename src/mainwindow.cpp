@@ -44,6 +44,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->languageTable->setModel(sortFilter);
     ui->languageTable->setItemDelegate(new CustomItemDelegate());
     connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
+
+    QWidget* empty = new QWidget();
+    empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->topToolBar->addWidget(empty);
+
+    lblSearch->setBuddy(searchLine);
+    ui->topToolBar->addWidget(lblSearch);
+    ui->topToolBar->addWidget(searchLine);
 }
 
 
@@ -64,10 +72,10 @@ void MainWindow::translateApp()
 {
     qApp->removeTranslator(translator.get());
     QSettings set;
-    auto currentLanguage = set.value(currentLanguageHandler, "it").toString();
-    lblSearch->setText(tr("  Sear&ch  "));
+    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
     if(translator->load(currentLanguage, languagePathHandler))
         qApp->installTranslator(translator.get());
+    lblSearch->setText(tr("  Sear&ch  "));
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -117,7 +125,17 @@ void MainWindow::on_actionImport_triggered()
     currentContext = "";
     populateContextTree();
     filteredLanguages = tableManager.getLanguagesName();
+    enableButtons();
     updateLanguageTable();
+}
+
+void MainWindow::enableButtons()
+{
+    ui->actionRemove_Languages->setEnabled(tableManager.getLanguagesName().size() != 0);
+    ui->actionFilters->setEnabled(tableManager.getLanguagesName().size() != 0);
+    ui->actionAdd_Language->setEnabled(true);
+    ui->actionExport->setEnabled(true);
+    ui->actionExport_Languages->setEnabled(true);
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -138,6 +156,8 @@ void MainWindow::on_actionAdd_Language_triggered()
         QMessageBox::information(this, tr("Error"), tr("This language already exists."));
     else {
         filteredLanguages.push_back(name);
+        ui->actionRemove_Languages->setEnabled(true);
+        ui->actionFilters->setEnabled(true);
     }
     updateLanguageTable();
 }
@@ -147,7 +167,17 @@ void MainWindow::on_actionRemove_Languages_triggered()
     languageListDialog dialog(tr("Remove Languages"));
     dialog.populateLanguagesList(tableManager.getLanguagesName());
     if (dialog.exec() == QDialog::Accepted) {
-        tableManager.removeLanguages(dialog.checkedLanguages());
+        std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
+        tableManager.removeLanguages(languagesToRemove);
+        for (auto i : languagesToRemove) {
+            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
+            if (position != filteredLanguages.end())
+                filteredLanguages.erase(position);
+        }
+        if (tableManager.getLanguagesName().size() == 0) {
+            ui->actionRemove_Languages->setEnabled(false);
+            ui->actionFilters->setEnabled(false);
+        }
     }
     updateLanguageTable();
 }

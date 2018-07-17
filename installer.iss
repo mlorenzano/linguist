@@ -24,7 +24,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName={pf64}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 OutputDir=installer
 OutputBaseFilename=ElcoLinguist-{#MyAppVersion}
@@ -64,6 +64,9 @@ Source: libs-3rdparty\libCSV\libCSV.dll; DestDir: {app}; Flags: replacesameversi
 Source: libs-3rdparty\libXLNT\xlnt.dll; DestDir: {app}; Flags: replacesameversion;
 
 Source: release\{#MyAppExeName}; DestDir: {app}; Flags: replacesameversion;
+
+;Translations 
+Source: translations\*.qm; DestDir: {app}\translations\; Flags: replacesameversion;
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}";

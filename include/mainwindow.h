@@ -63,6 +63,7 @@ private:
     std::map<std::string, std::set<std::string>> collectContexts();
     void updateLanguageTable();
     void searchString(const QString &s);
+    void enableButtons();
 
     Ui::MainWindow *ui;
     QLineEdit *searchLine;

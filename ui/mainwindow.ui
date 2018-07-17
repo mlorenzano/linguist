@@ -146,6 +146,9 @@
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionExport">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/icons/icons/gnome_export.png</normaloff>:/icons/icons/gnome_export.png</iconset>
@@ -165,6 +168,9 @@
    </property>
   </action>
   <action name="actionAdd_Language">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normalon>:/icons/icons/Gnome-List-Add-64.png</normalon>
@@ -175,6 +181,9 @@
    </property>
   </action>
   <action name="actionRemove_Languages">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normalon>:/icons/icons/Gnome-List-Remove-64.png</normalon>
@@ -185,6 +194,9 @@
    </property>
   </action>
   <action name="actionFilters">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normalon>:/icons/icons/Gnome-Logviewer-64.png</normalon>
@@ -214,6 +226,9 @@
    </property>
   </action>
   <action name="actionExport_Languages">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normalon>:/icons/icons/select_all.png</normalon>
