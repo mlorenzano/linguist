@@ -70,7 +70,7 @@ void languagesTableManager::removeLanguages(const std::vector<std::string> &lang
 }
 bool languagesTableManager::insertLanguage(const std::string &languageName, const Language &language)
 {
-    if (languages.find(languageName) != languages.end())
+    if (languages.find(languageName) != languages.end() || languageName == "Default")
         return false;
     languages.insert(std::make_pair(languageName, language));
     return true;

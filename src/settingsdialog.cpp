@@ -12,7 +12,7 @@ settingsDialog::settingsDialog(QWidget *parent) :
     ui->languageBox->addItem("Italiano", "it");
     ui->languageBox->addItem("English", "en");
     QSettings set;
-    const auto currentLanguage = set.value(currentLanguageHandler, "it").toString();
+    const auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
     auto language_index = ui->languageBox->findData(currentLanguage);
     if (language_index > -1)
         ui->languageBox->setCurrentIndex(language_index);

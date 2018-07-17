@@ -117,7 +117,17 @@ void MainWindow::on_actionImport_triggered()
     currentContext = "";
     populateContextTree();
     filteredLanguages = tableManager.getLanguagesName();
+    enableButtons();
     updateLanguageTable();
+}
+
+void MainWindow::enableButtons()
+{
+    ui->actionRemove_Languages->setEnabled(tableManager.getLanguagesName().size() != 0);
+    ui->actionFilters->setEnabled(tableManager.getLanguagesName().size() != 0);
+    ui->actionAdd_Language->setEnabled(true);
+    ui->actionExport->setEnabled(true);
+    ui->actionExport_Languages->setEnabled(true);
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -138,6 +148,8 @@ void MainWindow::on_actionAdd_Language_triggered()
         QMessageBox::information(this, tr("Error"), tr("This language already exists."));
     else {
         filteredLanguages.push_back(name);
+        ui->actionRemove_Languages->setEnabled(true);
+        ui->actionFilters->setEnabled(true);
     }
     updateLanguageTable();
 }
@@ -147,7 +159,17 @@ void MainWindow::on_actionRemove_Languages_triggered()
     languageListDialog dialog(tr("Remove Languages"));
     dialog.populateLanguagesList(tableManager.getLanguagesName());
     if (dialog.exec() == QDialog::Accepted) {
-        tableManager.removeLanguages(dialog.checkedLanguages());
+        std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
+        tableManager.removeLanguages(languagesToRemove);
+        for (auto i : languagesToRemove) {
+            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
+            if (position != filteredLanguages.end())
+                filteredLanguages.erase(position);
+        }
+        if (tableManager.getLanguagesName().size() == 0) {
+            ui->actionRemove_Languages->setEnabled(false);
+            ui->actionFilters->setEnabled(false);
+        }
     }
     updateLanguageTable();
 }
