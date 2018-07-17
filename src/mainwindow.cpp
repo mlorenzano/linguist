@@ -44,6 +44,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->languageTable->setModel(sortFilter);
     ui->languageTable->setItemDelegate(new CustomItemDelegate());
     connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
+
+    QWidget* empty = new QWidget();
+    empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->topToolBar->addWidget(empty);
+
+    lblSearch->setBuddy(searchLine);
+    ui->topToolBar->addWidget(lblSearch);
+    ui->topToolBar->addWidget(searchLine);
 }
 
 
@@ -64,10 +72,10 @@ void MainWindow::translateApp()
 {
     qApp->removeTranslator(translator.get());
     QSettings set;
-    auto currentLanguage = set.value(currentLanguageHandler, "it").toString();
-    lblSearch->setText(tr("  Sear&ch  "));
+    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
     if(translator->load(currentLanguage, languagePathHandler))
         qApp->installTranslator(translator.get());
+    lblSearch->setText(tr("  Sear&ch  "));
 }
 
 void MainWindow::changeEvent(QEvent *e)
