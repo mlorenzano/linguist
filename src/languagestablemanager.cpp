@@ -14,11 +14,13 @@ languageTableModel *languagesTableManager::getTable(const std::string &context,
                                                     const std::vector<std::string> languagesName)
 {
     languagesTable->reset();
-    languagesTable->appendColumn(defaultLanguage.getMessagesByContext(context, page));
+    auto a = defaultLanguage.getMessagesByContext(context, page);
+    languagesTable->appendColumn(a);
     languagesTable->setHorizontalHeaderItem(0, new QStandardItem("Default"));
     int i = 1;
     for (auto lang : languagesName) {
-        languagesTable->appendColumn(languages[lang].getMessagesByContext(context, page));
+        auto b = languages[lang].getMessagesByContext(context, page);
+        languagesTable->appendColumn(b);
         languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang)));
         ++i;
     }

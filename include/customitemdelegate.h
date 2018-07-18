@@ -23,10 +23,6 @@ private slots:
     void keyPressEvent(QKeyEvent *e) {
         if ((e->key() == Qt::Key_Execute || e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)) {
             if ((e->modifiers() & Qt::ControlModifier) == Qt::ControlModifier) {
-//                QKeyEvent keyPress(QEvent::KeyPress, e->key(), Qt::NoModifier);
-//                QKeyEvent keyRelease(QEvent::KeyRelease, e->key(), Qt::NoModifier);
-//                qApp->sendEvent(this, &keyPress);
-//                qApp->sendEvent(this, &keyRelease);
                 insertPlainText(QString("\n"));
             }
             else
