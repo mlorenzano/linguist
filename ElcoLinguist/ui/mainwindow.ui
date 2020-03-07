@@ -96,16 +96,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionImport"/>
-   <addaction name="actionExport"/>
-   <addaction name="actionExport_Languages"/>
-   <addaction name="separator"/>
-   <addaction name="actionAdd_Language"/>
-   <addaction name="actionRemove_Languages"/>
-   <addaction name="separator"/>
-   <addaction name="actionFilters"/>
-   <addaction name="separator"/>
-   <addaction name="actionPreferences"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -120,124 +110,23 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionExport"/>
-    <addaction name="actionImport"/>
-    <addaction name="actionExport_Languages"/>
     <addaction name="separator"/>
-    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionAdd_Language"/>
-    <addaction name="actionRemove_Languages"/>
     <addaction name="separator"/>
-    <addaction name="actionFilters"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
-  <action name="actionExport">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/Gnome-Export.png</normaloff>:/Gnome-Export.png</iconset>
-   </property>
-   <property name="text">
-    <string>Export</string>
-   </property>
-  </action>
-  <action name="actionImport">
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/gnome_import.png</normaloff>
-     <normalon>:/icons/icons/gnome_import.png</normalon>:/gnome_import.png</iconset>
-   </property>
-   <property name="text">
-    <string>Import</string>
-   </property>
-  </action>
-  <action name="actionAdd_Language">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/Gnome-List-Add-64.png</normaloff>
-     <normalon>:/icons/icons/Gnome-List-Add-64.png</normalon>:/Gnome-List-Add-64.png</iconset>
-   </property>
-   <property name="text">
-    <string>Add Language</string>
-   </property>
-  </action>
-  <action name="actionRemove_Languages">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/Gnome-List-Remove-64.png</normaloff>
-     <normalon>:/icons/icons/Gnome-List-Remove-64.png</normalon>:/Gnome-List-Remove-64.png</iconset>
-   </property>
-   <property name="text">
-    <string>Remove Languages</string>
-   </property>
-  </action>
-  <action name="actionFilters">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/Gnome-Logviewer-64.png</normaloff>
-     <normalon>:/icons/icons/Gnome-Logviewer-64.png</normalon>:/Gnome-Logviewer-64.png</iconset>
-   </property>
-   <property name="text">
-    <string>Filters</string>
-   </property>
-  </action>
-  <action name="actionAbout">
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/el.ico</normaloff>
-     <normalon>:/icons/icons/el.png</normalon>:/el.ico</iconset>
-   </property>
-   <property name="text">
-    <string>About</string>
-   </property>
-  </action>
-  <action name="actionPreferences">
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/Gnome-System-Run-64.png</normaloff>:/Gnome-System-Run-64.png</iconset>
-   </property>
-   <property name="text">
-    <string>Preferences</string>
-   </property>
-  </action>
-  <action name="actionExport_Languages">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../icons/icons.qrc">
-     <normaloff>:/gnome_export.png</normaloff>
-     <normalon>:/icons/icons/select_all.png</normalon>:/gnome_export.png</iconset>
-   </property>
-   <property name="text">
-    <string>Export Languages</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

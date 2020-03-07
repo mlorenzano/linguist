@@ -24,39 +24,36 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , supportedType{"Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)"}
-    , tableManager()
-    , sortFilter(new QSortFilterProxyModel())
     , searchLine(new QLineEdit())
-    , translator(new QTranslator)
-    , filteredLanguages()
     , lblSearch(new QLabel())
+    , tableManager()
+    , supportedType{"Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)"}
+    , filteredLanguages()
+    , translator(new QTranslator)
+    , sortFilter(new QSortFilterProxyModel())
 {
     ui->setupUi(this);
 
-    translateApp();
-    qApp->installEventFilter(this);
+    loadSettings();
 
-    QSettings settings;
-    restoreGeometry(settings.value("geometry").toByteArray());
-    restoreState(settings.value("windowState").toByteArray());
+    createActions();
 
-    connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
-    currentContext = "";
-    sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    sortFilter->setSourceModel(
-        tableManager.getTable(currentContext, currentPage, filteredLanguages));
+    //    connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
+    //    currentContext = "";
+    //    sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    //    sortFilter->setSourceModel(
+    //        tableManager.getTable(currentContext, currentPage, filteredLanguages));
     ui->languageTable->setModel(sortFilter);
-    ui->languageTable->setItemDelegate(new CustomItemDelegate());
+    ui->languageTable->setItemDelegate(new CustomItemDelegate);
     connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
 
-    QWidget *empty = new QWidget();
-    empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    ui->topToolBar->addWidget(empty);
+    //    QWidget *empty = new QWidget();
+    //    empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    //    ui->topToolBar->addWidget(empty);
 
-    lblSearch->setBuddy(searchLine);
-    ui->topToolBar->addWidget(lblSearch);
-    ui->topToolBar->addWidget(searchLine);
+    //    lblSearch->setBuddy(searchLine);
+    //    ui->topToolBar->addWidget(lblSearch);
+    //    ui->topToolBar->addWidget(searchLine);
 }
 
 MainWindow::~MainWindow()
@@ -72,16 +69,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
-void MainWindow::translateApp()
-{
-    qApp->removeTranslator(translator.get());
-    QSettings set;
-    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
-    if (translator->load(currentLanguage, languagePathHandler))
-        qApp->installTranslator(translator.get());
-    lblSearch->setText(tr("  Sear&ch  "));
-}
-
 void MainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
@@ -89,43 +76,34 @@ void MainWindow::changeEvent(QEvent *e)
         ui->retranslateUi(this);
 }
 
-void MainWindow::on_actionExport_triggered()
-{
-    QString destFilename = QFileDialog::getSaveFileName(this,
-                                                        tr("Export languages"),
-                                                        QString(),
-                                                        supportedType);
-    if (destFilename.isEmpty())
-        return;
-    FileWriter writer(destFilename.toStdString());
-    writer.setKeys(Language::getKeys());
-    writer.addLanguages(tableManager.getLanguages());
-    writer.save();
-}
-
-void MainWindow::on_actionImport_triggered()
+void MainWindow::importFile()
 {
     QSettings set;
-    std::string destFilename
+    const auto destFilename
         = QFileDialog::getOpenFileName(this,
                                        tr("Import languages"),
                                        set.value("workingDirectory", QString()).toString(),
                                        supportedType)
               .toStdString();
-    if (destFilename.empty())
+
+    if (destFilename.empty()) {
         return;
+    }
+
     tableManager.clear();
 
     QFileInfo info(QString::fromStdString(destFilename));
-    QWidget::setWindowTitle(info.fileName() + " - " + "ElcoLinguist");
+    setWindowTitle(info.fileName() + " - " + "ElcoLinguist");
     set.setValue("workingDirectory", info.path());
     FileReader reader(destFilename);
     auto a = reader.collectKeys();
     Language::setKeys(a);
     std::vector<std::string> intestations = reader.collectIntestations();
-    if (!intestations.empty())
+    if (!intestations.empty()) {
         tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
-    for (int i = 1; i < intestations.size(); i++) {
+    }
+
+    for (size_t i = 1; i < intestations.size(); ++i) {
         tableManager.insertLanguage(intestations[i],
                                     Language(intestations[i], reader.collectColumnAt(i)));
     }
@@ -137,93 +115,108 @@ void MainWindow::on_actionImport_triggered()
     updateLanguageTable();
 }
 
-void MainWindow::enableButtons()
+void MainWindow::translateApp()
 {
-    ui->actionRemove_Languages->setEnabled(tableManager.getLanguagesName().size() != 0);
-    ui->actionFilters->setEnabled(tableManager.getLanguagesName().size() != 0);
-    ui->actionAdd_Language->setEnabled(true);
-    ui->actionExport->setEnabled(true);
-    ui->actionExport_Languages->setEnabled(true);
+    //    qApp->removeTranslator(translator.get());
+    //    QSettings set;
+    //    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
+    //    if (translator->load(currentLanguage, languagePathHandler))
+    //        qApp->installTranslator(translator.get());
+    //    lblSearch->setText(tr("  Sear&ch  "));
 }
 
-void MainWindow::on_actionPreferences_triggered()
-{
-    settingsDialog *d = new settingsDialog();
-    d->show();
-    d->exec();
-    translateApp();
-}
+//void MainWindow::on_actionExport_triggered()
+//{
+//    QString destFilename = QFileDialog::getSaveFileName(this,
+//                                                        tr("Export languages"),
+//                                                        QString(),
+//                                                        supportedType);
+//    if (destFilename.isEmpty())
+//        return;
+//    FileWriter writer(destFilename.toStdString());
+//    writer.setKeys(Language::getKeys());
+//    writer.addLanguages(tableManager.getLanguages());
+//    writer.save();
+//}
 
-void MainWindow::on_actionAdd_Language_triggered()
-{
-    std::string name = QInputDialog::getText(this, tr("New language"), tr("Insert language name:"))
-                           .toStdString();
-    if (name.empty())
-        return;
-    if (!tableManager.insertLanguage(name, Language(name)))
-        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
-    else {
-        filteredLanguages.push_back(name);
-        ui->actionRemove_Languages->setEnabled(true);
-        ui->actionFilters->setEnabled(true);
-    }
-    updateLanguageTable();
-}
+//void MainWindow::on_actionPreferences_triggered()
+//{
+//    settingsDialog *d = new settingsDialog();
+//    d->show();
+//    d->exec();
+//    translateApp();
+//}
 
-void MainWindow::on_actionRemove_Languages_triggered()
-{
-    languageListDialog dialog(tr("Remove Languages"));
-    dialog.populateLanguagesList(tableManager.getLanguagesName());
-    if (dialog.exec() == QDialog::Accepted) {
-        std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
-        tableManager.removeLanguages(languagesToRemove);
-        for (auto i : languagesToRemove) {
-            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
-            if (position != filteredLanguages.end())
-                filteredLanguages.erase(position);
-        }
-        if (tableManager.getLanguagesName().size() == 0) {
-            ui->actionRemove_Languages->setEnabled(false);
-            ui->actionFilters->setEnabled(false);
-        }
-    }
-    updateLanguageTable();
-}
+//void MainWindow::on_actionAdd_Language_triggered()
+//{
+//    std::string name = QInputDialog::getText(this, tr("New language"), tr("Insert language name:"))
+//                           .toStdString();
+//    if (name.empty())
+//        return;
+//    if (!tableManager.insertLanguage(name, Language(name)))
+//        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
+//    else {
+//        filteredLanguages.push_back(name);
+//        ui->actionRemove_Languages->setEnabled(true);
+//        ui->actionFilters->setEnabled(true);
+//    }
+//    updateLanguageTable();
+//}
 
-void MainWindow::on_actionFilters_triggered()
-{
-    languageListDialog dialog(tr("Set Filters"));
-    dialog.populateLanguagesList(tableManager.getLanguagesName());
-    dialog.setSelectedLanguages(filteredLanguages);
-    if (dialog.exec() == QDialog::Accepted) {
-        filteredLanguages = dialog.checkedLanguages();
-    }
-    updateLanguageTable();
-}
+//void MainWindow::on_actionRemove_Languages_triggered()
+//{
+//    languageListDialog dialog(tr("Remove Languages"));
+//    dialog.populateLanguagesList(tableManager.getLanguagesName());
+//    if (dialog.exec() == QDialog::Accepted) {
+//        std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
+//        tableManager.removeLanguages(languagesToRemove);
+//        for (auto i : languagesToRemove) {
+//            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
+//            if (position != filteredLanguages.end())
+//                filteredLanguages.erase(position);
+//        }
+//        if (tableManager.getLanguagesName().size() == 0) {
+//            ui->actionRemove_Languages->setEnabled(false);
+//            ui->actionFilters->setEnabled(false);
+//        }
+//    }
+//    updateLanguageTable();
+//}
 
-void MainWindow::on_actionAbout_triggered()
-{
-    AboutDialog *d{new AboutDialog(this)};
-    d->exec();
-}
+//void MainWindow::on_actionFilters_triggered()
+//{
+//    languageListDialog dialog(tr("Set Filters"));
+//    dialog.populateLanguagesList(tableManager.getLanguagesName());
+//    dialog.setSelectedLanguages(filteredLanguages);
+//    if (dialog.exec() == QDialog::Accepted) {
+//        filteredLanguages = dialog.checkedLanguages();
+//    }
+//    updateLanguageTable();
+//}
 
-void MainWindow::on_actionExport_Languages_triggered()
-{
-    languageListDialog dialog(tr("Export Languages"));
-    dialog.populateLanguagesList(tableManager.getLanguagesName());
-    if (dialog.exec() == QDialog::Accepted) {
-        QString destFilename = QFileDialog::getSaveFileName(this,
-                                                            tr("Import languages"),
-                                                            QString(),
-                                                            supportedType);
-        if (destFilename.isEmpty())
-            return;
-        FileWriter writer(destFilename.toStdString());
-        writer.setKeys(Language::getKeys());
-        writer.addLanguages(tableManager.getLanguages(dialog.checkedLanguages()));
-        writer.save();
-    }
-}
+//void MainWindow::on_actionAbout_triggered()
+//{
+//    AboutDialog *d{new AboutDialog(this)};
+//    d->exec();
+//}
+
+//void MainWindow::on_actionExport_Languages_triggered()
+//{
+//    languageListDialog dialog(tr("Export Languages"));
+//    dialog.populateLanguagesList(tableManager.getLanguagesName());
+//    if (dialog.exec() == QDialog::Accepted) {
+//        QString destFilename = QFileDialog::getSaveFileName(this,
+//                                                            tr("Import languages"),
+//                                                            QString(),
+//                                                            supportedType);
+//        if (destFilename.isEmpty())
+//            return;
+//        FileWriter writer(destFilename.toStdString());
+//        writer.setKeys(Language::getKeys());
+//        writer.addLanguages(tableManager.getLanguages(dialog.checkedLanguages()));
+//        writer.save();
+//    }
+//}
 
 void MainWindow::populateContextTree()
 {
@@ -275,25 +268,25 @@ std::map<std::string, std::set<std::string>> MainWindow::collectContexts()
     return contexts;
 }
 
-void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
-{
-    if (item->childCount() == 0) {
-        if (item->text(column) == "DynamicStrings" || item->text(column) == "EventsHandler") {
-            currentContext = "$$" + item->text(column).toStdString() + "$$";
-            currentPage = "";
-        } else {
-            currentPage = item->text(column).toStdString();
-            currentContext = item->parent()->text(column).toStdString();
-        }
-    } else {
-        currentPage = "";
-        if (item->parent())
-            currentContext = item->text(column).toStdString();
-        else
-            currentContext = "";
-    }
-    updateLanguageTable();
-}
+//void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
+//{
+//    if (item->childCount() == 0) {
+//        if (item->text(column) == "DynamicStrings" || item->text(column) == "EventsHandler") {
+//            currentContext = "$$" + item->text(column).toStdString() + "$$";
+//            currentPage = "";
+//        } else {
+//            currentPage = item->text(column).toStdString();
+//            currentContext = item->parent()->text(column).toStdString();
+//        }
+//    } else {
+//        currentPage = "";
+//        if (item->parent())
+//            currentContext = item->text(column).toStdString();
+//        else
+//            currentContext = "";
+//    }
+//    updateLanguageTable();
+//}
 
 void MainWindow::searchString(const QString &s)
 {
@@ -313,4 +306,32 @@ void MainWindow::resizeTable()
 {
     ui->languageTable->resizeColumnsToContents();
     ui->languageTable->resizeRowsToContents();
+}
+
+void MainWindow::loadSettings() noexcept
+{
+    QSettings settings;
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
+}
+
+void MainWindow::createActions() noexcept
+{
+    auto actImport = new QAction(this);
+    actImport->setText(tr("Import File..."));
+    actImport->setIcon(QIcon(":/gnome_import.png"));
+    connect(actImport, &QAction::triggered, this, &MainWindow::importFile);
+
+    ui->menuFile->addAction(actImport);
+    ui->topToolBar->addAction(actImport);
+}
+
+void MainWindow::enableButtons()
+{
+    // FIXME: implement this feature correctly
+    //    ui->actionRemove_Languages->setEnabled(tableManager.getLanguagesName().size() != 0);
+    //    ui->actionFilters->setEnabled(tableManager.getLanguagesName().size() != 0);
+    //    ui->actionAdd_Language->setEnabled(true);
+    //    ui->actionExport->setEnabled(true);
+    //    ui->actionExport_Languages->setEnabled(true);
 }
