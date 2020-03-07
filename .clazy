@@ -1,0 +1,2 @@
+#clazy checks specification
+CHECKS level2,no-qenums,no-qgetenv
