@@ -127,6 +127,39 @@ void MainWindow::exportFile()
     FileWriter().save(destFilename.toStdString(), tableManager.getLanguages());
 }
 
+void MainWindow::addLanguage()
+{
+    std::string name = QInputDialog::getText(this, tr("New language"),
+                                             tr("Insert language name:")).toStdString();
+    if (name.empty())
+        return;
+
+    if (!tableManager.insertLanguage(name, Language(name))) {
+        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
+    } else {
+        filteredLanguages.push_back(name);
+    }
+
+    updateLanguageTable();
+}
+
+void MainWindow::removelanguage()
+{
+    languageListDialog dialog(tr("Remove Languages"));
+    dialog.populateLanguagesList(tableManager.getLanguagesName());
+
+    if (dialog.exec() == QDialog::Accepted) {
+        std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
+        tableManager.removeLanguages(languagesToRemove);
+        for (auto i : languagesToRemove) {
+            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
+            if (position != filteredLanguages.end())
+                filteredLanguages.erase(position);
+        }
+        updateLanguageTable();
+    }
+}
+
 void MainWindow::openAbout()
 {
     AboutDialog().exec();
@@ -137,42 +170,6 @@ void MainWindow::openSettings()
     settingsDialog().exec();
     translateApp();
 }
-
-//void MainWindow::on_actionAdd_Language_triggered()
-//{
-//    std::string name = QInputDialog::getText(this, tr("New language"), tr("Insert language name:"))
-//                           .toStdString();
-//    if (name.empty())
-//        return;
-//    if (!tableManager.insertLanguage(name, Language(name)))
-//        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
-//    else {
-//        filteredLanguages.push_back(name);
-//        ui->actionRemove_Languages->setEnabled(true);
-//        ui->actionFilters->setEnabled(true);
-//    }
-//    updateLanguageTable();
-//}
-
-//void MainWindow::on_actionRemove_Languages_triggered()
-//{
-//    languageListDialog dialog(tr("Remove Languages"));
-//    dialog.populateLanguagesList(tableManager.getLanguagesName());
-//    if (dialog.exec() == QDialog::Accepted) {
-//        std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
-//        tableManager.removeLanguages(languagesToRemove);
-//        for (auto i : languagesToRemove) {
-//            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
-//            if (position != filteredLanguages.end())
-//                filteredLanguages.erase(position);
-//        }
-//        if (tableManager.getLanguagesName().size() == 0) {
-//            ui->actionRemove_Languages->setEnabled(false);
-//            ui->actionFilters->setEnabled(false);
-//        }
-//    }
-//    updateLanguageTable();
-//}
 
 //void MainWindow::on_actionFilters_triggered()
 //{
@@ -238,6 +235,7 @@ void MainWindow::populateContextTree()
     ui->contextTree->expandItem(root);
     ui->languageTable->resizeColumnsToContents();
 }
+
 std::map<std::string, std::set<std::string>> MainWindow::collectContexts()
 {
     std::map<std::string, std::set<std::string>> contexts;
@@ -312,6 +310,26 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::exportFile);
         ui->topToolBar->addAction(act);
         ui->menuFile->addAction(act);
+    }
+
+    ui->topToolBar->addSeparator();
+
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Add Language"));
+        act->setIcon(QIcon(":/gnome_add.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::addLanguage);
+        ui->topToolBar->addAction(act);
+        ui->menuEdit->addAction(act);
+    }
+
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Remove Language"));
+        act->setIcon(QIcon(":/gnome_remove.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::removelanguage);
+        ui->topToolBar->addAction(act);
+        ui->menuEdit->addAction(act);
     }
 
     {

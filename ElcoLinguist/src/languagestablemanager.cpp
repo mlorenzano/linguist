@@ -75,7 +75,7 @@ void languagesTableManager::removeLanguages(const std::vector<std::string> &lang
 }
 bool languagesTableManager::insertLanguage(const std::string &languageName, const Language &language)
 {
-    if (/*findKeyString(languageName) < 0 || */languageName == "Default") {
+    if (findKeyString(languageName) != -1 || languageName == "Default") {
         return false;
     }
     languages.push_back(std::make_pair(languageName, language));
@@ -92,10 +92,15 @@ void languagesTableManager::updateItemData(QStandardItem *changedItem)
     emit dataChanged();
 }
 
-int languagesTableManager::findKeyString(const std::string &str)
+int languagesTableManager:: findKeyString(const std::string &str)
 {
     auto it = std::find_if(languages.begin(), languages.end(),
                            [&](auto &item){return item.first == str;});
+
+    if (it == languages.end()) {
+        return -1;
+    }
+
     return std::distance(languages.begin(), it);
 }
 
