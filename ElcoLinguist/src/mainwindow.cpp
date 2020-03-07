@@ -100,7 +100,7 @@ void MainWindow::importFile()
     Language::setKeys(a);
     std::vector<std::string> intestations = reader.collectIntestations();
     if (!intestations.empty()) {
-        tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
+        tableManager.setDefault(Language(intestations[1], reader.collectColumnAt(1)));
     }
 
     for (size_t i = 1; i < intestations.size(); ++i) {
@@ -129,28 +129,6 @@ void MainWindow::translateApp()
     //        qApp->installTranslator(translator.get());
     //    lblSearch->setText(tr("  Sear&ch  "));
 }
-
-//void MainWindow::on_actionExport_triggered()
-//{
-//    QString destFilename = QFileDialog::getSaveFileName(this,
-//                                                        tr("Export languages"),
-//                                                        QString(),
-//                                                        supportedType);
-//    if (destFilename.isEmpty())
-//        return;
-//    FileWriter writer(destFilename.toStdString());
-//    writer.setKeys(Language::getKeys());
-//    writer.addLanguages(tableManager.getLanguages());
-//    writer.save();
-//}
-
-//void MainWindow::on_actionPreferences_triggered()
-//{
-//    settingsDialog *d = new settingsDialog();
-//    d->show();
-//    d->exec();
-//    translateApp();
-//}
 
 //void MainWindow::on_actionAdd_Language_triggered()
 //{

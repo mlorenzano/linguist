@@ -34,8 +34,10 @@ private slots:
     void updateItemData(QStandardItem *changedItem);
 
 private:
+    int findKeyString(const std::string &str);
+
     Language defaultLanguage;
-    std::unordered_map<std::string, Language> languages;
+    std::vector<std::pair<std::string, Language>> languages;
     languageTableModel *languagesTable;
 };
 
