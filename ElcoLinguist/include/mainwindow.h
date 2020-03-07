@@ -42,20 +42,10 @@ protected:
 private slots:
     void importFile();
     void exportFile();
+    void addLanguage();
+    void removelanguage();
     void openAbout();
     void openSettings();
-
-    //    void on_actionPreferences_triggered();
-
-    //    void on_actionAdd_Language_triggered();
-
-    //    void on_actionRemove_Languages_triggered();
-
-    //    void on_actionFilters_triggered();
-
-    //    void on_actionAbout_triggered();
-
-    //    void on_contextTree_itemClicked(QTreeWidgetItem *item, int column);
 
 private:
     void populateContextTree();

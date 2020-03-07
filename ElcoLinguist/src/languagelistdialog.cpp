@@ -7,6 +7,7 @@ languageListDialog::languageListDialog(const QString &title, QWidget *parent)
 {
     ui->setupUi(this);
     QDialog::setWindowTitle(title);
+    setWindowIcon(QIcon(":/el.ico"));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
