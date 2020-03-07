@@ -31,8 +31,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override;
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -40,25 +40,23 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private slots:
-    // TODO: Change this on_functions, pls
+    void importFile();
 
-    void on_actionExport_triggered();
+    //    void on_actionExport_triggered();
 
-    void on_actionImport_triggered();
+    //    void on_actionPreferences_triggered();
 
-    void on_actionPreferences_triggered();
+    //    void on_actionAdd_Language_triggered();
 
-    void on_actionAdd_Language_triggered();
+    //    void on_actionRemove_Languages_triggered();
 
-    void on_actionRemove_Languages_triggered();
+    //    void on_actionFilters_triggered();
 
-    void on_actionFilters_triggered();
+    //    void on_actionAbout_triggered();
 
-    void on_actionAbout_triggered();
+    //    void on_contextTree_itemClicked(QTreeWidgetItem *item, int column);
 
-    void on_contextTree_itemClicked(QTreeWidgetItem *item, int column);
-
-    void on_actionExport_Languages_triggered();
+    //    void on_actionExport_Languages_triggered();
 
     void resizeTable();
 
@@ -69,7 +67,6 @@ private:
     std::map<std::string, std::set<std::string>> collectContexts();
     void updateLanguageTable();
     void searchString(const QString &s);
-    void enableButtons();
 
     Ui::MainWindow *ui;
     QLineEdit *searchLine;
@@ -81,6 +78,10 @@ private:
     std::vector<std::string> filteredLanguages;
     std::unique_ptr<QTranslator> translator;
     QSortFilterProxyModel *sortFilter;
+
+    void loadSettings() noexcept;
+    void createActions() noexcept;
+    void enableButtons();
 };
 
 #endif // MAINWINDOW_H
