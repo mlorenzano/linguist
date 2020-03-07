@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>el.ico</file>
+        <file>el.png</file>
+        <file>Gnome-Edit-Clear-64.png</file>
+        <file>gnome_export.png</file>
+        <file>Gnome-Export.png</file>
+        <file>gnome_import.png</file>
+        <file>Gnome-List-Add-64.png</file>
+        <file>Gnome-List-Remove-64.png</file>
+        <file>Gnome-Logviewer-64.png</file>
+        <file>Gnome-Send-64.png</file>
+        <file>Gnome-System-Run-64.png</file>
+        <file>select_all.png</file>
+        <file>unselect_all.png</file>
+    </qresource>
+</RCC>
