@@ -47,7 +47,7 @@
       <string notr="true"/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources.qrc">:/icons/icons/el.png</pixmap>
+      <pixmap>:/icons/icons/el.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -121,8 +121,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

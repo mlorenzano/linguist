@@ -1,32 +1,36 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "aboutdialog.h"
-#include "settingsdialog.h"
+#include "customitemdelegate.h"
 #include "filereader.h"
 #include "filewriter.h"
 #include "language.h"
 #include "languagelistdialog.h"
-#include "customitemdelegate.h"
+#include "settingsdialog.h"
 
-#include <QInputDialog>
-#include <QFileInfo>
+#include <QApplication>
 #include <QFileDialog>
+#include <QFileInfo>
+#include <QInputDialog>
+#include <QLabel>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QSettings>
-#include <QApplication>
+#include <QSortFilterProxyModel>
+#include <QTranslator>
+#include <QTreeWidget>
 
-#include <iostream>
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    supportedType{"Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)"},
-    tableManager(),
-    sortFilter(new QSortFilterProxyModel()),
-    searchLine(new QLineEdit()),
-    translator(new QTranslator),
-    filteredLanguages(),
-    lblSearch(new QLabel())
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , supportedType{"Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)"}
+    , tableManager()
+    , sortFilter(new QSortFilterProxyModel())
+    , searchLine(new QLineEdit())
+    , translator(new QTranslator)
+    , filteredLanguages()
+    , lblSearch(new QLabel())
 {
     ui->setupUi(this);
 
@@ -40,12 +44,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     currentContext = "";
     sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    sortFilter->setSourceModel(tableManager.getTable(currentContext, currentPage, filteredLanguages));
+    sortFilter->setSourceModel(
+        tableManager.getTable(currentContext, currentPage, filteredLanguages));
     ui->languageTable->setModel(sortFilter);
     ui->languageTable->setItemDelegate(new CustomItemDelegate());
     connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
 
-    QWidget* empty = new QWidget();
+    QWidget *empty = new QWidget();
     empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     ui->topToolBar->addWidget(empty);
 
@@ -53,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->topToolBar->addWidget(lblSearch);
     ui->topToolBar->addWidget(searchLine);
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -73,7 +77,7 @@ void MainWindow::translateApp()
     qApp->removeTranslator(translator.get());
     QSettings set;
     auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
-    if(translator->load(currentLanguage, languagePathHandler))
+    if (translator->load(currentLanguage, languagePathHandler))
         qApp->installTranslator(translator.get());
     lblSearch->setText(tr("  Sear&ch  "));
 }
@@ -87,8 +91,10 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::on_actionExport_triggered()
 {
-    QString destFilename = QFileDialog::getSaveFileName(this, tr("Export languages"),
-                                                        QString(), supportedType);
+    QString destFilename = QFileDialog::getSaveFileName(this,
+                                                        tr("Export languages"),
+                                                        QString(),
+                                                        supportedType);
     if (destFilename.isEmpty())
         return;
     FileWriter writer(destFilename.toStdString());
@@ -100,10 +106,12 @@ void MainWindow::on_actionExport_triggered()
 void MainWindow::on_actionImport_triggered()
 {
     QSettings set;
-    std::string destFilename = QFileDialog::getOpenFileName(this, tr("Import languages"),
-                                                            set.value("workingDirectory",
-                                                                      QString()).toString(),
-                                                            supportedType).toStdString();
+    std::string destFilename
+        = QFileDialog::getOpenFileName(this,
+                                       tr("Import languages"),
+                                       set.value("workingDirectory", QString()).toString(),
+                                       supportedType)
+              .toStdString();
     if (destFilename.empty())
         return;
     tableManager.clear();
@@ -119,7 +127,7 @@ void MainWindow::on_actionImport_triggered()
         tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
     for (int i = 1; i < intestations.size(); i++) {
         tableManager.insertLanguage(intestations[i],
-                                    Language(intestations[i], reader.collectColumnAt(i+1)));
+                                    Language(intestations[i], reader.collectColumnAt(i + 1)));
     }
 
     currentContext = "";
@@ -148,8 +156,8 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionAdd_Language_triggered()
 {
-    std::string name = QInputDialog::getText(this, tr("New language"),
-                                             tr("Insert language name:")).toStdString();
+    std::string name = QInputDialog::getText(this, tr("New language"), tr("Insert language name:"))
+                           .toStdString();
     if (name.empty())
         return;
     if (!tableManager.insertLanguage(name, Language(name)))
@@ -204,8 +212,10 @@ void MainWindow::on_actionExport_Languages_triggered()
     languageListDialog dialog(tr("Export Languages"));
     dialog.populateLanguagesList(tableManager.getLanguagesName());
     if (dialog.exec() == QDialog::Accepted) {
-        QString destFilename = QFileDialog::getSaveFileName(this, tr("Import languages"),
-                                                            QString(),supportedType);
+        QString destFilename = QFileDialog::getSaveFileName(this,
+                                                            tr("Import languages"),
+                                                            QString(),
+                                                            supportedType);
         if (destFilename.isEmpty())
             return;
         FileWriter writer(destFilename.toStdString());
@@ -218,7 +228,7 @@ void MainWindow::on_actionExport_Languages_triggered()
 void MainWindow::populateContextTree()
 {
     ui->contextTree->clear();
-    QList<QTreeWidgetItem*> contexts;
+    QList<QTreeWidgetItem *> contexts;
     bool normalContext;
     for (auto i : collectContexts()) {
         normalContext = true;
@@ -226,15 +236,13 @@ void MainWindow::populateContextTree()
         if (i.first == "$$DynamicStrings$$") {
             childContext->setText(0, "DynamicStrings");
             normalContext = false;
-        }
-        else if (i.first == "$$EventsHandler$$") {
+        } else if (i.first == "$$EventsHandler$$") {
             childContext->setText(0, "EventsHandler");
             normalContext = false;
-        }
-        else
+        } else
             childContext->setText(0, QString::fromStdString(i.first));
         if (normalContext) {
-            QList<QTreeWidgetItem*> pages;
+            QList<QTreeWidgetItem *> pages;
             for (auto j : i.second) {
                 QTreeWidgetItem *childPage = new QTreeWidgetItem();
                 childPage->setText(0, QString::fromStdString(j));
@@ -258,8 +266,7 @@ std::map<std::string, std::set<std::string>> MainWindow::collectContexts()
     for (auto i : Language::getKeys()) {
         std::string tmpContext = i.getContext();
         if (contexts.find(tmpContext) == contexts.end())
-            contexts.insert(std::make_pair(tmpContext,
-                                           std::set<std::string> {i.getPageOfContext()}));
+            contexts.insert(std::make_pair(tmpContext, std::set<std::string>{i.getPageOfContext()}));
         else {
             if (contexts.at(tmpContext).find(i.getPageOfContext()) == contexts.at(tmpContext).end())
                 contexts.at(tmpContext).insert(i.getPageOfContext());
@@ -296,7 +303,8 @@ void MainWindow::searchString(const QString &s)
 
 void MainWindow::updateLanguageTable()
 {
-    sortFilter->setSourceModel(tableManager.getTable(currentContext, currentPage, filteredLanguages));
+    sortFilter->setSourceModel(
+        tableManager.getTable(currentContext, currentPage, filteredLanguages));
     ui->languageTable->update();
     resizeTable();
 }

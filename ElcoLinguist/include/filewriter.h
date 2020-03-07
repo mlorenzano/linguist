@@ -3,9 +3,6 @@
 
 #include "language.h"
 
-#include <csv.h>
-#include <xlnt/xlnt.hpp>
-
 class FileWriter
 {
 public:
@@ -13,9 +10,11 @@ public:
     void setKeys(std::vector<Key> keys);
     void addLanguages(const std::vector<Language> &languages);
     void save();
+
 private:
-    csv *csvWriter;
-    xlnt::workbook *xlsxWriter;
+    // FIXME
+    //    csv *csvWriter;
+    //    xlnt::workbook *xlsxWriter;
     std::string filename;
 
     int languagesCount;

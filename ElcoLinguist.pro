@@ -9,6 +9,8 @@ TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
+include($$PWD/libs-3rdparty/qtcsv/qtcsv.pri)
+
 INCLUDEPATH += \
     $$PWD/ElcoLinguist/src \
     $$PWD/ElcoLinguist/include \
