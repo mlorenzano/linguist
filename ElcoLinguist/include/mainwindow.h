@@ -41,6 +41,7 @@ protected:
 
 private slots:
     void importFile();
+    void openAbout();
 
     //    void on_actionExport_triggered();
 
