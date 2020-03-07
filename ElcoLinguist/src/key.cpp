@@ -21,7 +21,7 @@ Key::Key(std::string keyString)
     this->fromString(keyString);
 }
 
-std::string Key::toString()
+std::string Key::toString() const
 {
 
     std::string keyString = "";

@@ -1,74 +1,33 @@
 #include "filewriter.h"
 
-FileWriter::FileWriter(std::string filename)
-{
-    infKeyText = "Please, do not edit the \"Key\" column. It's used to identify the message.";
-    languagesCount = 0;
-    this->filename = filename;
-    //    if (filename.find("csv") != std::string::npos) {
-    //        csvWriter = new csv();
-    //        csvWriter->addItem(0, 0, QString::fromStdString(infKeyText));
-    //        xlsxWriter = nullptr;
-    //    }
-    //    else if (filename.find("xlsx") != std::string::npos ||
-    //             filename.find("xlx") != std::string::npos){
-    //        xlsxWriter = new xlnt::workbook();
-    //        xlnt::worksheet ws = xlsxWriter->active_sheet();
-    //        ws.cell("A1").value(infKeyText);
-    //        csvWriter = nullptr;
-    //    }
-}
+#include "qtcsv/writer.h"
+#include "qtcsv/stringdata.h"
 
-void FileWriter::setKeys(std::vector<Key> keys)
+void FileWriter::save(const std::string &filename,
+                      const std::vector<Language> &languages)
 {
-    //    if (csvWriter) {
-    //        csvWriter->addItem(1, 0, "Key");
-    //        int i = 2;
-    //        for (auto key : keys) {
-    //            csvWriter->addItem(i, 0, QString::fromStdString(key.toString()));
-    //            i++;
-    //        }
-    //    } else if (xlsxWriter) {
-    //        xlnt::worksheet ws = xlsxWriter->active_sheet();
-    //        ws.rows(false)[1][0].value("Key");
-    //        int i = 2;
-    //        for (auto key : keys) {
-    //            ws.rows(false)[i][0].value(key.toString());
-    //            i++;
-    //        }
-    //    }
-}
+    QStringList strList;
+    QtCSV::StringData strData;
 
-void FileWriter::addLanguages(const std::vector<Language> &languages)
-{
-    //    if (csvWriter) {
-    //        for (auto lang : languages) {
-    //            csvWriter->addItem(1, languagesCount + 1, QString::fromStdString(lang.getName()));
-    //            int i = 2;
-    //            for (auto message : lang.getMessages()) {
-    //                csvWriter->addItem(i, languagesCount + 1, QString::fromStdString(message));
-    //                i++;
-    //            }
-    //            ++languagesCount;
-    //        }
-    //    } else if (xlsxWriter) {
-    //        for (auto lang : languages) {
-    //            xlnt::worksheet ws = xlsxWriter->active_sheet();
-    //            ws.rows(false)[1][languagesCount + 1].value(lang.getName());
-    //            int i = 2;
-    //            for (auto message : lang.getMessages()) {
-    //                ws.rows(false)[i][languagesCount + 1].value(message);
-    //                i++;
-    //            }
-    //            ++languagesCount;
-    //        }
-    //    }
-}
+    strList << "Please, do not edit the \"Key\" column. It's used to identify the message.";
+    strData.addRow(strList);
 
-void FileWriter::save()
-{
-    //    if (csvWriter)
-    //        csvWriter->save(QString::fromStdString(filename));
-    //    else if (xlsxWriter)
-    //        xlsxWriter->save(filename);
+    strList.clear();
+
+    strList << "Key";
+    for (auto language : languages) {
+        strList << QString::fromStdString(language.getName());
+    }
+    strData.addRow(strList);
+
+    strList.clear();
+    for (auto i = 0; i < languages.front().getMessages().size(); ++i) {
+        strList << QString::fromStdString(languages.front().getKeys().at(i).toString());
+        for (auto lang : languages) {
+            strList << lang.getMessages().at(i).c_str();
+        }
+        strData.addRow(strList);
+        strList.clear();
+    }
+    QtCSV::Writer::write(QString::fromStdString(filename), strData, ";");
 }
