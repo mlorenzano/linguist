@@ -40,6 +40,8 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private slots:
+    // TODO: Change this on_functions, pls
+
     void on_actionExport_triggered();
 
     void on_actionImport_triggered();

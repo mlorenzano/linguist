@@ -1,18 +1,18 @@
 #include "filereader.h"
 
+#include "qtcsv/reader.h"
+
+#include <QFile>
+#include <QtDebug>
+
 #include <algorithm>
 
 FileReader::FileReader(std::string filename)
 {
-    //    if (filename.find("csv") != std::string::npos) {
-    //        csvReader = new csv(';', QString::fromStdString(filename));
-    //        xlsxReader = nullptr;
-    //    }
-    //    else {
-    //        xlsxReader = new xlnt::workbook();
-    //        xlsxReader->load(filename);
-    //        csvReader = nullptr;
-    //    }
+    if (filename.find("csv") != std::string::npos) {
+        auto list = QtCSV::Reader::readToList(filename.data(), ";", "\"");
+        qDebug() << list;
+    }
 }
 
 std::vector<Key> FileReader::collectKeys()

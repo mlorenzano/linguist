@@ -1,5 +1,4 @@
-#ifndef INCLUDECSVREADER_H
-#define INCLUDECSVREADER_H
+#pragma once
 
 #include "key.h"
 
@@ -8,8 +7,7 @@
 class FileReader
 {
 public:
-    FileReader();
-    FileReader(std::string filename);
+    explicit FileReader(std::string filename);
 
     std::vector<Key> collectKeys();
     std::vector<std::string> collectColumnAt(std::size_t i);
@@ -20,5 +18,3 @@ private:
     //    csv *csvReader;
     //    xlnt::workbook *xlsxReader;
 };
-
-#endif // INCLUDECSVREADER_H
