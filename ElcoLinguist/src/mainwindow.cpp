@@ -115,6 +115,11 @@ void MainWindow::importFile()
     updateLanguageTable();
 }
 
+void MainWindow::openAbout()
+{
+    AboutDialog().exec();
+}
+
 void MainWindow::translateApp()
 {
     //    qApp->removeTranslator(translator.get());
@@ -192,12 +197,6 @@ void MainWindow::translateApp()
 //        filteredLanguages = dialog.checkedLanguages();
 //    }
 //    updateLanguageTable();
-//}
-
-//void MainWindow::on_actionAbout_triggered()
-//{
-//    AboutDialog *d{new AboutDialog(this)};
-//    d->exec();
 //}
 
 //void MainWindow::on_actionExport_Languages_triggered()
@@ -324,6 +323,11 @@ void MainWindow::createActions() noexcept
 
     ui->menuFile->addAction(actImport);
     ui->topToolBar->addAction(actImport);
+
+    auto actAbout = new QAction(this);
+    actAbout->setText(tr("About..."));
+    connect(actAbout, &QAction::triggered, this, &MainWindow::openAbout);
+    ui->menuHelp->addAction(actAbout);
 }
 
 void MainWindow::enableButtons()
