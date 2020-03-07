@@ -57,10 +57,6 @@ private slots:
 
     //    void on_contextTree_itemClicked(QTreeWidgetItem *item, int column);
 
-    void resizeTable();
-
-    void translateApp();
-
 private:
     void populateContextTree();
     std::map<std::string, std::set<std::string>> collectContexts();
@@ -81,6 +77,8 @@ private:
     void loadSettings() noexcept;
     void createActions() noexcept;
     void enableButtons();
+    void resizeTable();
+    void translateApp();
 };
 
 #endif // MAINWINDOW_H
