@@ -124,8 +124,7 @@ void MainWindow::exportFile()
     if (destFilename.isEmpty())
         return;
 
-    FileWriter().save(destFilename.toStdString(),
-                      tableManager.getLanguages());
+    FileWriter().save(destFilename.toStdString(), tableManager.getLanguages());
 }
 
 void MainWindow::openAbout()
@@ -137,16 +136,6 @@ void MainWindow::openSettings()
 {
     settingsDialog().exec();
     translateApp();
-}
-
-void MainWindow::translateApp()
-{
-    qApp->removeTranslator(translator.get());
-    QSettings set;
-    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
-    auto qmToLoad = QString(":/elcolinguist_%1.qm").arg(currentLanguage);
-    if (translator->load(qmToLoad))
-        qApp->installTranslator(translator.get());
 }
 
 //void MainWindow::on_actionAdd_Language_triggered()
@@ -298,12 +287,6 @@ void MainWindow::updateLanguageTable()
     resizeTable();
 }
 
-void MainWindow::resizeTable()
-{
-    ui->languageTable->resizeColumnsToContents();
-    ui->languageTable->resizeRowsToContents();
-}
-
 void MainWindow::loadSettings() noexcept
 {
     QSettings settings;
@@ -354,4 +337,21 @@ void MainWindow::enableButtons()
     //    ui->actionAdd_Language->setEnabled(true);
     //    ui->actionExport->setEnabled(true);
     //    ui->actionExport_Languages->setEnabled(true);
+}
+
+void MainWindow::resizeTable()
+{
+    ui->languageTable->resizeColumnsToContents();
+    ui->languageTable->resizeRowsToContents();
+}
+
+void MainWindow::translateApp()
+{
+    qApp->removeTranslator(translator.get());
+    QSettings set;
+    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
+    auto qmToLoad = QString(":/elcolinguist_%1.qm").arg(currentLanguage);
+    if (translator->load(qmToLoad)) {
+        qApp->installTranslator(translator.get());
+    }
 }
