@@ -4,8 +4,8 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../ui/aboutdialog.ui" line="14"/>
-        <location filename="../src/aboutdialog.cpp" line="16"/>
+        <location filename="../ElcoLinguist/ui/aboutdialog.ui" line="14"/>
+        <location filename="../ElcoLinguist/src/aboutdialog.cpp" line="16"/>
         <source>About</source>
         <translation></translation>
     </message>
@@ -13,135 +13,84 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../ui/mainwindow.ui" line="20"/>
+        <location filename="../ElcoLinguist/ui/mainwindow.ui" line="20"/>
         <source>ElcoLinguist</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="58"/>
+        <location filename="../ElcoLinguist/ui/mainwindow.ui" line="58"/>
         <source>Contexts</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="88"/>
+        <location filename="../ElcoLinguist/ui/mainwindow.ui" line="88"/>
         <source>toolBar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="108"/>
+        <location filename="../ElcoLinguist/ui/mainwindow.ui" line="111"/>
         <source>File</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="118"/>
+        <location filename="../ElcoLinguist/ui/mainwindow.ui" line="117"/>
         <source>Tools</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="127"/>
+        <location filename="../ElcoLinguist/ui/mainwindow.ui" line="123"/>
         <source>Help</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="141"/>
-        <location filename="../src/mainwindow.cpp" line="214"/>
-        <source>Export</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="151"/>
-        <location filename="../src/mainwindow.cpp" line="208"/>
-        <source>Import</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="161"/>
-        <location filename="../src/mainwindow.cpp" line="194"/>
-        <source>Add Language</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="171"/>
-        <location filename="../src/mainwindow.cpp" line="148"/>
-        <location filename="../src/mainwindow.cpp" line="200"/>
-        <source>Remove Languages</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="181"/>
-        <location filename="../src/mainwindow.cpp" line="228"/>
-        <source>Filters</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="191"/>
-        <source>About</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="200"/>
-        <location filename="../src/mainwindow.cpp" line="222"/>
-        <source>Preferences</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.ui" line="210"/>
-        <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Export Languages</source>
-        <translation>Export Languages</translation>
+        <translation type="vanished">Export Languages</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="96"/>
-        <location filename="../src/mainwindow.cpp" line="178"/>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="84"/>
         <source>Import languages</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="134"/>
-        <source>New language</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="135"/>
-        <source>Insert language name:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="139"/>
-        <source>Error</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="139"/>
-        <source>This language already exists.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="158"/>
-        <source>Set Filters</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="69"/>
-        <location filename="../src/mainwindow.cpp" line="235"/>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="149"/>
         <source>  Sear&amp;ch  </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="83"/>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="121"/>
         <source>Export languages</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="272"/>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="251"/>
         <source>All</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="323"/>
+        <source>Import File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="332"/>
+        <source>Export File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="341"/>
+        <source>About...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ElcoLinguist/src/mainwindow.cpp" line="348"/>
+        <source>Settings...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>exportLanguagesDialog</name>
     <message>
-        <location filename="../ui/exportlanguagesdialog.ui" line="14"/>
+        <location filename="../ElcoLinguist/ui/exportlanguagesdialog.ui" line="14"/>
         <source>Dialog</source>
         <translation></translation>
     </message>
@@ -149,12 +98,12 @@
 <context>
     <name>settingsDialog</name>
     <message>
-        <location filename="../ui/settingsdialog.ui" line="14"/>
+        <location filename="../ElcoLinguist/ui/settingsdialog.ui" line="14"/>
         <source>Setting</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsdialog.ui" line="26"/>
+        <location filename="../ElcoLinguist/ui/settingsdialog.ui" line="26"/>
         <source>Language</source>
         <translation></translation>
     </message>

@@ -35,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     loadSettings();
-
     createActions();
+    translateApp();
 
     //    connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     //    currentContext = "";
@@ -133,14 +133,20 @@ void MainWindow::openAbout()
     AboutDialog().exec();
 }
 
+void MainWindow::openSettings()
+{
+    settingsDialog().exec();
+    translateApp();
+}
+
 void MainWindow::translateApp()
 {
-    //    qApp->removeTranslator(translator.get());
-    //    QSettings set;
-    //    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
-    //    if (translator->load(currentLanguage, languagePathHandler))
-    //        qApp->installTranslator(translator.get());
-    //    lblSearch->setText(tr("  Sear&ch  "));
+    qApp->removeTranslator(translator.get());
+    QSettings set;
+    auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
+    auto qmToLoad = QString(":/elcolinguist_%1.qm").arg(currentLanguage);
+    if (translator->load(qmToLoad))
+        qApp->installTranslator(translator.get());
 }
 
 //void MainWindow::on_actionAdd_Language_triggered()
@@ -325,10 +331,19 @@ void MainWindow::createActions() noexcept
         ui->menuFile->addAction(act);
     }
 
-    auto actAbout = new QAction(this);
-    actAbout->setText(tr("About..."));
-    connect(actAbout, &QAction::triggered, this, &MainWindow::openAbout);
-    ui->menuHelp->addAction(actAbout);
+    {
+        auto act = new QAction(this);
+        act->setText(tr("About..."));
+        connect(act, &QAction::triggered, this, &MainWindow::openAbout);
+        ui->menuHelp->addAction(act);
+    }
+
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Settings..."));
+        connect(act, &QAction::triggered, this, &MainWindow::openSettings);
+        ui->menuTools->addAction(act);
+    }
 }
 
 void MainWindow::enableButtons()

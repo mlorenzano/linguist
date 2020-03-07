@@ -43,6 +43,7 @@ private slots:
     void importFile();
     void exportFile();
     void openAbout();
+    void openSettings();
 
     //    void on_actionPreferences_triggered();
 

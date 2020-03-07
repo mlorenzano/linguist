@@ -50,7 +50,9 @@ FORMS += \
     $$PWD/ElcoLinguist/ui/settingsdialog.ui \
     $$PWD/ElcoLinguist/ui/exportlanguagesdialog.ui
 
-RESOURCES += $$PWD/icons/icons.qrc
+RESOURCES += \
+    $$PWD/icons/icons.qrc \
+    $$PWD/translations/translations.qrc
 
 TRANSLATIONS += $$PWD/translations/elcolinguist_it.ts
 TRANSLATIONS += $$PWD/translations/elcolinguist_en.ts
