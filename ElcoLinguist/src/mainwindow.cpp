@@ -115,6 +115,19 @@ void MainWindow::importFile()
     updateLanguageTable();
 }
 
+void MainWindow::exportFile()
+{
+    QString destFilename = QFileDialog::getSaveFileName(this,
+                                                        tr("Export languages"),
+                                                        QString(),
+                                                        supportedType);
+    if (destFilename.isEmpty())
+        return;
+
+    FileWriter().save(destFilename.toStdString(),
+                      tableManager.getLanguages());
+}
+
 void MainWindow::openAbout()
 {
     AboutDialog().exec();
@@ -294,13 +307,23 @@ void MainWindow::loadSettings() noexcept
 
 void MainWindow::createActions() noexcept
 {
-    auto actImport = new QAction(this);
-    actImport->setText(tr("Import File..."));
-    actImport->setIcon(QIcon(":/gnome_import.png"));
-    connect(actImport, &QAction::triggered, this, &MainWindow::importFile);
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Import File..."));
+        act->setIcon(QIcon(":/gnome_import.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::importFile);
+        ui->topToolBar->addAction(act);
+        ui->menuFile->addAction(act);
+    }
 
-    ui->menuFile->addAction(actImport);
-    ui->topToolBar->addAction(actImport);
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Export File..."));
+        act->setIcon(QIcon(":/gnome_export.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::exportFile);
+        ui->topToolBar->addAction(act);
+        ui->menuFile->addAction(act);
+    }
 
     auto actAbout = new QAction(this);
     actAbout->setText(tr("About..."));

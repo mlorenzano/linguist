@@ -41,9 +41,8 @@ protected:
 
 private slots:
     void importFile();
+    void exportFile();
     void openAbout();
-
-    //    void on_actionExport_triggered();
 
     //    void on_actionPreferences_triggered();
 
@@ -56,8 +55,6 @@ private slots:
     //    void on_actionAbout_triggered();
 
     //    void on_contextTree_itemClicked(QTreeWidgetItem *item, int column);
-
-    //    void on_actionExport_Languages_triggered();
 
     void resizeTable();
 

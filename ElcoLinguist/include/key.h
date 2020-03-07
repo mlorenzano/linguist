@@ -12,7 +12,7 @@ public:
     Key(std::string context, std::string id, std::string pageOfContext);
     Key(std::string keyString);
 
-    std::string toString();
+    std::string toString() const;
     bool fromString(std::string keyString);
     bool belongsTo(const std::string &context, const std::string pageOfContext) const;
 
