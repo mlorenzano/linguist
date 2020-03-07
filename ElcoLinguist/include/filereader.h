@@ -3,6 +3,7 @@
 #include "key.h"
 
 #include <vector>
+#include <QList>
 
 class FileReader
 {
@@ -14,7 +15,5 @@ public:
     std::vector<std::string> collectIntestations();
 
 private:
-    // FIXME
-    //    csv *csvReader;
-    //    xlnt::workbook *xlsxReader;
+    QList<QStringList> m_csvData;
 };

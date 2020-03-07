@@ -10,8 +10,7 @@
 FileReader::FileReader(std::string filename)
 {
     if (filename.find("csv") != std::string::npos) {
-        auto list = QtCSV::Reader::readToList(filename.data(), ";", "\"");
-        qDebug() << list;
+        m_csvData = QtCSV::Reader::readToList(filename.data(), ";", "\"");
     }
 }
 
@@ -29,6 +28,7 @@ std::vector<Key> FileReader::collectKeys()
 std::vector<std::string> FileReader::collectColumnAt(std::size_t i)
 {
     std::vector<std::string> v;
+
     //    if (csvReader) {
     //        auto tmp = csvReader->column((int) i);
     //        if (tmp.size() > 2)
@@ -51,24 +51,11 @@ std::vector<std::string> FileReader::collectColumnAt(std::size_t i)
 std::vector<std::string> FileReader::collectIntestations()
 {
     std::vector<std::string> v;
-    //    if (csvReader) {
-    //        auto tmp = csvReader->row(1);
-    //        if (!tmp.empty()) {
-    //            if (tmp.back() == "")
-    //                tmp.pop_back();
-    //            std::transform(tmp.begin() + 1,
-    //                           tmp.end(),
-    //                           std::back_inserter(v),
-    //                           [](const QString &var) { return var.toStdString(); });
-    //        }
-    //    } else {
-    //        auto ws = xlsxReader->active_sheet();
-    //        auto rowStart = ws.rows(false)[1].begin();
-    //        std::advance(rowStart, 1);
-    //        std::transform(rowStart,
-    //                       ws.rows(false)[1].end(),
-    //                       std::back_inserter(v),
-    //                       [](const xlnt::cell &var) { return var.to_string(); });
-    //    }
+    auto intestations = m_csvData.at(1);
+
+    for (auto item : intestations) {
+        v.push_back(item.toStdString());
+    }
+
     return v;
 }
