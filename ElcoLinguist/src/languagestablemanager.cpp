@@ -19,7 +19,8 @@ languageTableModel *languagesTableManager::getTable(const std::string &context,
     languagesTable->setHorizontalHeaderItem(0, new QStandardItem("Default"));
     int i = 1;
     for (auto lang : languagesName) {
-        auto b = languages[lang].getMessagesByContext(context, page);
+        auto pos = findKeyString(lang);
+        auto b = languages.at(pos).second.getMessagesByContext(context, page);
         languagesTable->appendColumn(b);
         languagesTable->setHorizontalHeaderItem(i, new QStandardItem(QString::fromStdString(lang)));
         ++i;
@@ -43,7 +44,8 @@ const std::vector<Language> languagesTableManager::getLanguages(const std::vecto
 {
     std::vector<Language> tmp;
     for (auto i : languagesToExport) {
-        tmp.push_back(languages[i]);
+        auto pos = findKeyString(i);
+        tmp.push_back(languages.at(pos).second);
     }
     return tmp;
 }
@@ -67,24 +69,34 @@ void languagesTableManager::setDefault(const Language &def)
 void languagesTableManager::removeLanguages(const std::vector<std::string> &languagesToRemove)
 {
     for (auto i : languagesToRemove) {
-        languages.erase(i);
+        auto pos = findKeyString(i);
+        languages.erase(languages.begin() + pos);
     }
 }
 bool languagesTableManager::insertLanguage(const std::string &languageName, const Language &language)
 {
-    if (languages.find(languageName) != languages.end() || languageName == "Default")
+    if (/*findKeyString(languageName) < 0 || */languageName == "Default") {
         return false;
-    languages.insert(std::make_pair(languageName, language));
+    }
+    languages.push_back(std::make_pair(languageName, language));
     return true;
 }
 
 void languagesTableManager::updateItemData(QStandardItem *changedItem)
 {
     auto changedMessageItem = (messageItem *) changedItem;
-    languages.at(changedMessageItem->getLanguage()).changeMessage
-            (changedMessageItem->text().toStdString(), changedMessageItem->getKey());
+    auto pos = findKeyString(changedMessageItem->getLanguage());
+    languages.at(pos).second.changeMessage(changedMessageItem->text().toStdString(),
+                                           changedMessageItem->getKey());
     changedMessageItem->changeColor();
     emit dataChanged();
+}
+
+int languagesTableManager::findKeyString(const std::string &str)
+{
+    auto it = std::find_if(languages.begin(), languages.end(),
+                           [&](auto &item){return item.first == str;});
+    return std::distance(languages.begin(), it);
 }
 
 void languagesTableManager::clear()
