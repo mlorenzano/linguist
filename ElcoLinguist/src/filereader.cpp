@@ -25,33 +25,22 @@ std::vector<Key> FileReader::collectKeys()
     return keys;
 }
 
-std::vector<std::string> FileReader::collectColumnAt(std::size_t i)
+std::vector<std::string> FileReader::collectColumnAt(std::size_t index)
 {
     std::vector<std::string> v;
 
-    //    if (csvReader) {
-    //        auto tmp = csvReader->column((int) i);
-    //        if (tmp.size() > 2)
-    //            std::transform(tmp.begin() + 2,
-    //                           tmp.end(),
-    //                           std::back_inserter(v),
-    //                           [](const QString &var) { return var.toStdString(); });
-    //    } else {
-    //        auto ws = xlsxReader->active_sheet();
-    //        auto colStart = ws.columns(false)[i].begin();
-    //        std::advance(colStart, 2);
-    //        std::transform(colStart,
-    //                       ws.columns(false)[i].end(),
-    //                       std::back_inserter(v),
-    //                       [](const xlnt::cell &var) { return var.to_string(); });
-    //    }
+    for (auto i = static_cast<int>(ROW_TYPE::STARTIG_DATA); i < m_csvData.size(); ++i) {
+        const auto item = m_csvData.at(i);
+        v.push_back(item.at(index).toStdString());
+    }
+
     return v;
 }
 
 std::vector<std::string> FileReader::collectIntestations()
 {
     std::vector<std::string> v;
-    auto intestations = m_csvData.at(1);
+    auto intestations = m_csvData.at(static_cast<int>(ROW_TYPE::INTESTATION));
 
     for (auto item : intestations) {
         v.push_back(item.toStdString());

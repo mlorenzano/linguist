@@ -127,7 +127,7 @@ void MainWindow::on_actionImport_triggered()
         tableManager.setDefault(Language(intestations[0], reader.collectColumnAt(1)));
     for (int i = 1; i < intestations.size(); i++) {
         tableManager.insertLanguage(intestations[i],
-                                    Language(intestations[i], reader.collectColumnAt(i + 1)));
+                                    Language(intestations[i], reader.collectColumnAt(i)));
     }
 
     currentContext = "";

@@ -11,9 +11,17 @@ public:
     explicit FileReader(std::string filename);
 
     std::vector<Key> collectKeys();
-    std::vector<std::string> collectColumnAt(std::size_t i);
+    std::vector<std::string> collectColumnAt(std::size_t index);
     std::vector<std::string> collectIntestations();
 
 private:
+    enum class ROW_TYPE {
+        DESCRIPTION,
+        INTESTATION,
+        STARTIG_DATA,
+
+        PLACEHOLDER_LAST
+    };
+
     QList<QStringList> m_csvData;
 };
