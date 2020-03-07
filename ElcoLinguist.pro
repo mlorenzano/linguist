@@ -8,6 +8,7 @@ TARGET = ElcoLinguist
 TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QTCSV_LIBRARY
 
 include($$PWD/libs-3rdparty/qtcsv/qtcsv.pri)
 
