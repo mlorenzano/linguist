@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/new/prefix1">
+    <qresource prefix="/">
         <file>el.ico</file>
         <file>el.png</file>
         <file>Gnome-Edit-Clear-64.png</file>

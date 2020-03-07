@@ -20,7 +20,7 @@
    <string>ElcoLinguist</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset>
     <normaloff>:/icons/icons/el.png</normaloff>:/icons/icons/el.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -113,7 +113,7 @@
      <x>0</x>
      <y>0</y>
      <width>691</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -150,7 +150,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/icons/gnome_export.png</normaloff>:/icons/icons/gnome_export.png</iconset>
    </property>
    <property name="text">
@@ -218,7 +218,7 @@
   </action>
   <action name="actionPreferences">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/icons/Gnome-System-Run-64.png</normaloff>:/icons/icons/Gnome-System-Run-64.png</iconset>
    </property>
    <property name="text">
@@ -240,8 +240,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

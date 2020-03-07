@@ -1,18 +1,18 @@
-#include "include\languagelistdialog.h"
+#include "languagelistdialog.h"
 #include "ui_exportlanguagesdialog.h"
 
-languageListDialog::languageListDialog (const QString &title, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::exportLanguagesDialog)
+languageListDialog::languageListDialog(const QString &title, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::exportLanguagesDialog)
 {
     ui->setupUi(this);
     QDialog::setWindowTitle(title);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-languageListDialog::languageListDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::exportLanguagesDialog)
+languageListDialog::languageListDialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::exportLanguagesDialog)
 {
     ui->setupUi(this);
 }
@@ -43,7 +43,7 @@ void languageListDialog::setSelectedLanguages(const std::vector<std::string> &fi
 {
     for (auto lang : filteredLanguages) {
         for (int i = 0; i < ui->languagesListWidget->count(); i++) {
-            if ( ui->languagesListWidget->item(i)->text().toStdString() == lang) {
+            if (ui->languagesListWidget->item(i)->text().toStdString() == lang) {
                 ui->languagesListWidget->item(i)->setCheckState(Qt::Checked);
                 break;
             }
