@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>elcolinguist_it.qm</file>
+    </qresource>
+</RCC>
