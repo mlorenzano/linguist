@@ -25,33 +25,27 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , searchLine(new QLineEdit())
-    , lblSearch(new QLabel())
+    , m_leSearch(new QLineEdit(this))
+    , m_lblSearch(new QLabel(this))
     //    , filteredLanguages()
-    , sortFilter(new QSortFilterProxyModel())
+    , m_filterSearch(new QSortFilterProxyModel(this))
 {
     ui->setupUi(this);
 
     loadSettings();
     createActions();
     translateApp();
+    createSearchWidget();
+    setupModel();
 
-    //    connect(searchLine, &QLineEdit::textEdited, this, &MainWindow::searchString);
     //    currentContext = "";
-    //    sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    //    sortFilter->setSourceModel(
-    //        tableManager.getTable(currentContext, currentPage, filteredLanguages));
-    ui->languageTable->setModel(&m_languagesModel);
+
     //    ui->languageTable->setItemDelegate(new CustomItemDelegate);
     //    connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
 
     //    QWidget *empty = new QWidget();
     //    empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     //    ui->topToolBar->addWidget(empty);
-
-    //    lblSearch->setBuddy(searchLine);
-    //    ui->topToolBar->addWidget(lblSearch);
-    //    ui->topToolBar->addWidget(searchLine);
 }
 
 MainWindow::~MainWindow()
@@ -299,16 +293,13 @@ void MainWindow::populateContextTree()
 
 void MainWindow::searchString(const QString &s)
 {
-    sortFilter->setFilterRegExp(QString("^.*(%1).*$").arg(s));
-    updateLanguageTable();
+    m_filterSearch->setFilterRegExp(QString("^.*(%1).*$").arg(s));
 }
 
 void MainWindow::updateLanguageTable()
 {
-    //    sortFilter->setSourceModel(
-    //        tableManager.getTable(currentContext, currentPage, filteredLanguages));
-    ui->languageTable->update();
-    resizeTable();
+    //    ui->languageTable->update();
+    //    resizeTable();
 }
 
 void MainWindow::loadSettings() noexcept
@@ -398,4 +389,20 @@ void MainWindow::translateApp()
     if (m_translator.load(qmToLoad)) {
         qApp->installTranslator(&m_translator);
     }
+}
+
+void MainWindow::createSearchWidget()
+{
+    connect(m_leSearch, &QLineEdit::textEdited, this, &MainWindow::searchString);
+    m_lblSearch->setBuddy(m_leSearch);
+    m_lblSearch->setText(tr("Search:"));
+    ui->topToolBar->addWidget(m_lblSearch);
+    ui->topToolBar->addWidget(m_leSearch);
+}
+
+void MainWindow::setupModel()
+{
+    m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_filterSearch->setSourceModel(&m_languagesModel);
+    ui->languageTable->setModel(m_filterSearch);
 }
