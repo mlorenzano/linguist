@@ -52,18 +52,20 @@ private:
     Ui::MainWindow *ui;
     LanguagesModel m_languagesModel;
 
-    QLineEdit *searchLine;
-    QLabel *lblSearch;
+    QLineEdit *m_leSearch;
+    QLabel *m_lblSearch;
     //    std::string currentContext;
     //    std::string currentPage;
     //    std::vector<std::string> filteredLanguages;
     QTranslator m_translator;
-    QSortFilterProxyModel *sortFilter;
     QProgressDialog *m_progressDialog;
+    QSortFilterProxyModel *m_filterSearch;
 
     void loadSettings() noexcept;
     void createActions() noexcept;
     void enableButtons();
     void resizeTable();
     void translateApp();
+    void createSearchWidget();
+    void setupModel();
 };
