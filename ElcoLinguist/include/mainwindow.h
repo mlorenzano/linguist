@@ -5,6 +5,8 @@
 #include <QMainWindow>
 #include <QTranslator>
 
+#include <set>
+
 class LanguagesManager;
 class LanguagesManagerModel;
 
@@ -44,10 +46,6 @@ private slots:
     void showFinishExport();
 
 private:
-    void populateContextTree();
-    //    std::map<std::string, std::set<std::string>> collectContexts();
-    void searchString(const QString &s);
-
     Ui::MainWindow *ui;
     LanguagesModel m_languagesModel;
 
@@ -67,4 +65,7 @@ private:
     void translateApp();
     void createSearchWidget();
     void setupModel();
+    void searchString(const QString &s);
+    void populateContextTree();
+    std::map<std::string, std::set<std::string>> collectContexts() const noexcept;
 };

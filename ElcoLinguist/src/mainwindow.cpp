@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , m_leSearch(new QLineEdit(this))
     , m_lblSearch(new QLabel(this))
-    //    , filteredLanguages()
     , m_filterSearch(new QSortFilterProxyModel(this))
 {
     ui->setupUi(this);
@@ -38,14 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     createSearchWidget();
     setupModel();
 
-    //    currentContext = "";
-
-    //    ui->languageTable->setItemDelegate(new CustomItemDelegate);
-    //    connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
-
-    //    QWidget *empty = new QWidget();
-    //    empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    //    ui->topToolBar->addWidget(empty);
+    //    ui->languageTable->setItemDelegate(new CustomItemDelegate); // WARNING: this is necessary?
 }
 
 MainWindow::~MainWindow()
@@ -102,11 +94,8 @@ void MainWindow::importFile()
                                         Language(intestations[i], reader.collectColumnAt(i)));
     }
 
-    //    currentContext = "";
-    //    populateContextTree();
-    //    filteredLanguages = tableManager.getLanguagesName();
+    populateContextTree();
     enableButtons();
-    //    updateLanguageTable();
     resizeTable();
 }
 
@@ -212,57 +201,6 @@ void MainWindow::showFinishExport()
 //    }
 //}
 
-void MainWindow::populateContextTree()
-{
-    //    ui->contextTree->clear();
-    //    QList<QTreeWidgetItem *> contexts;
-    //    bool normalContext;
-    //    for (auto i : collectContexts()) {
-    //        normalContext = true;
-    //        QTreeWidgetItem *childContext = new QTreeWidgetItem();
-    //        if (i.first == "$$DynamicStrings$$") {
-    //            childContext->setText(0, "DynamicStrings");
-    //            normalContext = false;
-    //        } else if (i.first == "$$EventsHandler$$") {
-    //            childContext->setText(0, "EventsHandler");
-    //            normalContext = false;
-    //        } else
-    //            childContext->setText(0, QString::fromStdString(i.first));
-    //        if (normalContext) {
-    //            QList<QTreeWidgetItem *> pages;
-    //            for (auto j : i.second) {
-    //                QTreeWidgetItem *childPage = new QTreeWidgetItem();
-    //                childPage->setText(0, QString::fromStdString(j));
-    //                pages << childPage;
-    //            }
-    //            childContext->addChildren(pages);
-    //        }
-    //        contexts << childContext;
-    //    }
-
-    //    QTreeWidgetItem *root = new QTreeWidgetItem();
-    //    root->setText(0, tr("All"));
-    //    root->addChildren(contexts);
-    //    ui->contextTree->addTopLevelItem(root);
-    //    ui->contextTree->expandItem(root);
-    //    ui->languageTable->resizeColumnsToContents();
-}
-
-//std::map<std::string, std::set<std::string>> MainWindow::collectContexts()
-//{
-//    std::map<std::string, std::set<std::string>> contexts;
-//    for (auto i : Language::getKeys()) {
-//        std::string tmpContext = i.getContext();
-//        if (contexts.find(tmpContext) == contexts.end())
-//            contexts.insert(std::make_pair(tmpContext, std::set<std::string>{i.getPageOfContext()}));
-//        else {
-//            if (contexts.at(tmpContext).find(i.getPageOfContext()) == contexts.at(tmpContext).end())
-//                contexts.at(tmpContext).insert(i.getPageOfContext());
-//        }
-//    }
-//    return contexts;
-//}
-
 //void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
 //{
 //    if (item->childCount() == 0) {
@@ -282,11 +220,6 @@ void MainWindow::populateContextTree()
 //    }
 //    updateLanguageTable();
 //}
-
-void MainWindow::searchString(const QString &s)
-{
-    m_filterSearch->setFilterRegExp(QString("^.*(%1).*$").arg(s));
-}
 
 void MainWindow::loadSettings() noexcept
 {
@@ -391,4 +324,60 @@ void MainWindow::setupModel()
     m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
     m_filterSearch->setSourceModel(&m_languagesModel);
     ui->languageTable->setModel(m_filterSearch);
+}
+
+void MainWindow::searchString(const QString &s)
+{
+    m_filterSearch->setFilterRegExp(QString("^.*(%1).*$").arg(s));
+}
+
+void MainWindow::populateContextTree()
+{
+    ui->contextTree->clear();
+    QList<QTreeWidgetItem *> contexts;
+    bool normalContext;
+    for (auto i : collectContexts()) {
+        normalContext = true;
+        QTreeWidgetItem *childContext = new QTreeWidgetItem();
+        if (i.first == "$$DynamicStrings$$") {
+            childContext->setText(0, "DynamicStrings");
+            normalContext = false;
+        } else if (i.first == "$$EventsHandler$$") {
+            childContext->setText(0, "EventsHandler");
+            normalContext = false;
+        } else
+            childContext->setText(0, QString::fromStdString(i.first));
+        if (normalContext) {
+            QList<QTreeWidgetItem *> pages;
+            for (auto j : i.second) {
+                QTreeWidgetItem *childPage = new QTreeWidgetItem();
+                childPage->setText(0, QString::fromStdString(j));
+                pages << childPage;
+            }
+            childContext->addChildren(pages);
+        }
+        contexts << childContext;
+    }
+
+    QTreeWidgetItem *root = new QTreeWidgetItem();
+    root->setText(0, tr("All"));
+    root->addChildren(contexts);
+    ui->contextTree->addTopLevelItem(root);
+    ui->contextTree->expandItem(root);
+    ui->languageTable->resizeColumnsToContents();
+}
+
+std::map<std::string, std::set<std::string>> MainWindow::collectContexts() const noexcept
+{
+    std::map<std::string, std::set<std::string>> contexts;
+    for (auto i : Language::getKeys()) {
+        std::string tmpContext = i.getContext();
+        if (contexts.find(tmpContext) == contexts.end())
+            contexts.insert(std::make_pair(tmpContext, std::set<std::string>{i.getPageOfContext()}));
+        else {
+            if (contexts.at(tmpContext).find(i.getPageOfContext()) == contexts.at(tmpContext).end())
+                contexts.at(tmpContext).insert(i.getPageOfContext());
+        }
+    }
+    return contexts;
 }
