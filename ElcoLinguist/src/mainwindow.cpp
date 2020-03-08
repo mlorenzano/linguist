@@ -142,17 +142,10 @@ void MainWindow::addLanguage()
 void MainWindow::removelanguage()
 {
     languageListDialog dialog(tr("Remove Languages"));
-    //    dialog.populateLanguagesList(tableManager.getLanguagesName());
+    dialog.populateLanguagesList(m_languagesModel.languages());
 
     if (dialog.exec() == QDialog::Accepted) {
-        std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
-        //        tableManager.removeLanguages(languagesToRemove);
-        for (auto i : languagesToRemove) {
-            //            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
-            //            if (position != filteredLanguages.end())
-            //                filteredLanguages.erase(position);
-        }
-        updateLanguageTable();
+        m_languagesModel.removeLanguages(dialog.checkedLanguages());
     }
 }
 
@@ -293,12 +286,6 @@ void MainWindow::populateContextTree()
 void MainWindow::searchString(const QString &s)
 {
     m_filterSearch->setFilterRegExp(QString("^.*(%1).*$").arg(s));
-}
-
-void MainWindow::updateLanguageTable()
-{
-    //    ui->languageTable->update();
-    //    resizeTable();
 }
 
 void MainWindow::loadSettings() noexcept

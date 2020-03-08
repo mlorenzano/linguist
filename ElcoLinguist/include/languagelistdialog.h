@@ -12,9 +12,9 @@ class languageListDialog : public QDialog
     Q_OBJECT
 
 public:
-    languageListDialog (const QString &titlem, QWidget *parent = 0);
+    languageListDialog(const QString &titlem, QWidget *parent = 0);
     explicit languageListDialog(QWidget *parent = 0);
-    void populateLanguagesList(const std::vector<std::string> &languages);
+    void populateLanguagesList(const QVector<QString> &languages);
     void setSelectedLanguages(const std::vector<std::string> &filteredLanguages);
     std::vector<std::string> checkedLanguages();
     ~languageListDialog();
