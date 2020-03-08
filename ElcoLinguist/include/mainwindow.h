@@ -65,6 +65,7 @@ private:
         REMOVE_LANG,
         OPEN_ABOUT,
         OPEN_SETTINGS,
+        EXIT,
 
         PLACEHOLDER_LAST
     };

@@ -13,5 +13,6 @@
         <file>gnome_settings.png</file>
         <file>select_all.png</file>
         <file>unselect_all.png</file>
+        <file>gnome_exit.png</file>
     </qresource>
 </RCC>
