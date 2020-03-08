@@ -1,10 +1,22 @@
 #include "filewriter.h"
 
-#include "qtcsv/writer.h"
 #include "qtcsv/stringdata.h"
+#include "qtcsv/writer.h"
 
-void FileWriter::save(const std::string &filename,
-                      const std::vector<Language> &languages)
+FileWriter::FileWriter(const std::string &filename,
+                       const std::vector<Language> &language,
+                       QObject *caller)
+    : m_filename{filename}
+    , m_languages{language}
+    , m_caller{caller}
+{}
+
+void FileWriter::run()
+{
+    save();
+}
+
+void FileWriter::save()
 {
     QStringList strList;
     QtCSV::StringData strData;
@@ -15,19 +27,20 @@ void FileWriter::save(const std::string &filename,
     strList.clear();
 
     strList << "Key";
-    for (auto language : languages) {
+    for (const auto &language : m_languages) {
         strList << QString::fromStdString(language.getName());
     }
     strData.addRow(strList);
 
     strList.clear();
-    for (auto i = 0; i < languages.front().getMessages().size(); ++i) {
-        strList << QString::fromStdString(languages.front().getKeys().at(i).toString());
-        for (auto lang : languages) {
+    for (size_t i = 0; i < m_languages.front().getMessages().size(); ++i) {
+        strList << QString::fromStdString(m_languages.front().getKeys().at(i).toString());
+        for (auto lang : m_languages) {
             strList << lang.getMessages().at(i).c_str();
         }
         strData.addRow(strList);
         strList.clear();
     }
-    QtCSV::Writer::write(QString::fromStdString(filename), strData, ";");
+    QtCSV::Writer::write(QString::fromStdString(m_filename), strData, ";");
+    QMetaObject::invokeMethod(m_caller, "showFinishExport", Qt::QueuedConnection);
 }

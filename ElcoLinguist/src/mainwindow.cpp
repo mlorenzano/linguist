@@ -20,6 +20,7 @@
 #include <QSortFilterProxyModel>
 #include <QTranslator>
 #include <QTreeWidget>
+#include <QtConcurrent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -124,13 +125,15 @@ void MainWindow::exportFile()
     if (destFilename.isEmpty())
         return;
 
-    FileWriter().save(destFilename.toStdString(), tableManager.getLanguages());
+    auto writer = new FileWriter(destFilename.toStdString(), tableManager.getLanguages(), this);
+    writer->setAutoDelete(true);
+    QThreadPool::globalInstance()->start(writer, QThread::HighPriority);
 }
 
 void MainWindow::addLanguage()
 {
-    std::string name = QInputDialog::getText(this, tr("New language"),
-                                             tr("Insert language name:")).toStdString();
+    std::string name = QInputDialog::getText(this, tr("New language"), tr("Insert language name:"))
+                           .toStdString();
     if (name.empty())
         return;
 
@@ -169,6 +172,12 @@ void MainWindow::openSettings()
 {
     settingsDialog().exec();
     translateApp();
+}
+
+void MainWindow::showFinishExport()
+{
+    QThreadPool::globalInstance()->releaseThread();
+    QMessageBox::information(this, tr("Finished!"), tr("Export file succesfully."));
 }
 
 //void MainWindow::on_actionFilters_triggered()
