@@ -21,6 +21,8 @@ void FileWriter::save()
     QStringList strList;
     QtCSV::StringData strData;
 
+    QMetaObject::invokeMethod(m_caller, "showStartExport", Qt::QueuedConnection);
+
     strList << "Please, do not edit the \"Key\" column. It's used to identify the message.";
     strData.addRow(strList);
 
