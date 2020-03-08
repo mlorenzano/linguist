@@ -1,7 +1,8 @@
 #include "key.h"
+
 #include <string>
-#include <QString>
 #include <QRegExp>
+#include <QString>
 #include <QStringList>
 
 Key::Key(const Key &other)
@@ -23,7 +24,6 @@ Key::Key(std::string keyString)
 
 std::string Key::toString() const
 {
-
     std::string keyString = "";
     keyString += "ct=\"" + context + "\" ";
     keyString += "id=\"" + id + "\" ";
@@ -71,11 +71,11 @@ bool Key::fromString(std::string keyString)
 
 bool Key::belongsTo(const std::string &context, const std::string pageOfContext) const
 {
-    return (this->context == context || context.empty()) &&
-            (this->pageOfContext == pageOfContext || pageOfContext.empty());
+    return (this->context == context || context.empty())
+           && (this->pageOfContext == pageOfContext || pageOfContext.empty());
 }
 
-Key &Key::operator =(const Key &other)
+Key &Key::operator=(const Key &other)
 {
     context = other.context;
     id = other.id;
@@ -83,13 +83,11 @@ Key &Key::operator =(const Key &other)
     return *this;
 }
 
-bool Key::operator ==(const Key &other) const
+bool Key::operator==(const Key &other) const
 {
-    return context == other.context &&
-            id == other.id &&
-            pageOfContext == other.pageOfContext;
+    return context == other.context && id == other.id && pageOfContext == other.pageOfContext;
 }
-bool Key::operator !=(const Key &other) const
+bool Key::operator!=(const Key &other) const
 {
     return !(*this == other);
 }
@@ -108,5 +106,3 @@ std::string Key::getPageOfContext() const
 {
     return pageOfContext;
 }
-
-

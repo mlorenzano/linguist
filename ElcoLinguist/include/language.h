@@ -6,9 +6,9 @@
 
 #include <QList>
 
-#include <unordered_map>
-#include <string>
 #include <iostream>
+#include <string>
+#include <unordered_map>
 
 class Language
 {
@@ -19,7 +19,8 @@ public:
     Language(const Language &other);
 
     const std::string &getName() const;
-    QList<QStandardItem *> getMessagesByContext(const std::string &context = "", const std::string &page = "");
+    QList<QStandardItem *> getMessagesByContext(const std::string &context = "",
+                                                const std::string &page = "");
     const std::vector<std::string> getMessages() const;
     void changeMessage(const std::string &text, const Key &key);
 
@@ -29,8 +30,7 @@ public:
 private:
     std::string name;
     static std::vector<Key> keys;
-    std::unordered_map<Key , std::string, KeyHasher> messages;
+    std::unordered_map<Key, std::string, KeyHasher> messages;
 };
 
 #endif // INCLUDELANGUAGE_H
-

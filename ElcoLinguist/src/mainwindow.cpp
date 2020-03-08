@@ -16,22 +16,18 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QProgressDialog>
 #include <QSettings>
 #include <QSortFilterProxyModel>
-#include <QTranslator>
 #include <QTreeWidget>
 #include <QtConcurrent>
-#include <QProgressDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , searchLine(new QLineEdit())
     , lblSearch(new QLabel())
-    , tableManager()
-    , supportedType{"Text CSV (*.csv);;Microsoft Excel 20007-2013 XML (*.xlsx)"}
-    , filteredLanguages()
-    , translator(new QTranslator)
+    //    , filteredLanguages()
     , sortFilter(new QSortFilterProxyModel())
 {
     ui->setupUi(this);
@@ -45,9 +41,9 @@ MainWindow::MainWindow(QWidget *parent)
     //    sortFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
     //    sortFilter->setSourceModel(
     //        tableManager.getTable(currentContext, currentPage, filteredLanguages));
-    ui->languageTable->setModel(sortFilter);
-    ui->languageTable->setItemDelegate(new CustomItemDelegate);
-    connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
+    ui->languageTable->setModel(&m_languagesModel);
+    //    ui->languageTable->setItemDelegate(new CustomItemDelegate);
+    //    connect(&tableManager, &languagesTableManager::dataChanged, this, &MainWindow::resizeTable);
 
     //    QWidget *empty = new QWidget();
     //    empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -74,8 +70,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange)
+    if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+    }
 }
 
 void MainWindow::importFile()
@@ -85,36 +82,38 @@ void MainWindow::importFile()
         = QFileDialog::getOpenFileName(this,
                                        tr("Import languages"),
                                        set.value("workingDirectory", QString()).toString(),
-                                       supportedType)
+                                       "Text CSV (*.csv)")
               .toStdString();
 
     if (destFilename.empty()) {
         return;
     }
 
-    tableManager.clear();
+    m_languagesModel.clear();
 
     QFileInfo info(QString::fromStdString(destFilename));
     setWindowTitle(info.fileName() + " - " + "ElcoLinguist");
     set.setValue("workingDirectory", info.path());
+
     FileReader reader(destFilename);
     auto a = reader.collectKeys();
     Language::setKeys(a);
-    std::vector<std::string> intestations = reader.collectIntestations();
+    const auto intestations = reader.collectIntestations();
     if (!intestations.empty()) {
-        tableManager.setDefault(Language(intestations[1], reader.collectColumnAt(1)));
+        m_languagesModel.setDefault(Language(intestations[1], reader.collectColumnAt(1)));
     }
 
     for (size_t i = 1; i < intestations.size(); ++i) {
-        tableManager.insertLanguage(intestations[i],
-                                    Language(intestations[i], reader.collectColumnAt(i)));
+        m_languagesModel.insertLanguage(intestations[i],
+                                        Language(intestations[i], reader.collectColumnAt(i)));
     }
 
-    currentContext = "";
-    populateContextTree();
-    filteredLanguages = tableManager.getLanguagesName();
+    //    currentContext = "";
+    //    populateContextTree();
+    //    filteredLanguages = tableManager.getLanguagesName();
     enableButtons();
-    updateLanguageTable();
+    //    updateLanguageTable();
+    resizeTable();
 }
 
 void MainWindow::exportFile()
@@ -122,7 +121,7 @@ void MainWindow::exportFile()
     QString destFilename = QFileDialog::getSaveFileName(this,
                                                         tr("Export languages"),
                                                         QString(),
-                                                        supportedType);
+                                                        "Text CSV (*.csv)");
     if (destFilename.isEmpty())
         return;
 
@@ -138,11 +137,11 @@ void MainWindow::addLanguage()
     if (name.empty())
         return;
 
-    if (!tableManager.insertLanguage(name, Language(name))) {
-        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
-    } else {
-        filteredLanguages.push_back(name);
-    }
+    //    if (!tableManager.insertLanguage(name, Language(name))) {
+    //        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
+    //    } else {
+    //        filteredLanguages.push_back(name);
+    //}
 
     updateLanguageTable();
 }
@@ -150,15 +149,15 @@ void MainWindow::addLanguage()
 void MainWindow::removelanguage()
 {
     languageListDialog dialog(tr("Remove Languages"));
-    dialog.populateLanguagesList(tableManager.getLanguagesName());
+    //    dialog.populateLanguagesList(tableManager.getLanguagesName());
 
     if (dialog.exec() == QDialog::Accepted) {
         std::vector<std::string> languagesToRemove = dialog.checkedLanguages();
-        tableManager.removeLanguages(languagesToRemove);
+        //        tableManager.removeLanguages(languagesToRemove);
         for (auto i : languagesToRemove) {
-            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
-            if (position != filteredLanguages.end())
-                filteredLanguages.erase(position);
+            //            auto position = std::find(filteredLanguages.begin(), filteredLanguages.end(), i);
+            //            if (position != filteredLanguages.end())
+            //                filteredLanguages.erase(position);
         }
         updateLanguageTable();
     }
@@ -177,8 +176,12 @@ void MainWindow::openSettings()
 
 void MainWindow::showStartExport()
 {
-    m_progressDialog = new QProgressDialog(tr("Exporting file..."), "", 0, 0,
-                                           this, Qt::WindowTitleHint | Qt::WindowMinimizeButtonHint);
+    m_progressDialog = new QProgressDialog(tr("Exporting file..."),
+                                           "",
+                                           0,
+                                           0,
+                                           this,
+                                           Qt::WindowTitleHint | Qt::WindowMinimizeButtonHint);
     m_progressDialog->setCancelButton(nullptr);
     m_progressDialog->exec();
 }
@@ -225,54 +228,54 @@ void MainWindow::showFinishExport()
 
 void MainWindow::populateContextTree()
 {
-    ui->contextTree->clear();
-    QList<QTreeWidgetItem *> contexts;
-    bool normalContext;
-    for (auto i : collectContexts()) {
-        normalContext = true;
-        QTreeWidgetItem *childContext = new QTreeWidgetItem();
-        if (i.first == "$$DynamicStrings$$") {
-            childContext->setText(0, "DynamicStrings");
-            normalContext = false;
-        } else if (i.first == "$$EventsHandler$$") {
-            childContext->setText(0, "EventsHandler");
-            normalContext = false;
-        } else
-            childContext->setText(0, QString::fromStdString(i.first));
-        if (normalContext) {
-            QList<QTreeWidgetItem *> pages;
-            for (auto j : i.second) {
-                QTreeWidgetItem *childPage = new QTreeWidgetItem();
-                childPage->setText(0, QString::fromStdString(j));
-                pages << childPage;
-            }
-            childContext->addChildren(pages);
-        }
-        contexts << childContext;
-    }
+    //    ui->contextTree->clear();
+    //    QList<QTreeWidgetItem *> contexts;
+    //    bool normalContext;
+    //    for (auto i : collectContexts()) {
+    //        normalContext = true;
+    //        QTreeWidgetItem *childContext = new QTreeWidgetItem();
+    //        if (i.first == "$$DynamicStrings$$") {
+    //            childContext->setText(0, "DynamicStrings");
+    //            normalContext = false;
+    //        } else if (i.first == "$$EventsHandler$$") {
+    //            childContext->setText(0, "EventsHandler");
+    //            normalContext = false;
+    //        } else
+    //            childContext->setText(0, QString::fromStdString(i.first));
+    //        if (normalContext) {
+    //            QList<QTreeWidgetItem *> pages;
+    //            for (auto j : i.second) {
+    //                QTreeWidgetItem *childPage = new QTreeWidgetItem();
+    //                childPage->setText(0, QString::fromStdString(j));
+    //                pages << childPage;
+    //            }
+    //            childContext->addChildren(pages);
+    //        }
+    //        contexts << childContext;
+    //    }
 
-    QTreeWidgetItem *root = new QTreeWidgetItem();
-    root->setText(0, tr("All"));
-    root->addChildren(contexts);
-    ui->contextTree->addTopLevelItem(root);
-    ui->contextTree->expandItem(root);
-    ui->languageTable->resizeColumnsToContents();
+    //    QTreeWidgetItem *root = new QTreeWidgetItem();
+    //    root->setText(0, tr("All"));
+    //    root->addChildren(contexts);
+    //    ui->contextTree->addTopLevelItem(root);
+    //    ui->contextTree->expandItem(root);
+    //    ui->languageTable->resizeColumnsToContents();
 }
 
-std::map<std::string, std::set<std::string>> MainWindow::collectContexts()
-{
-    std::map<std::string, std::set<std::string>> contexts;
-    for (auto i : Language::getKeys()) {
-        std::string tmpContext = i.getContext();
-        if (contexts.find(tmpContext) == contexts.end())
-            contexts.insert(std::make_pair(tmpContext, std::set<std::string>{i.getPageOfContext()}));
-        else {
-            if (contexts.at(tmpContext).find(i.getPageOfContext()) == contexts.at(tmpContext).end())
-                contexts.at(tmpContext).insert(i.getPageOfContext());
-        }
-    }
-    return contexts;
-}
+//std::map<std::string, std::set<std::string>> MainWindow::collectContexts()
+//{
+//    std::map<std::string, std::set<std::string>> contexts;
+//    for (auto i : Language::getKeys()) {
+//        std::string tmpContext = i.getContext();
+//        if (contexts.find(tmpContext) == contexts.end())
+//            contexts.insert(std::make_pair(tmpContext, std::set<std::string>{i.getPageOfContext()}));
+//        else {
+//            if (contexts.at(tmpContext).find(i.getPageOfContext()) == contexts.at(tmpContext).end())
+//                contexts.at(tmpContext).insert(i.getPageOfContext());
+//        }
+//    }
+//    return contexts;
+//}
 
 //void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
 //{
@@ -302,8 +305,8 @@ void MainWindow::searchString(const QString &s)
 
 void MainWindow::updateLanguageTable()
 {
-    sortFilter->setSourceModel(
-        tableManager.getTable(currentContext, currentPage, filteredLanguages));
+    //    sortFilter->setSourceModel(
+    //        tableManager.getTable(currentContext, currentPage, filteredLanguages));
     ui->languageTable->update();
     resizeTable();
 }
@@ -388,11 +391,11 @@ void MainWindow::resizeTable()
 
 void MainWindow::translateApp()
 {
-    qApp->removeTranslator(translator.get());
+    qApp->removeTranslator(&m_translator);
     QSettings set;
     auto currentLanguage = set.value(currentLanguageHandler, "en").toString();
     auto qmToLoad = QString(":/elcolinguist_%1.qm").arg(currentLanguage);
-    if (translator->load(qmToLoad)) {
-        qApp->installTranslator(translator.get());
+    if (m_translator.load(qmToLoad)) {
+        qApp->installTranslator(&m_translator);
     }
 }
