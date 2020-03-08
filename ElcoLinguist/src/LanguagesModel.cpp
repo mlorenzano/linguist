@@ -22,9 +22,28 @@ void LanguagesModel::insertLanguage(const std::string &languageName, const Langu
     updateItemsData();
 }
 
+void LanguagesModel::removeLanguages(const std::vector<std::string> &names)
+{
+    for (const auto &name : names) {
+        const auto column = findKeyString(name);
+        m_languages.erase(m_languages.begin() + column);
+        removeColumn(column);
+    }
+}
+
 bool LanguagesModel::exists(const std::string &name) const noexcept
 {
     return findKeyString(name) != -1;
+}
+
+QVector<QString> LanguagesModel::languages() const noexcept
+{
+    QVector<QString> ret;
+    for (const auto &item : m_languages) {
+        ret.push_back(item.first.c_str());
+    }
+
+    return ret;
 }
 
 int LanguagesModel::findKeyString(const std::string &str) const

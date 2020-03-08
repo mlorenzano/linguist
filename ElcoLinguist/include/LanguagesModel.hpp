@@ -14,8 +14,11 @@ public:
     void setDefault(const Language &def);
 
     void insertLanguage(const std::string &languageName, const Language &language);
+    void removeLanguages(const std::vector<std::string> &names);
 
     bool exists(const std::string &name) const noexcept;
+
+    QVector<QString> languages() const noexcept;
 
 private:
     std::vector<std::pair<std::string, Language>> m_languages;

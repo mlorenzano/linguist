@@ -30,11 +30,11 @@ void languageListDialog::changeEvent(QEvent *e)
         ui->retranslateUi(this);
 }
 
-void languageListDialog::populateLanguagesList(const std::vector<std::string> &languages)
+void languageListDialog::populateLanguagesList(const QVector<QString> &languages)
 {
-    for (auto lang : languages) {
-        auto *item = new QListWidgetItem();
-        item->setText(QString::fromStdString(lang));
+    for (const auto &lang : languages) {
+        auto item = new QListWidgetItem;
+        item->setText(lang);
         item->setCheckState(Qt::Unchecked);
         ui->languagesListWidget->addItem(item);
     }
