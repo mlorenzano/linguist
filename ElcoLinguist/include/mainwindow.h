@@ -58,6 +58,19 @@ private:
     QProgressDialog *m_progressDialog;
     QSortFilterProxyModel *m_filterSearch;
 
+    enum class ACTION_TYPE {
+        IMPORT,
+        EXPORT,
+        ADD_LANG,
+        REMOVE_LANG,
+        OPEN_ABOUT,
+        OPEN_SETTINGS,
+
+        PLACEHOLDER_LAST
+    };
+    QVector<QPair<ACTION_TYPE, QAction *>> m_actions;
+    QAction *actionAt(ACTION_TYPE type);
+
     void loadSettings() noexcept;
     void createActions() noexcept;
     void enableButtons();

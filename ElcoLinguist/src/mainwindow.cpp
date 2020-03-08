@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     translateApp();
     createSearchWidget();
     setupModel();
-
+    enableButtons();
     //    ui->languageTable->setItemDelegate(new CustomItemDelegate); // WARNING: this is necessary?
 }
 
@@ -221,6 +221,18 @@ void MainWindow::showFinishExport()
 //    updateLanguageTable();
 //}
 
+QAction *MainWindow::actionAt(MainWindow::ACTION_TYPE type)
+{
+    auto it = std::find_if(m_actions.begin(), m_actions.end(), [&](auto &item) {
+        return item.first == type;
+    });
+
+    if (it == m_actions.end()) {
+        return nullptr;
+    }
+    return it->second;
+}
+
 void MainWindow::loadSettings() noexcept
 {
     QSettings settings;
@@ -237,6 +249,11 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::importFile);
         ui->topToolBar->addAction(act);
         ui->menuFile->addAction(act);
+
+        QPair<ACTION_TYPE, QAction *> pair;
+        pair.first = ACTION_TYPE::IMPORT;
+        pair.second = act;
+        m_actions << pair;
     }
 
     {
@@ -246,6 +263,11 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::exportFile);
         ui->topToolBar->addAction(act);
         ui->menuFile->addAction(act);
+
+        QPair<ACTION_TYPE, QAction *> pair;
+        pair.first = ACTION_TYPE::EXPORT;
+        pair.second = act;
+        m_actions << pair;
     }
 
     ui->topToolBar->addSeparator();
@@ -257,6 +279,11 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::addLanguage);
         ui->topToolBar->addAction(act);
         ui->menuEdit->addAction(act);
+
+        QPair<ACTION_TYPE, QAction *> pair;
+        pair.first = ACTION_TYPE::ADD_LANG;
+        pair.second = act;
+        m_actions << pair;
     }
 
     {
@@ -266,31 +293,48 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::removelanguage);
         ui->topToolBar->addAction(act);
         ui->menuEdit->addAction(act);
+
+        QPair<ACTION_TYPE, QAction *> pair;
+        pair.first = ACTION_TYPE::REMOVE_LANG;
+        pair.second = act;
+        m_actions << pair;
+    }
+
+    ui->topToolBar->addSeparator();
+
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Settings..."));
+        act->setIcon(QIcon(":/gnome_settings.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::openSettings);
+        ui->topToolBar->addAction(act);
+        ui->menuTools->addAction(act);
+
+        QPair<ACTION_TYPE, QAction *> pair;
+        pair.first = ACTION_TYPE::OPEN_SETTINGS;
+        pair.second = act;
+        m_actions << pair;
     }
 
     {
         auto act = new QAction(this);
         act->setText(tr("About..."));
+        act->setIcon(QIcon(":/el.ico"));
         connect(act, &QAction::triggered, this, &MainWindow::openAbout);
         ui->menuHelp->addAction(act);
-    }
 
-    {
-        auto act = new QAction(this);
-        act->setText(tr("Settings..."));
-        connect(act, &QAction::triggered, this, &MainWindow::openSettings);
-        ui->menuTools->addAction(act);
+        QPair<ACTION_TYPE, QAction *> pair;
+        pair.first = ACTION_TYPE::OPEN_ABOUT;
+        pair.second = act;
+        m_actions << pair;
     }
 }
 
 void MainWindow::enableButtons()
 {
-    // FIXME: implement this feature correctly
-    //    ui->actionRemove_Languages->setEnabled(tableManager.getLanguagesName().size() != 0);
-    //    ui->actionFilters->setEnabled(tableManager.getLanguagesName().size() != 0);
-    //    ui->actionAdd_Language->setEnabled(true);
-    //    ui->actionExport->setEnabled(true);
-    //    ui->actionExport_Languages->setEnabled(true);
+    actionAt(ACTION_TYPE::EXPORT)->setEnabled(collectContexts().size() != 0);
+    actionAt(ACTION_TYPE::ADD_LANG)->setEnabled(collectContexts().size() != 0);
+    actionAt(ACTION_TYPE::REMOVE_LANG)->setEnabled(!m_languagesModel.languageNames().isEmpty());
 }
 
 void MainWindow::resizeTable()
@@ -335,9 +379,8 @@ void MainWindow::populateContextTree()
 {
     ui->contextTree->clear();
     QList<QTreeWidgetItem *> contexts;
-    bool normalContext;
     for (auto i : collectContexts()) {
-        normalContext = true;
+        auto normalContext = true;
         QTreeWidgetItem *childContext = new QTreeWidgetItem();
         if (i.first == "$$DynamicStrings$$") {
             childContext->setText(0, "DynamicStrings");
@@ -350,7 +393,7 @@ void MainWindow::populateContextTree()
         if (normalContext) {
             QList<QTreeWidgetItem *> pages;
             for (auto j : i.second) {
-                QTreeWidgetItem *childPage = new QTreeWidgetItem();
+                const auto childPage = new QTreeWidgetItem;
                 childPage->setText(0, QString::fromStdString(j));
                 pages << childPage;
             }
@@ -359,7 +402,7 @@ void MainWindow::populateContextTree()
         contexts << childContext;
     }
 
-    QTreeWidgetItem *root = new QTreeWidgetItem();
+    const auto root = new QTreeWidgetItem;
     root->setText(0, tr("All"));
     root->addChildren(contexts);
     ui->contextTree->addTopLevelItem(root);
