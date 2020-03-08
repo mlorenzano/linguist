@@ -14,12 +14,17 @@ void LanguagesModel::setDefault(const Language &def)
 
 void LanguagesModel::insertLanguage(const std::string &languageName, const Language &language)
 {
-    if (findKeyString(languageName) != -1 || languageName == "Default") {
+    if (exists(languageName) || languageName == "Default") {
         return;
     }
 
     m_languages.push_back(std::make_pair(languageName, language));
     updateItemsData();
+}
+
+bool LanguagesModel::exists(const std::string &name) const noexcept
+{
+    return findKeyString(name) != -1;
 }
 
 int LanguagesModel::findKeyString(const std::string &str) const

@@ -126,18 +126,17 @@ void MainWindow::exportFile()
 
 void MainWindow::addLanguage()
 {
-    std::string name = QInputDialog::getText(this, tr("New language"), tr("Insert language name:"))
-                           .toStdString();
-    if (name.empty())
+    const auto name = QInputDialog::getText(this, tr("New language"), tr("Insert language name:"))
+                          .toStdString();
+    if (name.empty()) {
         return;
+    }
 
-    //    if (!tableManager.insertLanguage(name, Language(name))) {
-    //        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
-    //    } else {
-    //        filteredLanguages.push_back(name);
-    //}
+    if (m_languagesModel.exists(name)) {
+        QMessageBox::information(this, tr("Error"), tr("This language already exists."));
+    }
 
-    updateLanguageTable();
+    m_languagesModel.insertLanguage(name, Language(name));
 }
 
 void MainWindow::removelanguage()
