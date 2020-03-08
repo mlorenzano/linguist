@@ -3,11 +3,9 @@
 #include "qtcsv/stringdata.h"
 #include "qtcsv/writer.h"
 
-FileWriter::FileWriter(const std::string &filename,
-                       const std::vector<Language> &language,
-                       QObject *caller)
+FileWriter::FileWriter(const QString &filename, const QVector<Language> &languages, QObject *caller)
     : m_filename{filename}
-    , m_languages{language}
+    , m_languages{languages}
     , m_caller{caller}
 {}
 
@@ -43,6 +41,7 @@ void FileWriter::save()
         strData.addRow(strList);
         strList.clear();
     }
-    QtCSV::Writer::write(QString::fromStdString(m_filename), strData, ";");
+
+    QtCSV::Writer::write(m_filename, strData, ";");
     QMetaObject::invokeMethod(m_caller, "showFinishExport", Qt::QueuedConnection);
 }

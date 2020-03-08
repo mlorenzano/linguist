@@ -18,7 +18,8 @@ public:
 
     bool exists(const std::string &name) const noexcept;
 
-    QVector<QString> languages() const noexcept;
+    QVector<QString> languageNames() const noexcept;
+    QVector<Language> languages() const noexcept;
 
 private:
     std::vector<std::pair<std::string, Language>> m_languages;
