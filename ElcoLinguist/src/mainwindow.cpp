@@ -119,7 +119,7 @@ void MainWindow::exportFile()
     if (destFilename.isEmpty())
         return;
 
-    auto writer = new FileWriter(destFilename.toStdString(), tableManager.getLanguages(), this);
+    auto writer = new FileWriter(destFilename, m_languagesModel.languages(), this);
     writer->setAutoDelete(true);
     QThreadPool::globalInstance()->start(writer, QThread::HighPriority);
 }
@@ -142,7 +142,7 @@ void MainWindow::addLanguage()
 void MainWindow::removelanguage()
 {
     languageListDialog dialog(tr("Remove Languages"));
-    dialog.populateLanguagesList(m_languagesModel.languages());
+    dialog.populateLanguagesList(m_languagesModel.languageNames());
 
     if (dialog.exec() == QDialog::Accepted) {
         m_languagesModel.removeLanguages(dialog.checkedLanguages());

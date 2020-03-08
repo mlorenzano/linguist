@@ -7,15 +7,15 @@
 class FileWriter : public QRunnable
 {
 public:
-    explicit FileWriter(const std::string &filename,
-                        const std::vector<Language> &language,
+    explicit FileWriter(const QString &filename,
+                        const QVector<Language> &languages,
                         QObject *caller);
 
     void run() override;
 
 private:
-    std::string m_filename;
-    std::vector<Language> m_languages;
+    QString m_filename;
+    QVector<Language> m_languages;
     QObject *m_caller;
 
     void save();

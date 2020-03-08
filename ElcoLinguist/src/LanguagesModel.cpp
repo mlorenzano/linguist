@@ -36,11 +36,21 @@ bool LanguagesModel::exists(const std::string &name) const noexcept
     return findKeyString(name) != -1;
 }
 
-QVector<QString> LanguagesModel::languages() const noexcept
+QVector<QString> LanguagesModel::languageNames() const noexcept
 {
     QVector<QString> ret;
     for (const auto &item : m_languages) {
         ret.push_back(item.first.c_str());
+    }
+
+    return ret;
+}
+
+QVector<Language> LanguagesModel::languages() const noexcept
+{
+    QVector<Language> ret;
+    for (const auto &item : m_languages) {
+        ret.push_back(item.second);
     }
 
     return ret;
