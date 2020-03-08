@@ -18,6 +18,7 @@ class QTreeWidgetItem;
 class QLabel;
 class QSortFilterProxyModel;
 class QTranslator;
+class QProgressDialog;
 QT_END_NAMESPACE
 
 static const QString languagePathHandler
@@ -46,6 +47,7 @@ private slots:
     void removelanguage();
     void openAbout();
     void openSettings();
+    void showStartExport();
     void showFinishExport();
 
 private:
@@ -64,6 +66,7 @@ private:
     std::vector<std::string> filteredLanguages;
     std::unique_ptr<QTranslator> translator;
     QSortFilterProxyModel *sortFilter;
+    QProgressDialog *m_progressDialog;
 
     void loadSettings() noexcept;
     void createActions() noexcept;

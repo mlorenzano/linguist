@@ -21,6 +21,7 @@
 #include <QTranslator>
 #include <QTreeWidget>
 #include <QtConcurrent>
+#include <QProgressDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -174,9 +175,22 @@ void MainWindow::openSettings()
     translateApp();
 }
 
+void MainWindow::showStartExport()
+{
+    m_progressDialog = new QProgressDialog(tr("Exporting file..."), "", 0, 0,
+                                           this, Qt::WindowTitleHint | Qt::WindowMinimizeButtonHint);
+    m_progressDialog->setCancelButton(nullptr);
+    m_progressDialog->exec();
+}
+
 void MainWindow::showFinishExport()
 {
     QThreadPool::globalInstance()->releaseThread();
+
+    m_progressDialog->close();
+    if (m_progressDialog)
+        delete m_progressDialog;
+
     QMessageBox::information(this, tr("Finished!"), tr("Export file succesfully."));
 }
 
