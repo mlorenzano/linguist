@@ -221,7 +221,7 @@ void MainWindow::showFinishExport()
 //    updateLanguageTable();
 //}
 
-QAction *MainWindow::actionAt(MainWindow::ACTION_TYPE type)
+QAction *MainWindow::actionAt(MainWindow::ActionType type)
 {
     auto it = std::find_if(m_actions.begin(), m_actions.end(), [&](auto &item) {
         return item.first == type;
@@ -249,11 +249,7 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::importFile);
         ui->topToolBar->addAction(act);
         ui->menuFile->addAction(act);
-
-        QPair<ACTION_TYPE, QAction *> pair;
-        pair.first = ACTION_TYPE::IMPORT;
-        pair.second = act;
-        m_actions << pair;
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::Import, act);
     }
 
     {
@@ -263,11 +259,16 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::exportFile);
         ui->topToolBar->addAction(act);
         ui->menuFile->addAction(act);
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::Export, act);
+    }
 
-        QPair<ACTION_TYPE, QAction *> pair;
-        pair.first = ACTION_TYPE::EXPORT;
-        pair.second = act;
-        m_actions << pair;
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Exit"));
+        act->setIcon(QIcon(":/gnome_exit.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::close);
+        ui->menuFile->addAction(act);
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::Exit, act);
     }
 
     ui->topToolBar->addSeparator();
@@ -279,11 +280,7 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::addLanguage);
         ui->topToolBar->addAction(act);
         ui->menuEdit->addAction(act);
-
-        QPair<ACTION_TYPE, QAction *> pair;
-        pair.first = ACTION_TYPE::ADD_LANG;
-        pair.second = act;
-        m_actions << pair;
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::AddLanguage, act);
     }
 
     {
@@ -293,11 +290,7 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::removelanguage);
         ui->topToolBar->addAction(act);
         ui->menuEdit->addAction(act);
-
-        QPair<ACTION_TYPE, QAction *> pair;
-        pair.first = ACTION_TYPE::REMOVE_LANG;
-        pair.second = act;
-        m_actions << pair;
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::RemoveLanguage, act);
     }
 
     {
@@ -306,11 +299,7 @@ void MainWindow::createActions() noexcept
         act->setIcon(QIcon(":/gnome_exit.png"));
         connect(act, &QAction::triggered, this, &MainWindow::close);
         ui->menuFile->addAction(act);
-
-        QPair<ACTION_TYPE, QAction*> pair;
-        pair.first = ACTION_TYPE::EXIT;
-        pair.second = act;
-        m_actions << pair;
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::Exit, act);
     }
 
     ui->topToolBar->addSeparator();
@@ -322,11 +311,7 @@ void MainWindow::createActions() noexcept
         connect(act, &QAction::triggered, this, &MainWindow::openSettings);
         ui->topToolBar->addAction(act);
         ui->menuTools->addAction(act);
-
-        QPair<ACTION_TYPE, QAction *> pair;
-        pair.first = ACTION_TYPE::OPEN_SETTINGS;
-        pair.second = act;
-        m_actions << pair;
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::OpenSettings, act);
     }
 
     {
@@ -335,19 +320,15 @@ void MainWindow::createActions() noexcept
         act->setIcon(QIcon(":/el.ico"));
         connect(act, &QAction::triggered, this, &MainWindow::openAbout);
         ui->menuHelp->addAction(act);
-
-        QPair<ACTION_TYPE, QAction *> pair;
-        pair.first = ACTION_TYPE::OPEN_ABOUT;
-        pair.second = act;
-        m_actions << pair;
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::OpenAbout, act);
     }
 }
 
 void MainWindow::enableButtons()
 {
-    actionAt(ACTION_TYPE::EXPORT)->setEnabled(collectContexts().size() != 0);
-    actionAt(ACTION_TYPE::ADD_LANG)->setEnabled(collectContexts().size() != 0);
-    actionAt(ACTION_TYPE::REMOVE_LANG)->setEnabled(!m_languagesModel.languageNames().isEmpty());
+    actionAt(ActionType::Export)->setEnabled(collectContexts().size() != 0);
+    actionAt(ActionType::AddLanguage)->setEnabled(collectContexts().size() != 0);
+    actionAt(ActionType::RemoveLanguage)->setEnabled(!m_languagesModel.languageNames().isEmpty());
 }
 
 void MainWindow::resizeTable()
