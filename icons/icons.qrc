@@ -10,7 +10,7 @@
         <file>gnome_remove.png</file>
         <file>Gnome-Logviewer-64.png</file>
         <file>Gnome-Send-64.png</file>
-        <file>Gnome-System-Run-64.png</file>
+        <file>gnome_settings.png</file>
         <file>select_all.png</file>
         <file>unselect_all.png</file>
     </qresource>
