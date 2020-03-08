@@ -2,6 +2,19 @@ QT       += core gui xml concurrent
 
 CONFIG += c++1z
 
+
+CONFIG(release, debug|release) {
+    QMAKE_CXXFLAGS += -O3
+}
+
+CONFIG(debug, debug|release) {
+    QMAKE_CXXFLAGS += -O0
+    QMAKE_CXXFLAGS -= -O1
+    QMAKE_CXXFLAGS -= -O2
+    QMAKE_CXXFLAGS -= -O3
+    QMAKE_CXXFLAGS += --debug
+}
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ElcoLinguist
