@@ -15,6 +15,8 @@ public:
 
     void insertLanguage(const std::string &languageName, const Language &language);
 
+    bool exists(const std::string &name) const noexcept;
+
 private:
     std::vector<std::pair<std::string, Language>> m_languages;
 
