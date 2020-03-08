@@ -1,4 +1,4 @@
-QT       += core gui xml
+QT       += core gui xml concurrent
 
 CONFIG += c++1z
 

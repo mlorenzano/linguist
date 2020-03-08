@@ -46,6 +46,7 @@ private slots:
     void removelanguage();
     void openAbout();
     void openSettings();
+    void showFinishExport();
 
 private:
     void populateContextTree();
