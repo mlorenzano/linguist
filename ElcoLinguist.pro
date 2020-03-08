@@ -40,12 +40,12 @@ SOURCES += \
     $$PWD/ElcoLinguist/src/settingsdialog.cpp \
     $$PWD/ElcoLinguist/src/language.cpp \
     $$PWD/ElcoLinguist/src/key.cpp \
-    $$PWD/ElcoLinguist/src/languagestablemanager.cpp \
     $$PWD/ElcoLinguist/src/messageitem.cpp \
     $$PWD/ElcoLinguist/src/languagelistdialog.cpp \
     $$PWD/ElcoLinguist/src/customitemdelegate.cpp \
     $$PWD/ElcoLinguist/src/filereader.cpp \
-    $$PWD/ElcoLinguist/src/filewriter.cpp
+    $$PWD/ElcoLinguist/src/filewriter.cpp \
+    $$PWD/ElcoLinguist/src/LanguagesModel.cpp
 
 HEADERS += \
     $$PWD/ElcoLinguist/include/aboutdialog.h \
@@ -53,13 +53,12 @@ HEADERS += \
     $$PWD/ElcoLinguist/include/settingsdialog.h \
     $$PWD/ElcoLinguist/include/language.h \
     $$PWD/ElcoLinguist/include/key.h \
-    $$PWD/ElcoLinguist/include/languagestablemanager.h \
-    $$PWD/ElcoLinguist/include/languagetablemodel.h \
     $$PWD/ElcoLinguist/include/messageitem.h \
     $$PWD/ElcoLinguist/include/languagelistdialog.h \
     $$PWD/ElcoLinguist/include/customitemdelegate.h \
     $$PWD/ElcoLinguist/include/filereader.h \
-    $$PWD/ElcoLinguist/include/filewriter.h
+    $$PWD/ElcoLinguist/include/filewriter.h \
+    $$PWD/ElcoLinguist/include/LanguagesModel.hpp
 
 FORMS += \
     $$PWD/ElcoLinguist/ui/aboutdialog.ui \

@@ -1,13 +1,9 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
-#include "languagestablemanager.h"
+#include "LanguagesModel.hpp"
 
-#include <QDir>
 #include <QMainWindow>
-
-#include <memory>
-#include <set>
+#include <QTranslator>
 
 class LanguagesManager;
 class LanguagesManagerModel;
@@ -17,16 +13,13 @@ class QLineEdit;
 class QTreeWidgetItem;
 class QLabel;
 class QSortFilterProxyModel;
-class QTranslator;
 class QProgressDialog;
 QT_END_NAMESPACE
 
-static const QString languagePathHandler
-    = QString("%1/%2").arg(QDir::currentPath()).arg("translations");
-
 namespace Ui {
 class MainWindow;
-}
+} // namespace Ui
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -52,19 +45,19 @@ private slots:
 
 private:
     void populateContextTree();
-    std::map<std::string, std::set<std::string>> collectContexts();
+    //    std::map<std::string, std::set<std::string>> collectContexts();
     void updateLanguageTable();
     void searchString(const QString &s);
 
     Ui::MainWindow *ui;
+    LanguagesModel m_languagesModel;
+
     QLineEdit *searchLine;
     QLabel *lblSearch;
-    languagesTableManager tableManager;
-    QString supportedType;
-    std::string currentContext;
-    std::string currentPage;
-    std::vector<std::string> filteredLanguages;
-    std::unique_ptr<QTranslator> translator;
+    //    std::string currentContext;
+    //    std::string currentPage;
+    //    std::vector<std::string> filteredLanguages;
+    QTranslator m_translator;
     QSortFilterProxyModel *sortFilter;
     QProgressDialog *m_progressDialog;
 
@@ -74,5 +67,3 @@ private:
     void resizeTable();
     void translateApp();
 };
-
-#endif // MAINWINDOW_H
