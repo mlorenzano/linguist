@@ -14,5 +14,10 @@
         <file>select_all.png</file>
         <file>unselect_all.png</file>
         <file>gnome_exit.png</file>
+        <file>export_csv.png</file>
+        <file>add_language.png</file>
+        <file>delete_language.png</file>
+        <file>import_csv.png</file>
+        <file>settings.png</file>
     </qresource>
 </RCC>

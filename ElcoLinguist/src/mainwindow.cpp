@@ -245,7 +245,7 @@ void MainWindow::createActions() noexcept
     {
         auto act = new QAction(this);
         act->setText(tr("Import File..."));
-        act->setIcon(QIcon(":/gnome_import.png"));
+        act->setIcon(QIcon(":/import_csv.png"));
         connect(act, &QAction::triggered, this, &MainWindow::importFile);
         ui->topToolBar->addAction(act);
         ui->menuFile->addAction(act);
@@ -255,7 +255,7 @@ void MainWindow::createActions() noexcept
     {
         auto act = new QAction(this);
         act->setText(tr("Export File..."));
-        act->setIcon(QIcon(":/gnome_export.png"));
+        act->setIcon(QIcon(":/export_csv.png"));
         connect(act, &QAction::triggered, this, &MainWindow::exportFile);
         ui->topToolBar->addAction(act);
         ui->menuFile->addAction(act);
@@ -267,7 +267,7 @@ void MainWindow::createActions() noexcept
     {
         auto act = new QAction(this);
         act->setText(tr("Add Language"));
-        act->setIcon(QIcon(":/gnome_add.png"));
+        act->setIcon(QIcon(":/add_language.png"));
         connect(act, &QAction::triggered, this, &MainWindow::addLanguage);
         ui->topToolBar->addAction(act);
         ui->menuEdit->addAction(act);
@@ -277,7 +277,7 @@ void MainWindow::createActions() noexcept
     {
         auto act = new QAction(this);
         act->setText(tr("Remove Language"));
-        act->setIcon(QIcon(":/gnome_remove.png"));
+        act->setIcon(QIcon(":/delete_language.png"));
         connect(act, &QAction::triggered, this, &MainWindow::removelanguage);
         ui->topToolBar->addAction(act);
         ui->menuEdit->addAction(act);
@@ -298,7 +298,7 @@ void MainWindow::createActions() noexcept
     {
         auto act = new QAction(this);
         act->setText(tr("Settings..."));
-        act->setIcon(QIcon(":/gnome_settings.png"));
+        act->setIcon(QIcon(":/settings.png"));
         connect(act, &QAction::triggered, this, &MainWindow::openSettings);
         ui->topToolBar->addAction(act);
         ui->menuTools->addAction(act);
