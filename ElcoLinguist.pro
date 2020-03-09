@@ -48,7 +48,7 @@ SOURCES += \
     $$PWD/ElcoLinguist/src/filereader.cpp \
     $$PWD/ElcoLinguist/src/filewriter.cpp \
     $$PWD/ElcoLinguist/src/LanguagesModel.cpp \
-    ElcoLinguist/include/tablefilter.cpp
+    $$PWD/ElcoLinguist/include/tablefilter.cpp
 
 HEADERS += \
     $$PWD/ElcoLinguist/include/aboutdialog.h \
@@ -62,7 +62,7 @@ HEADERS += \
     $$PWD/ElcoLinguist/include/filereader.h \
     $$PWD/ElcoLinguist/include/filewriter.h \
     $$PWD/ElcoLinguist/include/LanguagesModel.hpp \
-    ElcoLinguist/include/tablefilter.h
+    $$PWD/ElcoLinguist/include/tablefilter.h
 
 FORMS += \
     $$PWD/ElcoLinguist/ui/aboutdialog.ui \

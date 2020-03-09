@@ -1,15 +1,16 @@
 #pragma once
 
 #include "LanguagesModel.hpp"
-#include "tablefilter.h"
 
 #include <QMainWindow>
 #include <QTranslator>
 
+#include <memory>
 #include <set>
 
 class LanguagesManager;
 class LanguagesManagerModel;
+class TableFilter;
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -55,7 +56,7 @@ private:
     QLabel *m_lblSearch;
     QTranslator m_translator;
     QProgressDialog *m_progressDialog;
-    TableFilter m_filterSearch;
+    std::unique_ptr<TableFilter> m_filterSearch;
 
     enum class ActionType {
         Import,
@@ -80,6 +81,7 @@ private:
     void createSearchWidget();
     void setupModel();
     void searchString(const QString &s);
+    void searchContext(const QString &context, const QString &page);
     void populateContextTree();
     std::map<std::string, std::set<std::string>> collectContexts() const noexcept;
 };

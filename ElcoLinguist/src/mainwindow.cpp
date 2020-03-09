@@ -8,6 +8,7 @@
 #include "language.h"
 #include "languagelistdialog.h"
 #include "settingsdialog.h"
+#include "tablefilter.h"
 
 #include <QApplication>
 #include <QFileDialog>
@@ -33,11 +34,9 @@ MainWindow::MainWindow(QWidget *parent)
     createActions();
     translateApp();
     createSearchWidget();
-    setupModel();
     enableButtons();
 
-    connect(ui->contextTree, &QTreeWidget::itemClicked,
-            this, &MainWindow::contextTreeFilter);
+    connect(ui->contextTree, &QTreeWidget::itemClicked, this, &MainWindow::contextTreeFilter);
 }
 
 MainWindow::~MainWindow()
@@ -94,6 +93,7 @@ void MainWindow::importFile()
                                         Language(intestations[i], reader.collectColumnAt(i)));
     }
 
+    setupModel();
     populateContextTree();
     enableButtons();
     resizeTable();
@@ -174,24 +174,25 @@ void MainWindow::showFinishExport()
 
 void MainWindow::contextTreeFilter(QTreeWidgetItem *item, int column)
 {
-//    if (item->childCount() == 0) {
-//        if (item->text(column) == "DynamicStrings" || item->text(column) == "EventsHandler") {
-//            m_currentContext = "$$" + item->text(column) + "$$";
-//            m_currentContextPage = "";
-//        } else {
-//            m_currentContext = item->parent()->text(column);
-//            m_currentContextPage = item->text(column);
-//        }
-//    } else {
-//        m_currentContextPage = "";
-//        if (item->parent())
-//            m_currentContext = item->text(column);
-//        else
-//            m_currentContext = "";
-//    }
+    QString context;
+    QString page;
 
-//    updateLanguageTable();
+    if (item->parent()) {
+        if (item->childCount() == 0) {
+            if (item->text(column) == QStringLiteral("DynamicStrings") ||
+                item->text(column) == QStringLiteral("EventsHandler")) {
+                context = "$$" + item->text(column) + "$$";
+            } else {
+                context = item->parent()->text(column);
+                page = item->text(column);
+            }
+        }
+        else {
+            context = item->text(column);
+        }
+    }
 
+    searchContext(context, page);
 }
 
 //void MainWindow::on_actionFilters_triggered()
@@ -301,9 +302,11 @@ void MainWindow::createActions() noexcept
 
 void MainWindow::enableButtons()
 {
-    actionAt(ActionType::Export)->setEnabled(collectContexts().size() != 0);
-    actionAt(ActionType::AddLanguage)->setEnabled(collectContexts().size() != 0);
-    actionAt(ActionType::RemoveLanguage)->setEnabled(!m_languagesModel.languageNames().isEmpty());
+    const auto fileLoaded = !m_languagesModel.languageNames().isEmpty();
+    actionAt(ActionType::Export)->setEnabled(fileLoaded);
+    actionAt(ActionType::AddLanguage)->setEnabled(fileLoaded);
+    actionAt(ActionType::RemoveLanguage)->setEnabled(fileLoaded);
+    m_leSearch->setEnabled(fileLoaded);
 }
 
 void MainWindow::resizeTable()
@@ -339,19 +342,26 @@ void MainWindow::createSearchWidget()
 
 void MainWindow::setupModel()
 {
-    m_filterSearch.setFilterCaseSensitivity(Qt::CaseInsensitive);
-    m_filterSearch.setSourceModel(&m_languagesModel);
-    ui->languageTable->setModel(&m_filterSearch);
+    m_filterSearch = std::make_unique<TableFilter>(Language::getKeys());
+    m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_filterSearch->setSourceModel(&m_languagesModel);
+    ui->languageTable->setModel(m_filterSearch.get());
 }
 
 void MainWindow::searchString(const QString &s)
 {
     QString regEx;
 
-    if (!s.isEmpty())
+    if (!s.isEmpty()) {
         regEx = QString("^.*(%1).*$").arg(s);
+    }
 
-    m_filterSearch.setFilterRegExp(regEx);
+    m_filterSearch->setFilterRegExp(regEx);
+}
+
+void MainWindow::searchContext(const QString &context, const QString &page)
+{
+    m_filterSearch->setFilter(context, page);
 }
 
 void MainWindow::populateContextTree()

@@ -56,6 +56,11 @@ const std::vector<std::string> Language::getMessages() const
     return tmp;
 }
 
+const std::string &Language::messageAt(const Key &key) const
+{
+    return messages.at(key);
+}
+
 void Language::changeMessage(const std::string &text, const Key &key)
 {
     messages.at(key) = text;
