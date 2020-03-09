@@ -353,6 +353,11 @@ void MainWindow::createSearchWidget()
     connect(m_leSearch, &QLineEdit::textEdited, this, &MainWindow::searchString);
     m_lblSearch->setBuddy(m_leSearch);
     m_lblSearch->setText(tr("Search:"));
+
+    const auto spacer = new QWidget(this);
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    ui->topToolBar->addWidget(spacer);
     ui->topToolBar->addWidget(m_lblSearch);
     ui->topToolBar->addWidget(m_leSearch);
 }
