@@ -2,22 +2,12 @@
     <qresource prefix="/">
         <file>el.ico</file>
         <file>el.png</file>
-        <file>Gnome-Edit-Clear-64.png</file>
-        <file>gnome_export.png</file>
-        <file>Gnome-Export.png</file>
-        <file>gnome_import.png</file>
-        <file>gnome_add.png</file>
-        <file>gnome_remove.png</file>
-        <file>Gnome-Logviewer-64.png</file>
-        <file>Gnome-Send-64.png</file>
-        <file>gnome_settings.png</file>
-        <file>select_all.png</file>
-        <file>unselect_all.png</file>
-        <file>gnome_exit.png</file>
         <file>export_csv.png</file>
         <file>add_language.png</file>
         <file>delete_language.png</file>
         <file>import_csv.png</file>
         <file>settings.png</file>
+        <file>search.png</file>
+        <file>exit.png</file>
     </qresource>
 </RCC>

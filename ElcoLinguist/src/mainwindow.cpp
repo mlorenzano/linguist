@@ -287,7 +287,7 @@ void MainWindow::createActions() noexcept
     {
         auto act = new QAction(this);
         act->setText(tr("Exit"));
-        act->setIcon(QIcon(":/gnome_exit.png"));
+        act->setIcon(QIcon(":/exit.png"));
         connect(act, &QAction::triggered, this, &MainWindow::close);
         ui->menuFile->addAction(act);
         m_actions << qMakePair<ActionType, QAction *>(ActionType::Exit, act);
@@ -343,7 +343,7 @@ void MainWindow::createSearchWidget()
 {
     connect(m_leSearch, &QLineEdit::textEdited, this, &MainWindow::searchString);
     m_lblSearch->setBuddy(m_leSearch);
-    m_lblSearch->setText(tr("Search:"));
+    m_lblSearch->setPixmap(QIcon(":/search.png").pixmap(kButtonSize, kButtonSize));
 
     const auto spacer = new QWidget(this);
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

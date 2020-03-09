@@ -46,6 +46,7 @@ private slots:
     void showFinishExport();
 
 private:
+    const int kButtonSize{24};
     Ui::MainWindow *ui;
     LanguagesModel m_languagesModel;
 
