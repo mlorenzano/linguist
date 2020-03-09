@@ -45,7 +45,8 @@ SOURCES += \
     $$PWD/ElcoLinguist/src/customitemdelegate.cpp \
     $$PWD/ElcoLinguist/src/filereader.cpp \
     $$PWD/ElcoLinguist/src/filewriter.cpp \
-    $$PWD/ElcoLinguist/src/LanguagesModel.cpp
+    $$PWD/ElcoLinguist/src/LanguagesModel.cpp \
+    ElcoLinguist/include/tablefilter.cpp
 
 HEADERS += \
     $$PWD/ElcoLinguist/include/aboutdialog.h \
@@ -58,7 +59,8 @@ HEADERS += \
     $$PWD/ElcoLinguist/include/customitemdelegate.h \
     $$PWD/ElcoLinguist/include/filereader.h \
     $$PWD/ElcoLinguist/include/filewriter.h \
-    $$PWD/ElcoLinguist/include/LanguagesModel.hpp
+    $$PWD/ElcoLinguist/include/LanguagesModel.hpp \
+    ElcoLinguist/include/tablefilter.h
 
 FORMS += \
     $$PWD/ElcoLinguist/ui/aboutdialog.ui \

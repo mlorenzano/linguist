@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LanguagesModel.hpp"
+#include "tablefilter.h"
 
 #include <QMainWindow>
 #include <QTranslator>
@@ -14,7 +15,6 @@ QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QTreeWidgetItem;
 class QLabel;
-class QSortFilterProxyModel;
 class QProgressDialog;
 QT_END_NAMESPACE
 
@@ -44,6 +44,7 @@ private slots:
     void openSettings();
     void showStartExport();
     void showFinishExport();
+    void contextTreeFilter(QTreeWidgetItem *item, int column);
 
 private:
     Ui::MainWindow *ui;
@@ -51,12 +52,9 @@ private:
 
     QLineEdit *m_leSearch;
     QLabel *m_lblSearch;
-    //    std::string currentContext;
-    //    std::string currentPage;
-    //    std::vector<std::string> filteredLanguages;
     QTranslator m_translator;
     QProgressDialog *m_progressDialog;
-    QSortFilterProxyModel *m_filterSearch;
+    TableFilter m_filterSearch;
 
     enum class ActionType {
         Import,

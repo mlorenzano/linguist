@@ -18,7 +18,6 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QSettings>
-#include <QSortFilterProxyModel>
 #include <QTreeWidget>
 #include <QtConcurrent>
 
@@ -27,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , m_leSearch(new QLineEdit(this))
     , m_lblSearch(new QLabel(this))
-    , m_filterSearch(new QSortFilterProxyModel(this))
 {
     ui->setupUi(this);
 
@@ -37,7 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
     createSearchWidget();
     setupModel();
     enableButtons();
-    //    ui->languageTable->setItemDelegate(new CustomItemDelegate); // WARNING: this is necessary?
+
+    connect(ui->contextTree, &QTreeWidget::itemClicked,
+            this, &MainWindow::contextTreeFilter);
 }
 
 MainWindow::~MainWindow()
@@ -172,6 +172,28 @@ void MainWindow::showFinishExport()
     QMessageBox::information(this, tr("Finished!"), tr("Export file succesfully."));
 }
 
+void MainWindow::contextTreeFilter(QTreeWidgetItem *item, int column)
+{
+//    if (item->childCount() == 0) {
+//        if (item->text(column) == "DynamicStrings" || item->text(column) == "EventsHandler") {
+//            m_currentContext = "$$" + item->text(column) + "$$";
+//            m_currentContextPage = "";
+//        } else {
+//            m_currentContext = item->parent()->text(column);
+//            m_currentContextPage = item->text(column);
+//        }
+//    } else {
+//        m_currentContextPage = "";
+//        if (item->parent())
+//            m_currentContext = item->text(column);
+//        else
+//            m_currentContext = "";
+//    }
+
+//    updateLanguageTable();
+
+}
+
 //void MainWindow::on_actionFilters_triggered()
 //{
 //    languageListDialog dialog(tr("Set Filters"));
@@ -179,44 +201,6 @@ void MainWindow::showFinishExport()
 //    dialog.setSelectedLanguages(filteredLanguages);
 //    if (dialog.exec() == QDialog::Accepted) {
 //        filteredLanguages = dialog.checkedLanguages();
-//    }
-//    updateLanguageTable();
-//}
-
-//void MainWindow::on_actionExport_Languages_triggered()
-//{
-//    languageListDialog dialog(tr("Export Languages"));
-//    dialog.populateLanguagesList(tableManager.getLanguagesName());
-//    if (dialog.exec() == QDialog::Accepted) {
-//        QString destFilename = QFileDialog::getSaveFileName(this,
-//                                                            tr("Import languages"),
-//                                                            QString(),
-//                                                            supportedType);
-//        if (destFilename.isEmpty())
-//            return;
-//        FileWriter writer(destFilename.toStdString());
-//        writer.setKeys(Language::getKeys());
-//        writer.addLanguages(tableManager.getLanguages(dialog.checkedLanguages()));
-//        writer.save();
-//    }
-//}
-
-//void MainWindow::on_contextTree_itemClicked(QTreeWidgetItem *item, int column)
-//{
-//    if (item->childCount() == 0) {
-//        if (item->text(column) == "DynamicStrings" || item->text(column) == "EventsHandler") {
-//            currentContext = "$$" + item->text(column).toStdString() + "$$";
-//            currentPage = "";
-//        } else {
-//            currentPage = item->text(column).toStdString();
-//            currentContext = item->parent()->text(column).toStdString();
-//        }
-//    } else {
-//        currentPage = "";
-//        if (item->parent())
-//            currentContext = item->text(column).toStdString();
-//        else
-//            currentContext = "";
 //    }
 //    updateLanguageTable();
 //}
@@ -355,14 +339,19 @@ void MainWindow::createSearchWidget()
 
 void MainWindow::setupModel()
 {
-    m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    m_filterSearch->setSourceModel(&m_languagesModel);
-    ui->languageTable->setModel(m_filterSearch);
+    m_filterSearch.setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_filterSearch.setSourceModel(&m_languagesModel);
+    ui->languageTable->setModel(&m_filterSearch);
 }
 
 void MainWindow::searchString(const QString &s)
 {
-    m_filterSearch->setFilterRegExp(QString("^.*(%1).*$").arg(s));
+    QString regEx;
+
+    if (!s.isEmpty())
+        regEx = QString("^.*(%1).*$").arg(s);
+
+    m_filterSearch.setFilterRegExp(regEx);
 }
 
 void MainWindow::populateContextTree()
