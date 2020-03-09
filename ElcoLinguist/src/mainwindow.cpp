@@ -262,15 +262,6 @@ void MainWindow::createActions() noexcept
         m_actions << qMakePair<ActionType, QAction *>(ActionType::Export, act);
     }
 
-    {
-        auto act = new QAction(this);
-        act->setText(tr("Exit"));
-        act->setIcon(QIcon(":/gnome_exit.png"));
-        connect(act, &QAction::triggered, this, &MainWindow::close);
-        ui->menuFile->addAction(act);
-        m_actions << qMakePair<ActionType, QAction *>(ActionType::Exit, act);
-    }
-
     ui->topToolBar->addSeparator();
 
     {
