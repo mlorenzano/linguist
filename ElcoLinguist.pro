@@ -8,9 +8,11 @@ CONFIG(release, debug|release) {
 }
 
 CONFIG(debug, debug|release) {
+unix: {
     CONFIG += sanitizer
     CONFIG += sanitize_address
     CONFIG += sanitize_undefined
+}
     QMAKE_CXXFLAGS += -O0
     QMAKE_CXXFLAGS -= -O1
     QMAKE_CXXFLAGS -= -O2
