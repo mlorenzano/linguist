@@ -4,6 +4,7 @@
 //#include <updater.h>
 
 #include <QApplication>
+#include <QIcon>
 
 #include <time.h>
 
@@ -15,6 +16,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 
     setWindowTitle(tr("About"));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowIcon(QIcon(":/el.ico"));
 
     ui->lblTitle->setText(qApp->applicationName());
     ui->lblVersion->setText(qApp->applicationVersion());
