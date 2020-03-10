@@ -9,6 +9,7 @@ settingsDialog::settingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowIcon(QIcon(":/el.ico"));
     ui->languageBox->addItem("Italiano", "it");
     ui->languageBox->addItem("English", "en");
     QSettings set;
