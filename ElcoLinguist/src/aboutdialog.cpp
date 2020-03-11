@@ -1,16 +1,14 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-//#include <updater.h>
-
 #include <QApplication>
 #include <QIcon>
 
-#include <time.h>
+#include <ctime>
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AboutDialog)
+AboutDialog::AboutDialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
 
@@ -21,16 +19,16 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->lblTitle->setText(qApp->applicationName());
     ui->lblVersion->setText(qApp->applicationVersion());
 
-    time_t theTime = time(nullptr);
-    const int y = localtime(&theTime)->tm_year + 1900;
-    const QString year{QString::number(y, 10)};
-    const QString s = QString("<p>Copyright &copy; %1 Elco Elettronica.</p>")
-                      .arg(year);
+    const auto theTime = time(nullptr);
+    const auto y = localtime(&theTime)->tm_year + 1900;
+    const auto year = QString::number(y, 10);
+    const auto s = QStringLiteral("<p>Copyright &copy; %1 Elco Elettronica.</p>").arg(year);
     ui->lblCopyright->setText(s);
 
-    ui->lblSite->setText(QString("<a href=%3>www.elcoelettronica.it</a></p>")
-                         .arg(qApp->organizationDomain()));
     ui->lblSite->setOpenExternalLinks(true);
+    ui->lblSite->setText(
+        QStringLiteral("<a href=\"http://%1\">%2</a>")
+            .arg(QApplication::organizationDomain(), QApplication::organizationName()));
 }
 
 void AboutDialog::changeEvent(QEvent *e)
@@ -44,4 +42,3 @@ AboutDialog::~AboutDialog()
 {
     delete ui;
 }
-
