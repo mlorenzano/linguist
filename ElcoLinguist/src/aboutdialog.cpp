@@ -1,12 +1,10 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-//#include <updater.h>
-
 #include <QApplication>
 #include <QIcon>
 
-#include <time.h>
+#include <ctime>
 
 AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
@@ -21,10 +19,10 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->lblTitle->setText(qApp->applicationName());
     ui->lblVersion->setText(qApp->applicationVersion());
 
-    time_t theTime = time(nullptr);
-    const int y = localtime(&theTime)->tm_year + 1900;
-    const QString year{QString::number(y, 10)};
-    const QString s = QString("<p>Copyright &copy; %1 Elco Elettronica.</p>").arg(year);
+    const auto theTime = time(nullptr);
+    const auto y = localtime(&theTime)->tm_year + 1900;
+    const auto year = QString::number(y, 10);
+    const auto s = QStringLiteral("<p>Copyright &copy; %1 Elco Elettronica.</p>").arg(year);
     ui->lblCopyright->setText(s);
 
     ui->lblSite->setOpenExternalLinks(true);
