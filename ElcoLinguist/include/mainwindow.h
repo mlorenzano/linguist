@@ -45,6 +45,7 @@ private slots:
     void removelanguage();
     void openAbout();
     void openSettings();
+    void openSelectLanguages();
     void showStartExport();
     void showFinishExport();
     void contextTreeFilter(QTreeWidgetItem *item, int column);
@@ -61,6 +62,7 @@ private:
     QProgressDialog *m_progressDialog;
     std::unique_ptr<TableFilter> m_filterSearch;
     searchform m_searchform;
+    std::vector<std::string> m_filteredLanguages;
 
     enum class ActionType {
         Import,
@@ -71,6 +73,7 @@ private:
         OpenAbout,
         OpenSettings,
         Exit,
+        SelectLanguages,
 
         PlaceholderLast
     };
@@ -86,6 +89,7 @@ private:
     void createSearchWidget();
     void setupModel();
     void searchContext(const QString &context, const QString &page);
+    void setIndexFilteredLang();
     void populateContextTree();
     std::map<std::string, std::set<std::string>> collectContexts() const noexcept;
 };

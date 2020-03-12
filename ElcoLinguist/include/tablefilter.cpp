@@ -6,7 +6,7 @@
 
 TableFilter::TableFilter(const std::vector<Key> &keys)
     : m_model{nullptr},
-      m_keys{keys}
+    m_keys{keys}
 {}
 
 void TableFilter::setSourceModel(QAbstractItemModel *sourceModel)
@@ -21,6 +21,11 @@ void TableFilter::setFilter(const QString &context, const QString &page)
     m_currentContext = context;
     m_currentPage = page;
     invalidateFilter();
+}
+
+void TableFilter::setFilteredLanguages(const QVector<uint16_t> &filteredLanguages)
+{
+    m_indexFilteredLang = filteredLanguages;
 }
 
 bool TableFilter::filterAcceptsRow(int source_row,
@@ -61,4 +66,11 @@ bool TableFilter::filterAcceptsRow(int source_row,
     }
 
     return filterOk;
+}
+
+bool TableFilter::filterAcceptsColumn(int source_column,
+                                      const QModelIndex &source_parent) const
+{
+    Q_UNUSED(source_parent)
+    return m_indexFilteredLang.contains(source_column);
 }
