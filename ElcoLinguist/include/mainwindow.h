@@ -4,6 +4,7 @@
 
 #include <QMainWindow>
 #include <QTranslator>
+#include <QCheckBox>
 
 #include <memory>
 #include <set>
@@ -46,6 +47,7 @@ private slots:
     void showStartExport();
     void showFinishExport();
     void contextTreeFilter(QTreeWidgetItem *item, int column);
+    void setCaseSesitivity();
 
 private:
     const int kButtonSize{24};
@@ -54,6 +56,7 @@ private:
 
     QLineEdit *m_leSearch;
     QLabel *m_lblSearch;
+    QCheckBox *m_cbCaseSentive;
     QTranslator m_translator;
     QProgressDialog *m_progressDialog;
     std::unique_ptr<TableFilter> m_filterSearch;
