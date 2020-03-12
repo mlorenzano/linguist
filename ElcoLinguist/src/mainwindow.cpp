@@ -108,6 +108,7 @@ void MainWindow::importFile()
     for (size_t i = 1; i < intestations.size(); ++i) {
         m_languagesModel.insertLanguage(intestations[i],
                                         Language(intestations[i], reader.collectColumnAt(i)));
+        m_filteredLanguages.push_back(intestations[i]);
     }
 
     setupModel();
@@ -166,6 +167,18 @@ void MainWindow::openSettings()
 {
     settingsDialog().exec();
     translateApp();
+}
+
+void MainWindow::openSelectLanguages()
+{
+    languageListDialog dialog(tr("Select Languages"));
+    dialog.populateLanguagesList(m_languagesModel.languageNames());
+    dialog.setSelectedLanguages(m_filteredLanguages);
+    if (dialog.exec() == QDialog::Accepted) {
+        m_filteredLanguages = dialog.checkedLanguages();
+    }
+    setIndexFilteredLang();
+    m_filterSearch->invalidate();
 }
 
 void MainWindow::showStartExport()
@@ -228,17 +241,6 @@ void MainWindow::setCaseSesitivity(int value)
 {
     m_filterSearch->setFilterCaseSensitivity(value != 0 ? Qt::CaseSensitive : Qt::CaseInsensitive);
 }
-
-//void MainWindow::on_actionFilters_triggered()
-//{
-//    languageListDialog dialog(tr("Set Filters"));
-//    dialog.populateLanguagesList(tableManager.getLanguagesName());
-//    dialog.setSelectedLanguages(filteredLanguages);
-//    if (dialog.exec() == QDialog::Accepted) {
-//        filteredLanguages = dialog.checkedLanguages();
-//    }
-//    updateLanguageTable();
-//}
 
 QAction *MainWindow::actionAt(MainWindow::ActionType type)
 {
@@ -315,6 +317,16 @@ void MainWindow::createActions() noexcept
 
     {
         auto act = new QAction(this);
+        act->setText(tr("Select Languages"));
+        act->setIcon(QIcon(":/select_languages.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::openSelectLanguages);
+        ui->topToolBar->addAction(act);
+        ui->menuEdit->addAction(act);
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::SelectLanguages, act);
+    }
+
+    {
+        auto act = new QAction(this);
         act->setText(tr("Exit"));
         act->setIcon(QIcon(":/exit.png"));
         connect(act, &QAction::triggered, this, &MainWindow::close);
@@ -351,6 +363,7 @@ void MainWindow::enableButtons()
     actionAt(ActionType::AddLanguage)->setEnabled(fileLoaded);
     actionAt(ActionType::RemoveLanguage)->setEnabled(fileLoaded);
     actionAt(ActionType::FindAndReplace)->setEnabled(fileLoaded);
+    actionAt(ActionType::SelectLanguages)->setEnabled(fileLoaded);
 }
 
 void MainWindow::resizeTable()
@@ -377,7 +390,9 @@ void MainWindow::createSearchWidget()
 
 void MainWindow::setupModel()
 {
-    m_filterSearch.reset(new TableFilter(Language::getKeys()));
+    m_filterSearch = std::make_unique<TableFilter>(Language::getKeys());
+    m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    setIndexFilteredLang();
     m_filterSearch->setSourceModel(&m_languagesModel);
     ui->languageTable->setModel(m_filterSearch.get());
 }
@@ -385,6 +400,24 @@ void MainWindow::setupModel()
 void MainWindow::searchContext(const QString &context, const QString &page)
 {
     m_filterSearch->setFilter(context, page);
+}
+
+void MainWindow::setIndexFilteredLang()
+{
+    QVector<uint16_t> indexFilteredLang;
+    const auto languages = m_languagesModel.languages();
+
+    for (int i = 0; i < languages.size(); ++i) {
+        auto it = std::find_if(m_filteredLanguages.begin(),
+                               m_filteredLanguages.end(),
+                               [&](auto &item) { return item == languages.at(i).getName(); });
+
+        if (it != m_filteredLanguages.end()) {
+            indexFilteredLang << i;
+        }
+    }
+
+    m_filterSearch->setFilteredLanguages(indexFilteredLang);
 }
 
 void MainWindow::populateContextTree()
