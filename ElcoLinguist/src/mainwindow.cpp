@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent)
     createSearchWidget();
     enableButtons();
 
+    ui->topToolBar->installEventFilter(this);
+    ui->menuBar->installEventFilter(this);
+
     connect(ui->contextTree, &QTreeWidget::itemClicked, this, &MainWindow::contextTreeFilter);
 }
 
@@ -58,6 +61,17 @@ void MainWindow::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if (dynamic_cast<QToolBar*>(watched) != nullptr ||
+        dynamic_cast<QMenuBar*>(watched) != nullptr) {
+        if (event->type() == QEvent::ContextMenu) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void MainWindow::importFile()
