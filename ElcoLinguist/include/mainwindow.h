@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTranslator>
 #include <QCheckBox>
+#include "searchform.h"
 
 #include <memory>
 #include <set>
@@ -47,19 +48,17 @@ private slots:
     void showStartExport();
     void showFinishExport();
     void contextTreeFilter(QTreeWidgetItem *item, int column);
-    void setCaseSesitivity();
+//    void setCaseSesitivity();
 
 private:
     const int kButtonSize{24};
     Ui::MainWindow *ui;
     LanguagesModel m_languagesModel;
 
-    QLineEdit *m_leSearch;
-    QLabel *m_lblSearch;
-    QCheckBox *m_cbCaseSentive;
     QTranslator m_translator;
     QProgressDialog *m_progressDialog;
     std::unique_ptr<TableFilter> m_filterSearch;
+    searchform m_searchform;
 
     enum class ActionType {
         Import,

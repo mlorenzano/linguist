@@ -48,7 +48,8 @@ SOURCES += \
     $$PWD/ElcoLinguist/src/filereader.cpp \
     $$PWD/ElcoLinguist/src/filewriter.cpp \
     $$PWD/ElcoLinguist/src/LanguagesModel.cpp \
-    $$PWD/ElcoLinguist/include/tablefilter.cpp
+    $$PWD/ElcoLinguist/include/tablefilter.cpp \
+    $$PWD/ElcoLinguist/src/searchform.cpp
 
 HEADERS += \
     $$PWD/ElcoLinguist/include/aboutdialog.h \
@@ -62,13 +63,15 @@ HEADERS += \
     $$PWD/ElcoLinguist/include/filereader.h \
     $$PWD/ElcoLinguist/include/filewriter.h \
     $$PWD/ElcoLinguist/include/LanguagesModel.hpp \
-    $$PWD/ElcoLinguist/include/tablefilter.h
+    $$PWD/ElcoLinguist/include/tablefilter.h \
+    $$PWD/ElcoLinguist/include/searchform.h
 
 FORMS += \
     $$PWD/ElcoLinguist/ui/aboutdialog.ui \
     $$PWD/ElcoLinguist/ui/mainwindow.ui \
     $$PWD/ElcoLinguist/ui/settingsdialog.ui \
-    $$PWD/ElcoLinguist/ui/exportlanguagesdialog.ui
+    $$PWD/ElcoLinguist/ui/exportlanguagesdialog.ui \
+    $$PWD/ElcoLinguist/ui/searchform.ui
 
 RESOURCES += \
     $$PWD/icons/icons.qrc \

@@ -9,6 +9,7 @@
 #include "languagelistdialog.h"
 #include "settingsdialog.h"
 #include "tablefilter.h"
+#include "searchform.h"
 
 #include <QApplication>
 #include <QFileDialog>
@@ -25,9 +26,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_leSearch(new QLineEdit(this))
-    , m_lblSearch(new QLabel(this))
-    , m_cbCaseSentive(new QCheckBox(this))
 {
     ui->setupUi(this);
 
@@ -321,7 +319,6 @@ void MainWindow::enableButtons()
     actionAt(ActionType::Export)->setEnabled(fileLoaded);
     actionAt(ActionType::AddLanguage)->setEnabled(fileLoaded);
     actionAt(ActionType::RemoveLanguage)->setEnabled(fileLoaded);
-    m_leSearch->setEnabled(fileLoaded);
 }
 
 void MainWindow::resizeTable()
@@ -343,37 +340,27 @@ void MainWindow::translateApp()
 
 void MainWindow::createSearchWidget()
 {
-    connect(m_leSearch, &QLineEdit::textEdited, this, &MainWindow::searchString);
-    m_lblSearch->setBuddy(m_leSearch);
-    m_lblSearch->setPixmap(QIcon(":/search.png").pixmap(kButtonSize, kButtonSize));   
-    m_cbCaseSentive->setText(tr("Case sensitive"));
 
-    const auto spacer = new QWidget(this);
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    ui->topToolBar->addWidget(&m_searchform);
 
-    ui->topToolBar->addWidget(spacer);
-    ui->topToolBar->addWidget(m_lblSearch);
-    ui->topToolBar->addWidget(m_leSearch);
-    ui->topToolBar->addWidget(m_cbCaseSentive);
-
-    connect(m_cbCaseSentive, &QCheckBox::stateChanged, this, &MainWindow::setCaseSesitivity);
+//    connect(m_leSearch, &QLineEdit::textEdited, this, &MainWindow::searchString);
+//    connect(m_cbCaseSentive, &QCheckBox::stateChanged, this, &MainWindow::setCaseSesitivity);
 }
 
 void MainWindow::setupModel()
 {
     m_filterSearch = std::make_unique<TableFilter>(Language::getKeys());
-    setCaseSesitivity();
     m_filterSearch->setSourceModel(&m_languagesModel);
     ui->languageTable->setModel(m_filterSearch.get());
 }
 
-void MainWindow::setCaseSesitivity()
-{
-    if (m_cbCaseSentive->isChecked())
-        m_filterSearch->setFilterCaseSensitivity(Qt::CaseSensitive);
-    else
-        m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
-}
+//void MainWindow::setCaseSesitivity()
+//{
+//    if (m_cbCaseSentive->isChecked())
+//        m_filterSearch->setFilterCaseSensitivity(Qt::CaseSensitive);
+//    else
+//        m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
+//}
 
 void MainWindow::searchString(const QString &s)
 {
