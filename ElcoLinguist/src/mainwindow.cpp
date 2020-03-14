@@ -7,9 +7,9 @@
 #include "filewriter.h"
 #include "language.h"
 #include "languagelistdialog.h"
+#include "searchform.h"
 #include "settingsdialog.h"
 #include "tablefilter.h"
-#include "searchform.h"
 
 #include <QApplication>
 #include <QFileDialog>
@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->menuBar->installEventFilter(this);
 
     connect(ui->contextTree, &QTreeWidget::itemClicked, this, &MainWindow::contextTreeFilter);
+    connect(&m_searchform, &searchform::textChanged, this, &MainWindow::searchString);
+    connect(&m_searchform, &searchform::sensitivityChanged, this, &MainWindow::setCaseSesitivity);
 }
 
 MainWindow::~MainWindow()
@@ -110,6 +112,7 @@ void MainWindow::importFile()
     populateContextTree();
     enableButtons();
     resizeTable();
+    setCaseSesitivity(0);
 }
 
 void MainWindow::exportFile()
@@ -118,8 +121,9 @@ void MainWindow::exportFile()
                                                         tr("Export languages"),
                                                         QString(),
                                                         "Text CSV (*.csv)");
-    if (destFilename.isEmpty())
+    if (destFilename.isEmpty()) {
         return;
+    }
 
     auto writer = new FileWriter(destFilename, m_languagesModel.languages(), this);
     writer->setAutoDelete(true);
@@ -192,20 +196,35 @@ void MainWindow::contextTreeFilter(QTreeWidgetItem *item, int column)
 
     if (item->parent()) {
         if (item->childCount() == 0) {
-            if (item->text(column) == QStringLiteral("DynamicStrings") ||
-                item->text(column) == QStringLiteral("EventsHandler")) {
+            if (item->text(column) == QStringLiteral("DynamicStrings")
+                || item->text(column) == QStringLiteral("EventsHandler")) {
                 context = "$$" + item->text(column) + "$$";
             } else {
                 context = item->parent()->text(column);
                 page = item->text(column);
             }
-        }
-        else {
+        } else {
             context = item->text(column);
         }
     }
 
     searchContext(context, page);
+}
+
+void MainWindow::searchString(const QString &s)
+{
+    QString regEx;
+
+    if (!s.isEmpty()) {
+        regEx = QString("^.*(%1).*$").arg(s);
+    }
+
+    m_filterSearch->setFilterRegExp(regEx);
+}
+
+void MainWindow::setCaseSesitivity(int value)
+{
+    m_filterSearch->setFilterCaseSensitivity(value != 0 ? Qt::CaseSensitive : Qt::CaseInsensitive);
 }
 
 //void MainWindow::on_actionFilters_triggered()
@@ -340,11 +359,7 @@ void MainWindow::translateApp()
 
 void MainWindow::createSearchWidget()
 {
-
     ui->topToolBar->addWidget(&m_searchform);
-
-//    connect(m_leSearch, &QLineEdit::textEdited, this, &MainWindow::searchString);
-//    connect(m_cbCaseSentive, &QCheckBox::stateChanged, this, &MainWindow::setCaseSesitivity);
 }
 
 void MainWindow::setupModel()
@@ -352,25 +367,6 @@ void MainWindow::setupModel()
     m_filterSearch = std::make_unique<TableFilter>(Language::getKeys());
     m_filterSearch->setSourceModel(&m_languagesModel);
     ui->languageTable->setModel(m_filterSearch.get());
-}
-
-//void MainWindow::setCaseSesitivity()
-//{
-//    if (m_cbCaseSentive->isChecked())
-//        m_filterSearch->setFilterCaseSensitivity(Qt::CaseSensitive);
-//    else
-//        m_filterSearch->setFilterCaseSensitivity(Qt::CaseInsensitive);
-//}
-
-void MainWindow::searchString(const QString &s)
-{
-    QString regEx;
-
-    if (!s.isEmpty()) {
-        regEx = QString("^.*(%1).*$").arg(s);
-    }
-
-    m_filterSearch->setFilterRegExp(regEx);
 }
 
 void MainWindow::searchContext(const QString &context, const QString &page)

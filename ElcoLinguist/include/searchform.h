@@ -1,5 +1,4 @@
-#ifndef SEARCHFORM_H
-#define SEARCHFORM_H
+#pragma once
 
 #include <QWidget>
 
@@ -7,16 +6,18 @@ namespace Ui {
 class searchform;
 }
 
-class searchform : public QWidget
+class searchform final : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit searchform(QWidget *parent = nullptr);
-    ~searchform();
+    ~searchform() override;
+
+Q_SIGNALS:
+    void textChanged(const QString &str);
+    void sensitivityChanged(int value);
 
 private:
     Ui::searchform *ui;
 };
-
-#endif // SEARCHFORM_H
