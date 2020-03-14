@@ -1,13 +1,13 @@
 <RCC>
     <qresource prefix="/">
-        <file>el.ico</file>
-        <file>el.png</file>
-        <file>export_csv.png</file>
         <file>add_language.png</file>
         <file>delete_language.png</file>
-        <file>import_csv.png</file>
-        <file>settings.png</file>
-        <file>search.png</file>
+        <file>el.ico</file>
+        <file>el.png</file>
         <file>exit.png</file>
+        <file>export_csv.png</file>
+        <file>import_csv.png</file>
+        <file>search.png</file>
+        <file>settings.png</file>
     </qresource>
 </RCC>
