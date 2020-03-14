@@ -48,7 +48,8 @@ private slots:
     void showStartExport();
     void showFinishExport();
     void contextTreeFilter(QTreeWidgetItem *item, int column);
-//    void setCaseSesitivity();
+    void searchString(const QString &s);
+    void setCaseSesitivity(int value);
 
 private:
     const int kButtonSize{24};
@@ -82,7 +83,6 @@ private:
     void translateApp();
     void createSearchWidget();
     void setupModel();
-    void searchString(const QString &s);
     void searchContext(const QString &context, const QString &page);
     void populateContextTree();
     std::map<std::string, std::set<std::string>> collectContexts() const noexcept;
