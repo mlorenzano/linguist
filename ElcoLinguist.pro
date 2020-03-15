@@ -31,52 +31,52 @@ DEFINES += QTCSV_LIBRARY
 include($$PWD/libs-3rdparty/qtcsv/qtcsv.pri)
 
 INCLUDEPATH += \
-    $$PWD/ElcoLinguist/src \
-    $$PWD/ElcoLinguist/include \
-    $$PWD/ElcoLinguist/ui
+    $$PWD/src/src \
+    $$PWD/src/include \
+    $$PWD/src/ui
 
 SOURCES += \
-    $$PWD/ElcoLinguist/src/main.cpp \
-    $$PWD/ElcoLinguist/src/aboutdialog.cpp \
-    $$PWD/ElcoLinguist/src/mainwindow.cpp \
-    $$PWD/ElcoLinguist/src/settingsdialog.cpp \
-    $$PWD/ElcoLinguist/src/language.cpp \
-    $$PWD/ElcoLinguist/src/key.cpp \
-    $$PWD/ElcoLinguist/src/messageitem.cpp \
-    $$PWD/ElcoLinguist/src/languagelistdialog.cpp \
-    $$PWD/ElcoLinguist/src/customitemdelegate.cpp \
-    $$PWD/ElcoLinguist/src/filereader.cpp \
-    $$PWD/ElcoLinguist/src/filewriter.cpp \
-    $$PWD/ElcoLinguist/src/LanguagesModel.cpp \
-    $$PWD/ElcoLinguist/include/tablefilter.cpp \
-    $$PWD/ElcoLinguist/src/searchform.cpp
+    $$PWD/src/src/main.cpp \
+    $$PWD/src/src/aboutdialog.cpp \
+    $$PWD/src/src/mainwindow.cpp \
+    $$PWD/src/src/settingsdialog.cpp \
+    $$PWD/src/src/language.cpp \
+    $$PWD/src/src/key.cpp \
+    $$PWD/src/src/messageitem.cpp \
+    $$PWD/src/src/languagelistdialog.cpp \
+    $$PWD/src/src/customitemdelegate.cpp \
+    $$PWD/src/src/filereader.cpp \
+    $$PWD/src/src/filewriter.cpp \
+    $$PWD/src/src/LanguagesModel.cpp \
+    $$PWD/src/include/tablefilter.cpp \
+    $$PWD/src/src/searchform.cpp
 
 HEADERS += \
-    $$PWD/ElcoLinguist/include/aboutdialog.h \
-    $$PWD/ElcoLinguist/include/mainwindow.h \
-    $$PWD/ElcoLinguist/include/settingsdialog.h \
-    $$PWD/ElcoLinguist/include/language.h \
-    $$PWD/ElcoLinguist/include/key.h \
-    $$PWD/ElcoLinguist/include/messageitem.h \
-    $$PWD/ElcoLinguist/include/languagelistdialog.h \
-    $$PWD/ElcoLinguist/include/customitemdelegate.h \
-    $$PWD/ElcoLinguist/include/filereader.h \
-    $$PWD/ElcoLinguist/include/filewriter.h \
-    $$PWD/ElcoLinguist/include/LanguagesModel.hpp \
-    $$PWD/ElcoLinguist/include/tablefilter.h \
-    $$PWD/ElcoLinguist/include/searchform.h
+    $$PWD/src/include/aboutdialog.h \
+    $$PWD/src/include/mainwindow.h \
+    $$PWD/src/include/settingsdialog.h \
+    $$PWD/src/include/language.h \
+    $$PWD/src/include/key.h \
+    $$PWD/src/include/messageitem.h \
+    $$PWD/src/include/languagelistdialog.h \
+    $$PWD/src/include/customitemdelegate.h \
+    $$PWD/src/include/filereader.h \
+    $$PWD/src/include/filewriter.h \
+    $$PWD/src/include/LanguagesModel.hpp \
+    $$PWD/src/include/tablefilter.h \
+    $$PWD/src/include/searchform.h
 
 FORMS += \
-    $$PWD/ElcoLinguist/ui/aboutdialog.ui \
-    $$PWD/ElcoLinguist/ui/mainwindow.ui \
-    $$PWD/ElcoLinguist/ui/settingsdialog.ui \
-    $$PWD/ElcoLinguist/ui/exportlanguagesdialog.ui \
-    $$PWD/ElcoLinguist/ui/searchform.ui
+    $$PWD/src/ui/aboutdialog.ui \
+    $$PWD/src/ui/mainwindow.ui \
+    $$PWD/src/ui/settingsdialog.ui \
+    $$PWD/src/ui/exportlanguagesdialog.ui \
+    $$PWD/src/ui/searchform.ui
 
 RESOURCES += \
     $$PWD/icons/icons.qrc \
     $$PWD/translations/translations.qrc
 
-TRANSLATIONS += $$PWD/translations/elcolinguist_it.ts
-TRANSLATIONS += $$PWD/translations/elcolinguist_en.ts
+TRANSLATIONS += $$PWD/translations/src_it.ts
+TRANSLATIONS += $$PWD/translations/src_en.ts
 
