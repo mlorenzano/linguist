@@ -364,6 +364,7 @@ void MainWindow::enableButtons()
     actionAt(ActionType::RemoveLanguage)->setEnabled(fileLoaded);
     actionAt(ActionType::FindAndReplace)->setEnabled(fileLoaded);
     actionAt(ActionType::SelectLanguages)->setEnabled(fileLoaded);
+    m_searchform.setEnabled(fileLoaded);
 }
 
 void MainWindow::resizeTable()
