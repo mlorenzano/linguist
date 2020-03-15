@@ -57,6 +57,25 @@ const std::vector<std::string> Language::getMessages() const
     return tmp;
 }
 
+const std::string &Language::messageAt(const Key &key) const
+{
+    return messages.at(key);
+}
+
+bool Language::changeMessage(const std::string &oldText, const std::string &text)
+{
+    auto iterator = std::find_if(messages.begin(), messages.end(),
+                                 [&](const auto &it){ return it.second == oldText;});
+
+    if (iterator == messages.end()) {
+        return false;
+    }
+
+    iterator->second = text;
+
+    return true;
+}
+
 void Language::setKeys(const std::vector<Key> &keys)
 {
     Language::keys = keys;
