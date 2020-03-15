@@ -5,6 +5,7 @@
 #include <QItemDelegate>
 #include <QDebug>
 #include <QApplication>
+
 class PlainTextEditor : public QTextEdit
 {
     Q_OBJECT

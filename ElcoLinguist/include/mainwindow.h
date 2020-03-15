@@ -1,11 +1,11 @@
 #pragma once
 
 #include "LanguagesModel.hpp"
+#include "searchform.h"
 
+#include <QCheckBox>
 #include <QMainWindow>
 #include <QTranslator>
-#include <QCheckBox>
-#include "searchform.h"
 
 #include <memory>
 #include <set>
