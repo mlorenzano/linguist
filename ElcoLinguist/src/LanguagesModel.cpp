@@ -64,6 +64,20 @@ void LanguagesModel::replace(const std::string &oldMsg, const std::string &newMs
     reloadModel();
 }
 
+bool LanguagesModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    Q_UNUSED(role)
+
+    auto it = item(index.row(), index.column());
+    auto oldText = it->text();
+    auto text = value.toString();
+
+    it->setText(text);
+    setItem(index.row(), index.column(), it);
+    return m_languages.at(index.column())
+        .second.changeMessage(oldText.toStdString(), text.toStdString());
+}
+
 int LanguagesModel::findKeyString(const std::string &str) const
 {
     auto it = std::find_if(m_languages.cbegin(), m_languages.cend(), [&](const auto &item) {

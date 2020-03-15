@@ -22,6 +22,8 @@ public:
     QList<QStandardItem *> getMessagesByContext(const std::string &context = "",
                                                 const std::string &page = "");
     const std::vector<std::string> getMessages() const;
+    const std::string &messageAt(const Key &key) const;
+    bool changeMessage(const std::string &oldText, const std::string &text);
 
     static void setKeys(const std::vector<Key> &keys);
     static const std::vector<Key> &getKeys();

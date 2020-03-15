@@ -22,6 +22,7 @@ public:
     QVector<Language> languages() const noexcept;
 
     void replace(const std::string &oldMsg, const std::string &newMsg);
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
 private:
     std::vector<std::pair<std::string, Language>> m_languages;
