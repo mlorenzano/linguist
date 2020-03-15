@@ -19,8 +19,10 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QProgressDialog>
+#include <QPushButton>
 #include <QSettings>
 #include <QTreeWidget>
+#include <QVBoxLayout>
 #include <QtConcurrent>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -66,8 +68,8 @@ void MainWindow::changeEvent(QEvent *e)
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    if (dynamic_cast<QToolBar*>(watched) != nullptr ||
-        dynamic_cast<QMenuBar*>(watched) != nullptr) {
+    if (dynamic_cast<QToolBar *>(watched) != nullptr
+        || dynamic_cast<QMenuBar *>(watched) != nullptr) {
         if (event->type() == QEvent::ContextMenu) {
             return true;
         }
@@ -303,6 +305,16 @@ void MainWindow::createActions() noexcept
 
     {
         auto act = new QAction(this);
+        act->setText(tr("Find And Replace"));
+        act->setIcon(QIcon(":/find_and_replace.png"));
+        connect(act, &QAction::triggered, this, &MainWindow::findAndReplace);
+        ui->topToolBar->addAction(act);
+        ui->menuEdit->addAction(act);
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::FindAndReplace, act);
+    }
+
+    {
+        auto act = new QAction(this);
         act->setText(tr("Exit"));
         act->setIcon(QIcon(":/exit.png"));
         connect(act, &QAction::triggered, this, &MainWindow::close);
@@ -338,6 +350,7 @@ void MainWindow::enableButtons()
     actionAt(ActionType::Export)->setEnabled(fileLoaded);
     actionAt(ActionType::AddLanguage)->setEnabled(fileLoaded);
     actionAt(ActionType::RemoveLanguage)->setEnabled(fileLoaded);
+    actionAt(ActionType::FindAndReplace)->setEnabled(fileLoaded);
 }
 
 void MainWindow::resizeTable()
@@ -364,7 +377,7 @@ void MainWindow::createSearchWidget()
 
 void MainWindow::setupModel()
 {
-    m_filterSearch = std::make_unique<TableFilter>(Language::getKeys());
+    m_filterSearch.reset(new TableFilter(Language::getKeys()));
     m_filterSearch->setSourceModel(&m_languagesModel);
     ui->languageTable->setModel(m_filterSearch.get());
 }
@@ -422,4 +435,25 @@ std::map<std::string, std::set<std::string>> MainWindow::collectContexts() const
         }
     }
     return contexts;
+}
+
+void MainWindow::findAndReplace()
+{
+    QDialog d(this);
+    d.setLayout(new QVBoxLayout);
+    auto findTextEdit = new QLineEdit(&d);
+    auto replaceTextEdit = new QLineEdit(&d);
+    d.layout()->addWidget(findTextEdit);
+    d.layout()->addWidget(replaceTextEdit);
+    QPushButton replaceButton(&d);
+    replaceButton.setText(tr("Replace"));
+    connect(&replaceButton, &QPushButton::clicked, [&] {
+        m_languagesModel.replace(findTextEdit->text().toStdString(),
+                                 replaceTextEdit->text().toStdString());
+        resizeTable();
+        d.done(0);
+    });
+    d.layout()->addWidget(&replaceButton);
+    d.setModal(true);
+    d.exec();
 }
