@@ -36,7 +36,6 @@ bool Key::fromString(std::string keyString)
     QString key, value, param;
     QRegExp reValue("((ct|id|op)=\"+[\\S]+\"+)");
     int pos = 0;
-    bool ok = false;
     QString str = QString::fromStdString(keyString);
 
     context.clear();
@@ -44,7 +43,6 @@ bool Key::fromString(std::string keyString)
     pageOfContext.clear();
 
     while ((pos = reValue.indexIn(str, pos)) != -1) {
-        ok = true;
         param = reValue.cap(1);
         pos += reValue.matchedLength();
         key = param.split("=").first();
