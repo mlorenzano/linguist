@@ -21,9 +21,12 @@ public:
     QVector<QString> languageNames() const noexcept;
     QVector<Language> languages() const noexcept;
 
+    void replace(const std::string &oldMsg, const std::string &newMsg);
+
 private:
     std::vector<std::pair<std::string, Language>> m_languages;
 
     int findKeyString(const std::string &str) const;
     void updateItemsData();
+    void reloadModel();
 };

@@ -56,6 +56,14 @@ QVector<Language> LanguagesModel::languages() const noexcept
     return ret;
 }
 
+void LanguagesModel::replace(const std::string &oldMsg, const std::string &newMsg)
+{
+    for (auto &l : m_languages) {
+        l.second.replaceMessage(oldMsg, newMsg);
+    }
+    reloadModel();
+}
+
 int LanguagesModel::findKeyString(const std::string &str) const
 {
     auto it = std::find_if(m_languages.cbegin(), m_languages.cend(), [&](const auto &item) {
@@ -75,4 +83,16 @@ void LanguagesModel::updateItemsData()
     appendColumn(lastInserted.getMessagesByContext());
     setHorizontalHeaderItem(m_languages.size() - 1,
                             new QStandardItem(lastInserted.getName().c_str()));
+}
+
+void LanguagesModel::reloadModel()
+{
+    clear();
+    auto i = 0;
+    for (const auto &language : m_languages) {
+        ++i;
+        decltype(auto) lastInserted = language.second;
+        appendColumn(lastInserted.getMessagesByContext());
+        setHorizontalHeaderItem(i - 1, new QStandardItem(lastInserted.getName().c_str()));
+    }
 }

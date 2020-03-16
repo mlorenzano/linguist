@@ -49,6 +49,7 @@ private slots:
     void showFinishExport();
     void contextTreeFilter(QTreeWidgetItem *item, int column);
     void searchString(const QString &s);
+    void findAndReplace();
     void setCaseSesitivity(int value);
 
 private:
@@ -66,6 +67,7 @@ private:
         Export,
         AddLanguage,
         RemoveLanguage,
+        FindAndReplace,
         OpenAbout,
         OpenSettings,
         Exit,

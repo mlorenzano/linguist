@@ -136,6 +136,11 @@
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
+  <action name="actionFind_Replace">
+   <property name="text">
+    <string>Find \&amp; Replace</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

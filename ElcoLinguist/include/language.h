@@ -22,11 +22,11 @@ public:
     QList<QStandardItem *> getMessagesByContext(const std::string &context = "",
                                                 const std::string &page = "");
     const std::vector<std::string> getMessages() const;
-    const std::string &messageAt(const Key &key) const;
-    void changeMessage(const std::string &text, const Key &key);
 
     static void setKeys(const std::vector<Key> &keys);
     static const std::vector<Key> &getKeys();
+
+    void replaceMessage(const std::string &oldMsg, const std::string &newMsg);
 
 private:
     std::string name;
