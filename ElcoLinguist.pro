@@ -28,12 +28,12 @@ TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QTCSV_LIBRARY
 
-OBJECTS_DIR = $$PWD/build/obj/
-MOC_DIR = $$PWD/build/obj/
-UI_DIR = $$PWD/build/obj/
-RCC_DIR = $$PWD/build/obj/
+OBJECTS_DIR = $$shadowed($$PWD)/obj/
+MOC_DIR = $$shadowed($$PWD)/obj/
+UI_DIR = $$shadowed($$PWD)/obj/
+RCC_DIR = $$shadowed($$PWD)/obj/
 
-DESTDIR = $$PWD/build/bin/
+DESTDIR = $$shadowed($$PWD)/bin/
 
 include($$PWD/libs-3rdparty/qtcsv/qtcsv.pri)
 
