@@ -56,6 +56,10 @@ bool TableFilter::filterAcceptsRow(int source_row,
     if (filterOk && !filterRegExp().isEmpty()) {
         filterOk = false;
         for (int col = 0; col < m_languages.size(); ++col) {
+            if (!m_indexFilteredLang.contains(col)) {
+                continue;
+            }
+
             auto model = sourceModel()->index(source_row, col, source_parent);
             text = sourceModel()->data(model).toString();
             if (filterRegExp().exactMatch(text)) {
