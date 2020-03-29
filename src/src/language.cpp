@@ -86,12 +86,14 @@ const std::vector<Key> &Language::getKeys()
     return keys;
 }
 
-void Language::replaceMessage(const std::string &oldMsg, const std::string &newMsg)
+void Language::replaceMessage(const std::string &oldMsg, const std::string &newMsg,
+                              int caseSensitivity)
 {
     for (const auto &key : keys) {
         // Fuck off I'm using QStrings...
         auto msgAsQString = QString::fromStdString(messages.at(key));
-        msgAsQString.replace(oldMsg.c_str(), newMsg.c_str());
+        msgAsQString.replace(oldMsg.c_str(), newMsg.c_str(),
+                             caseSensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive);
         messages.at(key) = msgAsQString.toStdString();
     }
 }

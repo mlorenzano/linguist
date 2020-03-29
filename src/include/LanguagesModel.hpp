@@ -21,7 +21,7 @@ public:
     QVector<QString> languageNames() const noexcept;
     QVector<Language> languages() const noexcept;
 
-    void replace(const std::string &oldMsg, const std::string &newMsg);
+    void replace(const std::string &oldMsg, const std::string &newMsg, int caseSensitivity);
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
 private:
