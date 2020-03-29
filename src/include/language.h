@@ -28,7 +28,7 @@ public:
     static void setKeys(const std::vector<Key> &keys);
     static const std::vector<Key> &getKeys();
 
-    void replaceMessage(const std::string &oldMsg, const std::string &newMsg);
+    void replaceMessage(const std::string &oldMsg, const std::string &newMsg, int caseSensitivity);
 
 private:
     std::string name;

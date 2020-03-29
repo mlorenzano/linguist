@@ -475,19 +475,31 @@ void MainWindow::findAndReplace()
 {
     QDialog d(this);
     d.setLayout(new QVBoxLayout);
+    auto sLabel = new QLabel(&d);
+    sLabel->setText(tr("Search:"));
     auto findTextEdit = new QLineEdit(&d);
+    auto rLabel = new QLabel(&d);
+    rLabel->setText(tr("Replace with:"));
     auto replaceTextEdit = new QLineEdit(&d);
-    d.layout()->addWidget(findTextEdit);
-    d.layout()->addWidget(replaceTextEdit);
+    auto caseSensitiveOption = new QCheckBox(&d);
+    caseSensitiveOption->setText(tr("Case sentive"));
     QPushButton replaceButton(&d);
     replaceButton.setText(tr("Replace"));
     connect(&replaceButton, &QPushButton::clicked, [&] {
         m_languagesModel.replace(findTextEdit->text().toStdString(),
-                                 replaceTextEdit->text().toStdString());
+                                 replaceTextEdit->text().toStdString(),
+                                 caseSensitiveOption->isChecked());
         resizeTable();
         d.done(0);
     });
+
+    d.layout()->addWidget(sLabel);
+    d.layout()->addWidget(findTextEdit);
+    d.layout()->addWidget(caseSensitiveOption);
+    d.layout()->addWidget(rLabel);
+    d.layout()->addWidget(replaceTextEdit);
     d.layout()->addWidget(&replaceButton);
     d.setModal(true);
+    d.setMinimumSize(250, 150);
     d.exec();
 }

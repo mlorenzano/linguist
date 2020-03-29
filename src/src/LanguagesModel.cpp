@@ -56,10 +56,10 @@ QVector<Language> LanguagesModel::languages() const noexcept
     return ret;
 }
 
-void LanguagesModel::replace(const std::string &oldMsg, const std::string &newMsg)
+void LanguagesModel::replace(const std::string &oldMsg, const std::string &newMsg, int caseSensitivity)
 {
     for (auto &l : m_languages) {
-        l.second.replaceMessage(oldMsg, newMsg);
+        l.second.replaceMessage(oldMsg, newMsg, caseSensitivity);
     }
     reloadModel();
 }
