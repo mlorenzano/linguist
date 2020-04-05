@@ -7,17 +7,24 @@
 
 #include <algorithm>
 
-FileReader::FileReader(std::string filename)
+FileReader::FileReader(const std::string &filename)
 {
     if (filename.find("csv") != std::string::npos) {
         m_csvData = QtCSV::Reader::readToList(filename.data(), ";", "\"");
     }
 }
 
-std::vector<Key> FileReader::collectKeys()
+FileReader::FileReader(const QString &filename)
+{
+    if (filename.contains("csv")) {
+        m_csvData = QtCSV::Reader::readToList(filename, ";", "\"");
+    }
+}
+
+Keys FileReader::collectKeys()
 {
     std::vector<std::string> stringKeys = collectColumnAt(0);
-    std::vector<Key> keys;
+    Keys keys;
     std::transform(stringKeys.begin(),
                    stringKeys.end(),
                    std::back_inserter(keys),

@@ -2,6 +2,7 @@
 
 #include "LanguagesModel.hpp"
 #include "searchform.h"
+#include "LanguagesContainer.hpp"
 
 #include <QCheckBox>
 #include <QMainWindow>
@@ -52,10 +53,12 @@ private slots:
     void searchString(const QString &s);
     void findAndReplace();
     void setCaseSesitivity(int value);
+    void addLanguageFromFile();
 
 private:
     const int kButtonSize{24};
     Ui::MainWindow *ui;
+    LanguagesContainer m_containerOfLanguages;
     LanguagesModel m_languagesModel;
 
     QTranslator m_translator;
@@ -74,6 +77,7 @@ private:
         OpenSettings,
         Exit,
         SelectLanguages,
+        AddLanguageFromFile,
 
         PlaceholderLast
     };

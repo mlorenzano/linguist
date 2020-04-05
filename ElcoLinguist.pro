@@ -56,7 +56,8 @@ SOURCES += \
     $$PWD/src/src/filewriter.cpp \
     $$PWD/src/src/LanguagesModel.cpp \
     $$PWD/src/include/tablefilter.cpp \
-    $$PWD/src/src/searchform.cpp
+    $$PWD/src/src/searchform.cpp \
+    $$PWD/src/src/LanguagesContainer.cpp
 
 HEADERS += \
     $$PWD/src/include/aboutdialog.h \
@@ -71,7 +72,9 @@ HEADERS += \
     $$PWD/src/include/filewriter.h \
     $$PWD/src/include/LanguagesModel.hpp \
     $$PWD/src/include/tablefilter.h \
-    $$PWD/src/include/searchform.h
+    $$PWD/src/include/searchform.h \
+    $$PWD/src/include/LanguagesContainer.hpp \
+    $$PWD/src/include/Keys.hpp
 
 FORMS += \
     $$PWD/src/ui/aboutdialog.ui \

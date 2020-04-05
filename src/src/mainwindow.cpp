@@ -242,6 +242,27 @@ void MainWindow::setCaseSesitivity(int value)
     m_filterSearch->setFilterCaseSensitivity(value != 0 ? Qt::CaseSensitive : Qt::CaseInsensitive);
 }
 
+void MainWindow::addLanguageFromFile()
+{
+    QSettings set;
+    const auto destFilename
+        = QFileDialog::getOpenFileName(this,
+                                       tr("Add Languages From File"),
+                                       set.value("workingDirectory", QString()).toString(),
+                                       "Text CSV (*.csv)");
+
+    if (destFilename.isEmpty()) {
+        return;
+    }
+
+    FileReader reader(destFilename);
+    auto a = reader.collectKeys();
+    Language tmp;
+
+
+    auto tt = 9;
+}
+
 QAction *MainWindow::actionAt(MainWindow::ActionType type)
 {
     auto it = std::find_if(m_actions.begin(), m_actions.end(), [&](auto &item) {
@@ -323,6 +344,15 @@ void MainWindow::createActions() noexcept
         ui->topToolBar->addAction(act);
         ui->menuEdit->addAction(act);
         m_actions << qMakePair<ActionType, QAction *>(ActionType::SelectLanguages, act);
+    }
+
+    {
+        auto act = new QAction(this);
+        act->setText(tr("Add Language From File"));
+        connect(act, &QAction::triggered, this, &MainWindow::addLanguageFromFile);
+        ui->topToolBar->addAction(act);
+        ui->menuEdit->addAction(act);
+        m_actions << qMakePair<ActionType, QAction *>(ActionType::AddLanguageFromFile, act);
     }
 
     {

@@ -1,34 +1,36 @@
 #include "language.h"
 #include <iterator>
 
-std::vector<Key> Language::keys = std::vector<Key>();
-
-Language::Language()
-    : messages()
+Language::Language(const Keys &keys)
+    : m_keys{keys}
 {}
 
-Language::Language(const std::string &name)
-{
-    this->name = name;
-    for (auto &key : keys) {
-        messages.insert(std::make_pair(std::cref(key), ""));
-    }
-}
+//Language::Language()
+//    : messages()
+//{}
 
-Language::Language(const std::string &name, const std::vector<std::string> &strings)
-{
-    this->name = name;
-    int i = 0;
-    for (auto &key : keys) {
-        messages.insert(std::make_pair(std::ref(key), strings[i]));
-        i++;
-    }
-}
+//Language::Language(const std::string &name)
+//{
+//    this->name = name;
+//    for (auto &key : keys) {
+//        messages.insert(std::make_pair(std::cref(key), ""));
+//    }
+//}
 
-Language::Language(const Language &other)
-{
-    *this = other;
-}
+//Language::Language(const std::string &name, const std::vector<std::string> &strings)
+//{
+//    this->name = name;
+//    int i = 0;
+//    for (auto &key : keys) {
+//        messages.insert(std::make_pair(std::ref(key), strings[i]));
+//        i++;
+//    }
+//}
+
+//Language::Language(const Language &other)
+//{
+//    *this = other;
+//}
 
 const std::string &Language::getName() const
 {
@@ -64,8 +66,9 @@ const std::string &Language::messageAt(const Key &key) const
 
 bool Language::changeMessage(const std::string &oldText, const std::string &text)
 {
-    auto iterator = std::find_if(messages.begin(), messages.end(),
-                                 [&](const auto &it){ return it.second == oldText;});
+    auto iterator = std::find_if(messages.begin(), messages.end(), [&](const auto &it) {
+        return it.second == oldText;
+    });
 
     if (iterator == messages.end()) {
         return false;

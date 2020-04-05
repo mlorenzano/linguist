@@ -1,6 +1,6 @@
 #pragma once
 
-#include "key.h"
+#include "Keys.hpp"
 
 #include <vector>
 #include <QList>
@@ -8,9 +8,10 @@
 class FileReader
 {
 public:
-    explicit FileReader(std::string filename);
+    explicit FileReader(const std::string &filename);
+    explicit FileReader(const QString &filename);
 
-    std::vector<Key> collectKeys();
+    Keys collectKeys();
     std::vector<std::string> collectColumnAt(std::size_t index);
     std::vector<std::string> collectIntestations();
 

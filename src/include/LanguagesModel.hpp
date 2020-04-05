@@ -4,11 +4,15 @@
 
 #include <QAbstractTableModel>
 
+class LanguagesContainer;
+
 class LanguagesModel final : public QStandardItemModel
 {
     Q_OBJECT
 
 public:
+    explicit LanguagesModel(const LanguagesContainer &container);
+
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     void setDefault(const Language &def);
@@ -25,7 +29,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
 private:
-    std::vector<std::pair<std::string, Language>> m_languages;
+    const LanguagesContainer &m_container;
 
     int findKeyString(const std::string &str) const;
     void updateItemsData();

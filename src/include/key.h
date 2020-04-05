@@ -1,5 +1,4 @@
-#ifndef INCLUDEKEY_H
-#define INCLUDEKEY_H
+#pragma once
 
 #include <iostream>
 
@@ -27,8 +26,8 @@ public:
     std::string getPageOfContext() const;
 
 private:
-    std::string context;
     std::string id;
+    std::string context;
     std::string pageOfContext;
 };
 
@@ -45,5 +44,3 @@ struct KeyHasher
                 ^ (hash<string>()(k.getPageOfContext()) << 1);
     }
 };
-
-#endif

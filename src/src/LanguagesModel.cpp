@@ -1,5 +1,9 @@
 #include "LanguagesModel.hpp"
 
+LanguagesModel::LanguagesModel(const LanguagesContainer &container)
+    : m_container{container}
+{}
+
 Qt::ItemFlags LanguagesModel::flags(const QModelIndex &index) const
 {
     return (index.column() != 0) ? Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable

@@ -1,22 +1,12 @@
-#ifndef INCLUDELANGUAGE_H
-#define INCLUDELANGUAGE_H
+#pragma once
 
-#include "key.h"
+#include "Keys.hpp"
 #include "messageitem.h"
-
-#include <QList>
-
-#include <iostream>
-#include <string>
-#include <unordered_map>
 
 class Language
 {
 public:
-    Language();
-    Language(const std::string &name);
-    Language(const std::string &name, const std::vector<std::string> &strings);
-    Language(const Language &other);
+    explicit Language(const Keys &keys);
 
     const std::string &getName() const;
     QList<QStandardItem *> getMessagesByContext(const std::string &context = "",
@@ -32,8 +22,6 @@ public:
 
 private:
     std::string name;
-    static std::vector<Key> keys;
-    std::unordered_map<Key, std::string, KeyHasher> messages;
+    const Keys &m_keys;
+    std::unordered_map<Key, QString, KeyHasher> messages;
 };
-
-#endif // INCLUDELANGUAGE_H
